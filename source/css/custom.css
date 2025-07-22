@@ -1,0 +1,3 @@
+div#footnotelist > ol > li {
+    list-style: none;
+}

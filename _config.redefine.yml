@@ -205,23 +205,23 @@ navbar:
     pages: 1000px #other pages
   # Navbar links
   links:
-    Home: 
+    Home:
       path: / 
       icon: fa-regular fa-house # can be empty
-    # Archives: 
-    #   path: /archives 
-    #   icon: fa-regular fa-archive # can be empty
-    # Status: 
+    Archives:
+      path: /archives 
+      icon: fa-regular fa-archive # can be empty
+    # Status:
     #   path: https://status.ohevan.com/
     #   icon: fa-regular fa-chart-bar
-    # About: 
+    # About:
     #   icon: fa-regular fa-user
     #   submenus:
     #     Me: /about
     #     Github: https://github.com/EvanNotFound/hexo-theme-redefine
     #     Blog: https://ohevan.com
     #     Friends: /friends
-    # Links: 
+    # Links:
     #   icon: fa-regular fa-link
     #   submenus:
     #     Link1: /link1
@@ -416,15 +416,13 @@ footer:
 # Docs: https://redefine-docs.ohevan.com/inject
 inject:
   # Whether to enable inject
-  enable: false
+  enable: true
   # Inject custom head html code
   head: 
-    -
-    -
+    - <link rel="stylesheet" href="/css/custom.css">
   # Inject custom footer html code
   footer:
-    -
-    -
+    - <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 # INJECT <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< end
 
 
