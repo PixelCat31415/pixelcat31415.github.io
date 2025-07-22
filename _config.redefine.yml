@@ -134,7 +134,7 @@ home_banner:
     light: /images/wallhaven-wqery6-light.webp # light mode
     dark: /images/wallhaven-wqery6-dark.webp # dark mode
   # Home banner title
-  title: Nyanyannya
+  title: A subtle purr from nowhere.
   # Home banner subtitle
   subtitle:
     text: [] # subtitle text, array
@@ -207,10 +207,13 @@ navbar:
   links:
     Home:
       path: / 
-      icon: fa-regular fa-house # can be empty
+      icon: fa-regular fa-house
     Archives:
       path: /archives 
-      icon: fa-regular fa-archive # can be empty
+      icon: fa-regular fa-archive
+    About:
+      path: /about
+      icon: fa-regular fa-user
     # Status:
     #   path: https://status.ohevan.com/
     #   icon: fa-regular fa-chart-bar
