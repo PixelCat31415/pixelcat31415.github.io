@@ -18,7 +18,7 @@ Displayed math:
 $$
 \begin{aligned}
     e^{i\pi} &= -1 \cr
-             &= \int^{1}_{\frac{1}{2}}\ln x \text{ dx}
+             &\neq \int^{1}_{\frac{1}{2}}\ln x \text{ dx}
 \end{aligned}
 $$
 

@@ -54,6 +54,13 @@ prismjs:
   preprocess: true
   line_number: true
   tab_replace: ''
+mathjax:
+  tags: all
+  single_dollars: false
+  cjk_width: 0.9
+  normal_width: 0.6
+  append_css: true
+  every_page: true
 
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
