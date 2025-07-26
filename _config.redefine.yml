@@ -132,7 +132,7 @@ home_banner:
   # Home banner image
   image: 
     light: /images/wallhaven-wqery6-light.webp # light mode
-    dark: /images/wallhaven-wqery6-dark.webp # dark mode
+    dark: /images/cat-in-tokyo-city.jpg # dark mode
   # Home banner title
   title: A subtle purr from nowhere.
   # Home banner subtitle
