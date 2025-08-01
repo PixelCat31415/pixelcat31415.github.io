@@ -1,7 +1,7 @@
 ---
 title: C++ 的強符號與弱符號
 date: 2025-05-12T06:41:14+08:00
-tags:
+tags: [C++]
 ---
 
 系統程式設計和作業系統和計算機結構都有教（所以說為什麼同一件事要教三次），C/C++ 原始碼會編譯（compile）成 object file，很多個 object file 可以連結（link）成一個可執行檔。C/C++ 裡面的變數、函數之類的東西在 object file 裡面變成 symbol，symbol 又有強和弱......
