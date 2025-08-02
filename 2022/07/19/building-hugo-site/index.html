@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="PixelCat31415">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set data attribute for CSS variables
+                root.setAttribute("data-theme", theme);
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes once DOM is ready
+            if (document.readyState !== "loading") {
+                document.body.classList.add(theme + "-mode");
+            } else {
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.body.classList.add(theme + "-mode");
+                    document.body.classList.remove((theme === DARK ? LIGHT : DARK) + "-mode");
+                });
+            }
+        })();
+    </script>
+    
+    <!-- Critical CSS to prevent flash -->
+    <style>
+        :root[data-theme="dark"] {
+            --background-color: #202124;
+            --background-color-transparent: rgba(32, 33, 36, 0.6);
+            --second-background-color: #2d2e32;
+            --third-background-color: #34353a;
+            --third-background-color-transparent: rgba(32, 33, 36, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #ffffff;
+            --second-text-color: #eeeeee;
+            --third-text-color: #bebec6;
+            --fourth-text-color: #999999;
+            --default-text-color: #bebec6;
+            --invert-text-color: #373D3F;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(255, 255, 255, 0.08);
+            --shadow-color-2: rgba(255, 255, 255, 0.05);
+        }
+        
+        :root[data-theme="light"] {
+            --background-color: #fff;
+            --background-color-transparent: rgba(255, 255, 255, 0.6);
+            --second-background-color: #f8f8f8;
+            --third-background-color: #f2f2f2;
+            --third-background-color-transparent: rgba(241, 241, 241, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #16171a;
+            --second-text-color: #2f3037;
+            --third-text-color: #5e5e5e;
+            --fourth-text-color: #eeeeee;
+            --default-text-color: #373D3F;
+            --invert-text-color: #bebec6;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(0, 0, 0, 0.08);
+            --shadow-color-2: rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+        
+        /* Apply body classes as soon as DOM is ready */
+        :root[data-theme="dark"] body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+    </style>
+    
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://pixelcat31415.github.io/2022/07/19/building-hugo-site/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+        
+        <meta name="description" content="Nyanyannya.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="建立 Hugo Site">
+<meta property="og:url" content="https://pixelcat31415.github.io/2022/07/19/building-hugo-site/">
+<meta property="og:site_name" content="Nyanyannya">
+<meta property="og:description" content="Nyanyannya.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://pixelcat31415.github.io/images/pixelcat.png">
+<meta property="article:published_time" content="2022-07-19T06:44:54.000Z">
+<meta property="article:modified_time" content="2025-08-02T00:26:44.519Z">
+<meta property="article:author" content="PixelCat31415">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="hugo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pixelcat31415.github.io/images/pixelcat.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/pixelcat.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/pixelcat.png">
+    <meta name="theme-color" content="#fcc7f4">
+    <link rel="shortcut icon" href="/images/pixelcat.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            建立 Hugo Site | Nyanyannya
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+        
+            
+    
+            
+    
+            
+                
+                    <link rel="stylesheet" href="/css/custom.css">
+                
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+        <link href="https://fonts.googleapis.com/css2?family=Victor+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    
+    
+        <link href="/css/openhuninn.css" rel="stylesheet">
+    
+    
+    
+        <link href="/css/openhuninn.css" rel="stylesheet">
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"pixelcat31415.github.io","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.75,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":false},"author_label":{"enable":false,"auto":false,"list":[]},"code_block":{"copy":true,"style":"simple","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":true,"family":"Victor Mono","url":"https://fonts.googleapis.com/css2?family=Victor+Mono:ital,wght@0,100..700;1,100..700&display=swap"}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":false,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#fcc7f4","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":true,"family":"Open Huninn","url":"/css/openhuninn.css"},"english":{"enable":false,"family":null,"url":null},"title":{"enable":true,"family":"Open Huninn","url":"/css/openhuninn.css"}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":false,"site_uv":false,"post_pv":false},"single_page":true,"preloader":{"enable":false,"custom_message":null},"side_tools":{"gear_rotation":false,"auto_expand":false},"open_graph":{"enable":true,"image":"/images/pixelcat.png","description":"Nyanyannya."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/cat-in-tokyo-city.jpg"},"title":"A subtle purr from nowhere.","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#afe0fa"},"text_style":{"title_size":"1.4rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1"}},"version":"2.8.5","navbar":{"auto_hide":false,"color":{"left":"#fcc7f4","right":"#afe0fa","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"About":{"path":"/about","icon":"fa-regular fa-user"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":false,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2025/7/22 18:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+                <a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/">
+                    <img src="/images/pixelcat.png" class="w-full h-full rounded-xs">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                Nyanyannya
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/about"
+                                        >
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    ABOUT
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/about"
+                        >
+                            <span>
+                                ABOUT
+                            </span>
+                            
+                                <i class="fa-regular fa-user fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">11</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">0</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">16</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">建立 Hugo Site</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/pixelcat.png">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">PixelCat31415</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2022-07-19 08:44:54</span>
+        <span class="mobile">2022-07-19 08:44:54</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-08-02 02:26:44</span>
+            <span class="mobile">2025-08-02 02:26:44</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/web/">web</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/hugo/">hugo</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>1.4k Words</span>
+        </span>
+    
+    
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p><em>（2025/07 更新：這是在說以前的 blog，從 2025 年七月開始 blog 搬遷到新的框架上面了）</em></p>
+<p>花了兩天才把這個 blog 架起來，來紀錄一下我都浪費了多少時間（？）在搞各種奇怪的東西。</p>
+<h2 id="為什麼我要做這件事">為什麼我要做這件事</h2>
+<p>架這個網站其實說不上是一件多有效益的事情，畢竟架了站對寫程式實在沒什麼幫助，又花時間，可能也沒多少人看。不過，我還是想做做看，因為有時候學到有趣的東西、寫到酷酷的題目還是會想要找個地方寫下來，當成是自己都在做什麼的一個紀錄。之前我是在 instagram 上發一些短文，偶爾配幾張圖片，可是後來慢慢會想寫一些篇幅長一點的東西，以 instagram 作為載體變得不是那麼適合，又剛好遇到暑假什麼事都沒有的空檔，就做下去了。</p>
+<p>TL;DR：我想而且我閒，ㄎㄎ。</p>
+<h2 id="如何架站">如何架站</h2>
+<p>因為我顯然沒錢自己搞一台伺服器再搞一個域名，所以我盯上 GitHub 提供的 GitHub Pages，可以寄存靜態網站。缺點是只能放靜態網站，不過我沒差，我看起來像會寫 / 需要寫後端嗎 owo</p>
+<p>另外，我不可能自己寫一個 CMS<sup id="fnref:1"><a href="#fn:1" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="Content Management System，不是你想的那個 Contest Management System">1</span></a></sup>，又想有能力自己把網站捏成喜歡的樣子，所以我用 [Hugo] 幫我產生網頁。文章內容本身是用 Markdown 寫的，經過 Hugo 一番操作變成靜態網頁，最強大的是可以自己寫（或偷別人的）很多模板，根據模板產生網頁 HTML，所以看哪裡不順眼就可以自己去改模板，足夠靈活，目前沒遇到什麼大問題。</p>
+<h2 id="Hugo">Hugo</h2>
+<h3 id="安裝">安裝</h3>
+<p>不怎麼特別，照著官網複製貼上就好了，目前還沒載到病毒（？）</p>
+<h3 id="找主題">找主題</h3>
+<p>這個真的是難，因為現成主題（theme）幾百個，但是要找到看順眼的、載下來符合預期、有提供充足個人化自由度的不知道有沒有幾個。因為實在太多了所以隨便選了一個看起來算順眼的，反正可以自己改，最後使用的是 <a class="link" target="_blank" rel="noopener" href="https://github.com/wangchucheng/hugo-eureka">Eureka<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>。</p>
+<blockquote>
+<p>Eureka is a feature-rich and highly customizable Hugo theme. Using Eureka allows you to customize and deploy your website quickly and easily.</p>
+</blockquote>
+<p>highly customizable…？你個鬼啦，接下來就是無盡 customize 了。</p>
+<h3 id="自訂主題">自訂主題</h3>
+<p>主題都會有給好的選項可以調，不過效果有限，最直接的方法還是直接改裡面的模板。然而此時發現Hugo 檔案根本量子糾纏，先不檢討我沒認真把官方文件看完（真的太多了啦 QQ），但是這到底是啥鬼（圖裡大概只有不到三分之一的檔案吧）</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/images/2022-07-building-hugo-site.png" alt="eureka files screenshot"></p>
+<p>原來是這個主題超級肥，有各種酷酷的功能，導致檔案一大堆難以找出到底要改哪個，好在經過一番通靈和撞牆還算搞懂哪個檔案在做什麼了。其實這步應該是最難的，因為搞懂了剩下都是 HTML/CSS 可以搞定的事情，慢慢搞就能做出想要的樣子了。</p>
+<p>需要改動的檔案主要是 layout 裡面的模板，每個模板都對應到頁面的某些部份，所以看哪裡不順眼就去改對應的模板，可以改內容也可以加個 CSS 改排版顏色之類的。最後被我改過的東西有：</p>
+<ol>
+<li>背景顏色，從純黑改成 Monikai 的背景色，這是主題自帶的選項之一。</li>
+<li>Markdown 樣式，包括前面黃色的井字號、看不太出來的縮排之類的，用一個自己給的 CSS 完成。<br><br>
+因為 CSS 是我自己亂搞的，所以發現哪裡劇醜或者排版在移動端炸了算正常（X）</li>
+<li>Markdown 程式碼著色，順便加上行號，這是 Hugo 自帶的選項。</li>
+<li>用自己的 CSS 把一切顏色都改成 Monokai 配色，好耶</li>
+<li>其他的好像不太重要</li>
+</ol>
+<p>中間的小插曲是我怎麼改背景色都沒有用，搞超級久才發現他的 CSS 是預處理過快取起來的，預設強制用快取的檔案，所以怎麼改原始檔案都沒用，不過官方文件完全沒提到這件事，嚴重差評。</p>
+<h2 id="GitHub-Pages">GitHub Pages</h2>
+<p>搞定 Hugo 就可以本地建立靜態網頁檔案了，可以推到 GitHub Pages 上。GitHub Pages 使用還蠻好上手的，只要蓋一個 repo 直接可以有可以用的網站。不過這樣要先本地跑過 hugo 才能推上去，而且原始檔案和處理好的網頁要分成兩個 repo 太麻煩了，於是官網給了一種解決方案，用 <a class="link" target="_blank" rel="noopener" href="https://gohugo.io/hosting-and-deployment/hosting-on-github/#build-hugo-with-github-action">GitHub Action<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 做到每次 push 東西上去都幫你跑一次 hugo，這樣完全不需要在本地建置整個網站。</p>
+<p>可能踩到小小的雷是，因為 GitHub Action 不是在自己的機器上跑，所以只要什麼設定沒改好或是 Hugo 版本沒有指定好（我就踩到這個）就會開噴一坨奇怪的錯誤，有時候還真不知道要從何解決起。</p>
+<h2 id="未完的工作">未完的工作</h2>
+<p>最後網站架好了，完全沒花半塊錢，賺翻吧。但是基本上他現在根本就是空殼，沒幾篇文，還是要靠之後繼續產出其他有用的東西。至少希望不要過好幾年了，文章數還是兩隻手數的出來 -w-</p>
+<p>不過搞不好我過一個月就遺忘這個網站了，誰知道 wwww</p>
+<div id="footnotes"><hr><div id="footnotelist"><ol style="list-style: none; padding-left: 0; margin-left: 40px"><li id="fn:1"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">1.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">Content Management System，不是你想的那個 Contest Management System<a href="#fnref:1" rev="footnote">↩</a></span></li></ol></div></div>
+		</div>
+
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/web/">#web</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/hugo/">#hugo</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/2022/07/27/gcc-option-notes/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">筆記．g++ 編譯選項</span>
+						<span class="post-nav-item">Prev posts</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/2022/07/19/markdown-test/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">Markdown Test</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">建立 Hugo Site</div>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%82%BA%E4%BB%80%E9%BA%BC%E6%88%91%E8%A6%81%E5%81%9A%E9%80%99%E4%BB%B6%E4%BA%8B"><span class="nav-text">為什麼我要做這件事</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E6%9E%B6%E7%AB%99"><span class="nav-text">如何架站</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hugo"><span class="nav-text">Hugo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%9D"><span class="nav-text">安裝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%BE%E4%B8%BB%E9%A1%8C"><span class="nav-text">找主題</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E8%A8%82%E4%B8%BB%E9%A1%8C"><span class="nav-text">自訂主題</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GitHub-Pages"><span class="nav-text">GitHub Pages</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AA%E5%AE%8C%E7%9A%84%E5%B7%A5%E4%BD%9C"><span class="nav-text">未完的工作</span></a></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2025</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-paw"></i>&nbsp;&nbsp;<a href="/">PixelCat31415</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        16 posts in total
+                    </span>
+                    
+                        <span>
+                            43.7k words in total
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.5</a></span>
+        </div>
+        
+        
+        
+        
+            
+                
+        
+                
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog "></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/build/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+</body>
+
+</html>

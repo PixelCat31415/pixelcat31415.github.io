@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="PixelCat31415">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set data attribute for CSS variables
+                root.setAttribute("data-theme", theme);
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes once DOM is ready
+            if (document.readyState !== "loading") {
+                document.body.classList.add(theme + "-mode");
+            } else {
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.body.classList.add(theme + "-mode");
+                    document.body.classList.remove((theme === DARK ? LIGHT : DARK) + "-mode");
+                });
+            }
+        })();
+    </script>
+    
+    <!-- Critical CSS to prevent flash -->
+    <style>
+        :root[data-theme="dark"] {
+            --background-color: #202124;
+            --background-color-transparent: rgba(32, 33, 36, 0.6);
+            --second-background-color: #2d2e32;
+            --third-background-color: #34353a;
+            --third-background-color-transparent: rgba(32, 33, 36, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #ffffff;
+            --second-text-color: #eeeeee;
+            --third-text-color: #bebec6;
+            --fourth-text-color: #999999;
+            --default-text-color: #bebec6;
+            --invert-text-color: #373D3F;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(255, 255, 255, 0.08);
+            --shadow-color-2: rgba(255, 255, 255, 0.05);
+        }
+        
+        :root[data-theme="light"] {
+            --background-color: #fff;
+            --background-color-transparent: rgba(255, 255, 255, 0.6);
+            --second-background-color: #f8f8f8;
+            --third-background-color: #f2f2f2;
+            --third-background-color-transparent: rgba(241, 241, 241, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #16171a;
+            --second-text-color: #2f3037;
+            --third-text-color: #5e5e5e;
+            --fourth-text-color: #eeeeee;
+            --default-text-color: #373D3F;
+            --invert-text-color: #bebec6;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(0, 0, 0, 0.08);
+            --shadow-color-2: rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+        
+        /* Apply body classes as soon as DOM is ready */
+        :root[data-theme="dark"] body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+    </style>
+    
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://pixelcat31415.github.io/2025/01/27/courses-review-2024fall/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+        
+        <meta name="description" content="Nyanyannya.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大二上修課心得（2024 Fall）">
+<meta property="og:url" content="https://pixelcat31415.github.io/2025/01/27/courses-review-2024fall/">
+<meta property="og:site_name" content="Nyanyannya">
+<meta property="og:description" content="Nyanyannya.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://pixelcat31415.github.io/images/pixelcat.png">
+<meta property="article:published_time" content="2025-01-26T16:59:03.000Z">
+<meta property="article:modified_time" content="2025-07-25T01:04:11.431Z">
+<meta property="article:author" content="PixelCat31415">
+<meta property="article:tag" content="修課心得">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pixelcat31415.github.io/images/pixelcat.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/pixelcat.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/pixelcat.png">
+    <meta name="theme-color" content="#fcc7f4">
+    <link rel="shortcut icon" href="/images/pixelcat.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            大二上修課心得（2024 Fall） | Nyanyannya
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+        
+            
+    
+            
+    
+            
+                
+                    <link rel="stylesheet" href="/css/custom.css">
+                
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+        <link href="https://fonts.googleapis.com/css2?family=Victor+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    
+    
+        <link href="/css/openhuninn.css" rel="stylesheet">
+    
+    
+    
+        <link href="/css/openhuninn.css" rel="stylesheet">
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"pixelcat31415.github.io","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.75,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":false},"author_label":{"enable":false,"auto":false,"list":[]},"code_block":{"copy":true,"style":"simple","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":true,"family":"Victor Mono","url":"https://fonts.googleapis.com/css2?family=Victor+Mono:ital,wght@0,100..700;1,100..700&display=swap"}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":false,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#fcc7f4","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":true,"family":"Open Huninn","url":"/css/openhuninn.css"},"english":{"enable":false,"family":null,"url":null},"title":{"enable":true,"family":"Open Huninn","url":"/css/openhuninn.css"}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":false,"site_uv":false,"post_pv":false},"single_page":true,"preloader":{"enable":false,"custom_message":null},"side_tools":{"gear_rotation":false,"auto_expand":false},"open_graph":{"enable":true,"image":"/images/pixelcat.png","description":"Nyanyannya."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/cat-in-tokyo-city.jpg"},"title":"A subtle purr from nowhere.","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#afe0fa"},"text_style":{"title_size":"1.4rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1"}},"version":"2.8.5","navbar":{"auto_hide":false,"color":{"left":"#fcc7f4","right":"#afe0fa","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"About":{"path":"/about","icon":"fa-regular fa-user"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":false,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2025/7/22 18:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+                <a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/">
+                    <img src="/images/pixelcat.png" class="w-full h-full rounded-xs">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                Nyanyannya
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/about"
+                                        >
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    ABOUT
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/about"
+                        >
+                            <span>
+                                ABOUT
+                            </span>
+                            
+                                <i class="fa-regular fa-user fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">11</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">0</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">16</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">大二上修課心得（2024 Fall）</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/pixelcat.png">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">PixelCat31415</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-01-26 17:59:03</span>
+        <span class="mobile">2025-01-26 17:59:03</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-07-25 03:04:11</span>
+            <span class="mobile">2025-07-25 03:04:11</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E4%BF%AE%E8%AA%B2%E5%BF%83%E5%BE%97/">修課心得</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>5.8k Words</span>
+        </span>
+    
+    
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<ul>
+<li>共同必修
+<ul>
+<li>〔3 學分〕 大學國文：文學鑑賞與寫作（一）by 汪詩珮</li>
+</ul>
+</li>
+<li>系必修
+<ul>
+<li>〔3 學分〕 自動機與形式語言 by 林忠緯</li>
+<li>〔3 學分〕 系統程式設計 by 鄭卜壬</li>
+<li>〔3 學分〕 線性代數 by 呂學一</li>
+</ul>
+</li>
+<li>通識
+<ul>
+<li>沒有通識 😭</li>
+</ul>
+</li>
+<li>系選修
+<ul>
+<li>〔3 學分〕 機器學習 by 林軒田</li>
+<li>〔3 學分〕 程式結構與設計 by 鄭卜壬</li>
+</ul>
+</li>
+<li>一般選修
+<ul>
+<li>〔3 學分〕 日文二上 by 張鈞竹</li>
+<li>〔停修〕 Web APP 開發 by 何承遠</li>
+</ul>
+</li>
+</ul>
+<p>總感覺每個學期修得要死要活，學期結束之後都只想放假不想管學期中發生什麼破事了，可能是真的累了，反正修完課就跟我沒關係了，那些破課過了幾年都會繼續是破課。不過當然還是有很喜歡的好課，再怎麼說都一定想記下來。</p>
+<h2 id="共同必修">共同必修</h2>
+<h3 id="〔3-學分〕-大學國文：文學鑑賞與寫作（一）by-汪詩珮">〔3 學分〕 大學國文：文學鑑賞與寫作（一）by 汪詩珮</h3>
+<p>大概是這學期修得最滿意的課之一。一開始想說抽抽看不虧，反正國文遲早有一天要修，因為好像很難抽所以沒有特別打聽哪一班比較好，也不覺得會中，後來不小心抽中了。</p>
+<p>這個教授主要研究的領域好像是戲曲一類的。前半學期講了幾篇三言，後面從白娘子永鎮雷峰塔開始花幾個禮拜重點講白蛇相關的作品和改編。上課教授基本上不管你在底下幹嘛，老實說我常常都在搞自己的事情所以真的有深刻記得的片段不多，但是教授講出來的話就是感覺特別有智慧。可能是因為第一次上國文課不需要考試，我覺得上課的氛圍輕鬆很多。老師常常會提問讓我們小組討論上去簡短的發表，老師從來沒有否定過任何一個答案，大家常常提出不同的思考點、對一個問題有不同的立場，老師都有辦法理清楚我們的思路跟我們討論；討論的題目並不刁鑽，可能是思考某一件事為什麼發生、象徵什麼，就算是我這種文學零基礎的也能加入討論。我一直不喜歡國高中國文課，但是我不覺得我討厭文學，這堂課終於算是滿足我對國文課的想像，證明我只是討厭國文考試。</p>
+<p>計分上，期中期末各寫一篇作文，有一次小組報告，加上平時出席、討論、小考分數。</p>
+<ul>
+<li>期中書寫自訂題目，1500 字以上（沒有上限 🥵），要從上課讀的幾篇作品出發寫關於我的大學生活，一開始覺得寫不出來很痛苦，後來寫了兩天，慢慢咀嚼那幾篇作品和我自己的想法，有一種把心裡最深處的思考也翻出來、第一次真正在寫作的感覺。期末書寫跟期中書寫差不多，主題是白蛇改編和另外一個比較正常的主題二選一，我跟白蛇真的不熟，還好不是強制寫白蛇。</li>
+<li>小組報告是五個人一組，讀一篇小說之後講解、設計討論問題，雖然分組是隨便亂分，但是我根本抽到頂級組員，有一個人自願跳出來當組長、所有人按時做完進度、言之有物而且言之有理、沒有人亂砸生成式 AI，整個組最趕死線最不知道在說什麼的大概是我。一開始分給我的工作我甚至沒有做到，死線前一天上去看簡報才發現全部人的部份都做完了只剩我，看過去發現憑我愚蠢的思想根本加不進任何一句話。最後互評表我把自己打最低分，不知道實際上分數是怎麼給的。實在是只能感謝隊友們，抽到這種隊友真是運氣太好了。</li>
+<li>平時小考不難，四題三分鐘，如同教授保證的有看文本就不會考砸（不過有一次我忘記開始時間所以考砸了 💩），最後甚至歡樂大放送只選最高的幾次成績採計。出席和討論成績不知道怎麼給的，反正該我講話就講話，該我出席就出席。</li>
+</ul>
+<p>最後我拿 A，是我大學以來到目前為止唯一一次沒有 A+，但是我沒有任何不滿。期中期末書寫各拿一個 A 我覺得都合情合理（甚至我覺得期末值得一個 A-？）。原本我就不覺得我國文/文學造詣有好到可以 beyond expectations，這堂課給我這麼好的修課體驗我已經覺得很幸福了。</p>
+<p>國文課最感動我的一個瞬間，是發還期中書寫作品和評語的時候。一個學測國文情意題 9/25 分的人寫出來的文章，教授真的看完了，而且是認真的看完了，就算我寫出來的對他來說可能跟 💩 差不多，他還是願意留給我一段溫暖的評語。教授說，他不希望我們在寫考試作文，他希望看到的是我們的思考。在那個瞬間，我覺得好像心裡有什麼東西被接受了。</p>
+<p>如果每一門國文課都像汪老師這門課一樣的話，從現在開始我支持大學國文必修。</p>
+<h2 id="系必修">系必修</h2>
+<h3 id="〔3-學分〕-自動機與形式語言-by-林忠緯">〔3 學分〕 自動機與形式語言 by 林忠緯</h3>
+<p>因為大家都修而且聽說 loading 不大所以也跟著修一修，實際上 loading 確實不大，修課體驗良好。</p>
+<p>自動機就是在教計算理論。三次期考，第一次教正規語言、有限狀態自動機；第二次教 Context-Free Grammar、Pushdown Automata、Turing Machine；第三次教 decidability、time complexity、reduction、NP completeness 之類越來越可怕的東西。不過後面的東西很多都點到為止，像 complexity class 那邊有數不清的邪道都沒有考，那些邪道只有七萬會自己去亂卷猛卷。</p>
+<p>計分純靠三次期考，甚至第一堂課就說可以不用出席，因為基本上是遠距課程，有完整的投影片和錄影。期考主要靠細心和會寫證明，想法難度都算還好。考試可以帶大抄，做大抄真是一份相當令人愉悅的工作。雖然後來覺得我的大抄好像有點方向錯誤，沒有真的放到對考試來說最重要的部份，但是做出整齊好看的大抄依然令人賞心悅目。</p>
+<p>自動機最值得稱讚的是改卷品質非常高（不知道是不是每題都忠緯親自改），regrade 之後老師也會好好跟你討論給你公正的判斷；因為 regrade 失敗三次之後會扣分，所以發 regrade request 之前也會稍微謹慎一點。真應該讓每一門課都像這樣改卷/regrade。</p>
+<h3 id="〔3-學分〕-系統程式設計-by-鄭卜壬">〔3 學分〕 系統程式設計 by 鄭卜壬</h3>
+<p>沒什麼特別的必修，體驗還不錯。上課內容基本上就是 system call 按類別拿出來一個一個教，一邊解釋背後的一些 UNIX 系統的概念，像是 file descriptor 和 inode 怎麼運作、檔案權限的那些 bit 是怎麼整的、process 和 threads 怎麼運作之類的。雖然內容不少，不過搞懂了原理就不容易再忘記。</p>
+<p>鄭卜壬說他教 SP 教很久，自己覺得他的課確實相當有料，雖然是在講一個一個 system call 但是不會枯燥，他會仔細把後面 kernel 裡面的原理解釋給你，有時候還會閒聊暴言。cool 上面也會放上課錄影，早上起不來（我）的話還可以考前一個晚上開三倍速 speedrun 看影片補課（又是我，非常抱歉 😔）。課程影片有問題的話常常需要查查 man page、自己做個小實驗、跟別人討論一下，我覺得其實也挺不錯的。</p>
+<p>計分應該是計期中考、期末考、程式作業、手寫作業。期中期末是手寫申論題，還要用手寫程式碼，不能帶大抄只有他給的 system call 列表（只有那些 system call 函數的 declaration），寫起來感覺比較著重考觀念而不是背 system call。程式作業一份大概需要個半天到一天左右，只要會查 man 就寫得出來，大多數時候 spec 給的都算清楚，因為我喜歡寫程式課所以寫起來相當愉快，也沒有很大的 loading。手寫作業不多，有寫有分。</p>
+<p>整體來說 SP 修起來頗為舒服。聽說跟 OS 重疊很大，下學期修完 OS 再來評論。</p>
+<h3 id="〔3-學分〕-線性代數-by-呂學一">〔3 學分〕 線性代數 by 呂學一</h3>
+<p>呂學一的線代，對我來說可以說是令人恐懼或令人痛苦。但是說到底他到底是爛課嗎？我覺得不是。</p>
+<p>呂學一第一堂課掏出群和場我就覺得大事不妙了，他宣稱他要一個學期教完快四百頁的 linear algebra done right，結果他差點辦到了。據說這本教科書是數學系那種風格，抽象，很多定理，更多證明，我只能說我不僅不是數學的料，還對這種東西心存恐懼。有時候一頁證明不看個半小時都沒辦法懂他在說什麼，看一個小時才稍微跟上，兩小時後發現我一小時前的理解是錯的。</p>
+<p>讀完那一本我一邊寫了快四十頁筆記，不過說是筆記更像是考前用的課本內容摘要。實在不知道怎麼摘要所有內容所以把筆記的章節標題列出來：</p>
+<ul>
+<li>Group</li>
+<li>Field</li>
+<li>Vectors</li>
+<li>Subspaces</li>
+<li>Spans &amp; Linear Independence &amp; Bases</li>
+<li>Linear Maps</li>
+<li>Null Spaces &amp; Ranges</li>
+<li>Matrices</li>
+<li>Product &amp; Quotient Spaces</li>
+<li>Duality</li>
+<li>Polynomials</li>
+<li>Eigenvalues and Eigenvectors</li>
+<li>Minimal Polynomials</li>
+<li>Upper-Triangular &amp; Diagonal Matrices</li>
+<li>Inner Product Spaces</li>
+<li>Orthonormal Bases</li>
+<li>Orthogonal Complements</li>
+<li>Self-Adjoint and Normal Operators</li>
+<li>Spectral Theorem</li>
+<li>Positive Operators</li>
+<li>Isometries, Unitary Operators, and Matrix Factorization</li>
+<li>Singular Value Decomposition</li>
+<li>Nilpotent Operators</li>
+<li>Generalized Eigenvectors</li>
+<li>Generalized Eigenspace Decomposition</li>
+<li>Characteristic Polynomials</li>
+<li>Jordan Basis</li>
+<li>Trace</li>
+<li>Bilinear Forms</li>
+<li>Multilinear Forms</li>
+<li>Determinants</li>
+<li>Tensor Products</li>
+</ul>
+<p>內容不少，呂學一的進度真的很快，再加上我時間管理失敗，後面兩次期考我要在期考周花整整半個禮拜 speedrun 讀 1/3 本課本，那幾天真的是讀到人生中只剩下線代。不過我覺得好像也不是完全沒有收穫，像是在學期最後行列式終於出現之前，他先定義 bilinear form，又定義 multilinear form，又開始講 permutation 什麼鬼的，就在不知道他在說什麼的時候，突然用奧妙的方式定義出以前熟悉的行列式，那一個瞬間開始從以前到現在學過的向量、矩陣，背後還有這麼長的故事，像是在沙漠裡步履維艱走了幾個月終於看到熟悉又陌生的家。</p>
+<p>不過還是不影響我讀得很痛苦的事實，這點毋庸置疑。</p>
+<p>呂學一的進度很快。平均一下我一週要讀個至少一整天的線代，但是他上課只有三小時，想當然他的課飛快，一份簡報常常上百頁，三小時要跟上他用嘴巴講至少我做不到。他的簡報又是不好讀的那種，排版跟書沒辦法比，還有各種呂學一自創名詞和 AI 圖。所以後來都直接硬讀課本，不上課不看簡報。</p>
+<p>不得不說自創名詞還蠻好笑的，像是零空僅零（指 null space 只有零向量）、怒空（null space）、居易觀察（「同是天涯淪落人，相似必同行列式」，某個跟行列式有關的性質）。只是這些名詞實在是混淆視聽，線代都學不明白了怎麼記這些詭異的名詞。</p>
+<p>三次期考決定成績。期考題目以一個線代初學者看起來蠻正常的，我覺得有點難，分數也不那麼好看，不過應該還是有讀有差。他最後當然不可能用原始成績算等第，等第給得還蠻甜的。</p>
+<p>後來某次我偷看計圖期末考題，有一題要 LU 分解，我問什麼是 LU 分解，旁邊的人很震驚的看著我問我線代到底發生什麼事了，所以我的線代到底發生什麼事了？可能有人覺得 LU 分解應該要是常識，我只能說呂學一一定得先負一點責任。</p>
+<p>第一次對呂學一線代有印象是去年 B11 學長很生氣的痛罵呂學一。修完之後我承認他不是爛課，但是我還是堅定的相信對資工系學生來說這種抽象的線代可能不是我們最需要的。有點無奈但是我能拿他怎麼辦，他開心就好。</p>
+<h2 id="通識">通識</h2>
+<p>沒有通識 💤</p>
+<p>哪天通識一定會變成我畢業的最大障礙。</p>
+<h2 id="系選修">系選修</h2>
+<h3 id="〔3-學分〕-機器學習-by-林軒田">〔3 學分〕 機器學習 by 林軒田</h3>
+<p>鼎鼎大名軒田 ML，三四百個人來修，人太多了名額不夠還一直加開。真不知道助教怎麼有辦法認真看完幾百份作業，所以事實證明，我不想用亂改一通這種決絕的詞，但是我們的作業真的沒有被很認真改。</p>
+<p>課程內容是一些經典的機器學習算法，不是現在比較容易聯想到的專指神經網路那種機器學習（神經網路只是一小部份），是從 perceptron、linear regression 之類的經典算法開始的更早期的那些。對數學的理論基礎著墨不少，像是為什麼一個算法會收斂、為什麼可以用 test accuracy 估計模型真實的表現、如何對抗 overfitting 之類的主題，最後簡單提了一筆神經網路和反向傳播。其實我覺得收穫不少，大概是多了解很多神經網路以前大家都是怎麼讓機器能夠學習，尤其喜歡他教什麼都點一下理論基礎。</p>
+<p>不過林軒田的投影片我就沒有特別喜歡。上課用的投影片應該跟 coursera 機器學習基石、技法是一樣的，投影片形式所以顏色很多字很少，有時候圖形化演示算法還不錯，數學推導的時候就覺得有點太簡略，遇到要推式子的時候都要自己慢慢想或是找其他資料。上課教室肯定坐不下三百個，有直播有錄影，但是是英文，自己覺得英文有點阻礙我理解，不如看投影片看不懂的時候再去 youtube 找之前機器學習基石、技法的中文錄影。</p>
+<p>到這裡為止都是一門不錯的課，但是是到這裡為止。軒田 ML 不考試，有七次作業一個 final project，每次作業九題手寫三題程式，外加一題手寫加分題。除了後面幾次加分題以外，手寫題難度都還好，就是寫成文字還蠻花時間，我這種不會寫證明的可能一題至少半小時到一小時以上；程式題也是難度沒有很高，照著上課教的寫就好。問題在於助教給分標準有時候很抽象，聽說有助教自己不會數學看不懂就在亂扣一通；程式題說要叫你觀察實驗結果寫下你的 findings，有助教覺得這題要拿滿分要會自己額外做實驗做額外的推論；後來推出一個 clarity bonus 分數說是證明寫得好的可以加分，但是標準是什麼完全不知道，根本變成助教爽怎麼改就怎麼改。</p>
+<p>final project 是給你棒球比賽的賽前統計數據要你預測誰贏誰輸，有人靠 data leak 做到 &gt; 90% 真神人。在 public test 階段我們和其他人怎麼做就是停在略低於 70% 附近，基本上所有正常的手段、上課教過的作法，做出來就是這個數字。但是在 private test 我們在幾千筆資料上算出來的準確率莫名其妙低好幾個百分點，抽象。更抽象的是我們實在無法解釋到底每個作法差在哪裡，每種作法結果就都長那個樣子。report 就算了，至今無法理解 report 是怎麼打分數的。不是說 final project 沒有意義，只是至少我覺得做完 final project 沒有讓我比較會 ML 或是 data science，可能我還是做不夠認真。</p>
+<p>整堂課讓人覺得最躁的是林軒田會一直宣稱他們要嚴格用最高標準要求大家，A+ 分數線切很緊，實際上作業批改就是不夠讓人信服，clarity bonus 讓人感覺在抽獎，findings 題意義不明。然後林軒田又會跟你宣傳他們多麼高標準、等第不是一切。有人反映 clarity bonus 標準不明，林軒田會把你放到臉書公審，然後繼續痛心疾首、語重心長地呼籲大家不要把等第視為一切。</p>
+<p>對我來說 ML 最大的缺點應該是作業還蠻花時間、和有時候分數被骰骰子會有點不爽，除此之外其實內容還挺不錯的。</p>
+<h3 id="〔3-學分〕-程式結構與設計-by-鄭卜壬">〔3 學分〕 程式結構與設計 by 鄭卜壬</h3>
+<p>ICPC 培訓班。老實說我真的越來越混了，除了團練以外基本上沒在寫程式，大一好像會一週一次團練，這學期也很少練了。我甚至沒有任何一次打個人 Codeforces/AtCoder 之類的加分到。校內賽打得宇宙無敵醜，桃園站打得差不多醜，表面上我可能沒有很關鍵的失誤，但是不夠會寫程式真的造成很多隱藏的、應該要做到但是沒做到、或讓隊伍多花很多時間的失誤。</p>
+<p>分數拿得很心虛。我覺得我其實已經不算競程選手了。</p>
+<h2 id="一般選修">一般選修</h2>
+<h3 id="〔3-學分〕-日文二上-by-張鈞竹">〔3 學分〕 日文二上 by 張鈞竹</h3>
+<p>存在感最低的課之一，說難聽一點的話就是我有點混水摸魚。張鈞竹的班挺涼的，要出席但是不用每週小考，一個學期兩次小考兩次期考，小考相當輕鬆，甚至覺得背了單字都有點沒用到，期考也差不多。他怎麼考就是那幾個文法，張鈞竹又把單字成份放很低，整體難度就還好，比較多靠細心。不過張鈞竹抓寫字的小地方真的抓很嚴，像是假名哪裡沒勾起來、漢字哪裡沒有凸出去，我漢字（跟繁體一樣的那種）寫快一點連筆也被抓。以前在池田晶子的班輕鬆寫，看起來是老師睜一隻眼閉一隻眼不想跟我計較，汗顏。</p>
+<p>沒有特別的感想，可能是因為我沒有放很多力氣在日文，或是因為張鈞竹的上課節奏沒有跟我對上。下學期已經確定要滾回去找池田晶子，一個純粹的沒有根據的感覺覺得他的上課模式和風格還是比較適合我。</p>
+<h3 id="〔停修〕-Web-APP-開發-by-何承遠">〔停修〕 Web APP 開發 by 何承遠</h3>
+<p>到目前為止修過最抽象的課。一開始是看別人去修，自己課表好像還有位子，所以就隨手填上去，一開始就想好可以退選或停修或探索，反正其他課沒有一個是有可能要停修的，就算是線代也不停，不然明年還要再線代一次。</p>
+<p>這堂課前半學期教網頁設計，從 javascript 開始，還有 vue、next 之類的，這個老師上課差不多是 google 隨便一個 tutorial 打開照著念的感覺，可能還是好幾年前的東西，總之就是上課可以根本不用聽。每個禮拜的作業花個一個下午的時間左右差不多可以做完，跟上課基本上沒多少關係。期中考就是一個笑話，有一大堆申論題，每一題都是純 google 和生成式 AI 可以做的題目，一堆名詞解釋，沒有任何一題需要會寫程式，自己寫會寫到崩潰，但是以這堂課展現的素質我猜他根本會放你每一題都 chatGPT。後半學期分組做專案，反正都停修了就沒有關心專案主題是什麼。</p>
+<p>「沒有任何一題需要會寫程式」有點好笑，但是想一想好像真的修這門課不需要動手寫任何一行程式碼，反正這堂課的所有作業和考試看起來都可以 chatGPT。</p>
+<p>原本的計畫是蹭一組認識的人做 final project，不過因為種種原因沒有跟認識的那幾個一組。後來去外面找人，找到之後一直沒有回音，想說他是不是放生我了，結果停修單簽下去當天才看到他傳訊息來找我，蠻幽默的。</p>
+<p>會選課的原因是 final project 能有認識的人一起做的話感覺可以嘗試做出個像樣的東西出來，還有我本來就摸過一點點網頁開發，所以前半學期的東西幾乎算是沒有 loading。後來期中發現 loading 有點可怕（線代是一個天大的意外），跟陌生人做 final project 是一個巨大的不確定因素，絕對不可以為了 web app 搞砸必修；再加上前半學期的課相當搞笑，看到期中考題直接讓我對這門課放棄所有期待，最後決定停修。如果硬撐下去，不小心變成要單扛 final project，害我明年要再線代一次的話我應該會想死。</p>
+<h2 id="後記">後記</h2>
+<p>為什麼還是每個學期都搞得這麼狼狽 💩</p>
+<p>課內的東西只能說左支右絀，每天都在趕不知道什麼的死線，每次都是死線前幾天才在趕緊處理，不知道什麼時候開始前面的死線推後面的死線，然後就掉進趕死線的循環。線代和自動機都是三次期考，等於一個月一次期考，ML 兩個禮拜一份作業，想一想節奏還是很快的，只是我從某個時間點開始一直慢了半拍。線代真的是一份相當超出預期的負擔，不管是時間上還是精神上的。</p>
+<p>與此同時搞砸了 IOIC 系統組，差點拖死線拖到搞砸講義，還有其他 NASA 二階之類的基本上是啥也沒做到。</p>
+<p>只能說，一事無成。什麼積極向上的雞湯，違心之論，就先不說了。</p>
+
+		</div>
+
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E4%BF%AE%E8%AA%B2%E5%BF%83%E5%BE%97/">#修課心得</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/2025/03/05/typst-first-try/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">Typst 初體驗</span>
+						<span class="post-nav-item">Prev posts</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/2024/11/13/thoughts-the-frontier-of-knowledge/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">隨筆．知識的邊界</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">大二上修課心得（2024 Fall）</div>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B1%E5%90%8C%E5%BF%85%E4%BF%AE"><span class="nav-text">共同必修</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%80%943-%E5%AD%B8%E5%88%86%E3%80%95-%E5%A4%A7%E5%AD%B8%E5%9C%8B%E6%96%87%EF%BC%9A%E6%96%87%E5%AD%B8%E9%91%91%E8%B3%9E%E8%88%87%E5%AF%AB%E4%BD%9C%EF%BC%88%E4%B8%80%EF%BC%89by-%E6%B1%AA%E8%A9%A9%E7%8F%AE"><span class="nav-text">〔3 學分〕 大學國文：文學鑑賞與寫作（一）by 汪詩珮</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E5%BF%85%E4%BF%AE"><span class="nav-text">系必修</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%80%943-%E5%AD%B8%E5%88%86%E3%80%95-%E8%87%AA%E5%8B%95%E6%A9%9F%E8%88%87%E5%BD%A2%E5%BC%8F%E8%AA%9E%E8%A8%80-by-%E6%9E%97%E5%BF%A0%E7%B7%AF"><span class="nav-text">〔3 學分〕 自動機與形式語言 by 林忠緯</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%80%943-%E5%AD%B8%E5%88%86%E3%80%95-%E7%B3%BB%E7%B5%B1%E7%A8%8B%E5%BC%8F%E8%A8%AD%E8%A8%88-by-%E9%84%AD%E5%8D%9C%E5%A3%AC"><span class="nav-text">〔3 學分〕 系統程式設計 by 鄭卜壬</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%80%943-%E5%AD%B8%E5%88%86%E3%80%95-%E7%B7%9A%E6%80%A7%E4%BB%A3%E6%95%B8-by-%E5%91%82%E5%AD%B8%E4%B8%80"><span class="nav-text">〔3 學分〕 線性代數 by 呂學一</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E8%AD%98"><span class="nav-text">通識</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E9%81%B8%E4%BF%AE"><span class="nav-text">系選修</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%80%943-%E5%AD%B8%E5%88%86%E3%80%95-%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92-by-%E6%9E%97%E8%BB%92%E7%94%B0"><span class="nav-text">〔3 學分〕 機器學習 by 林軒田</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%80%943-%E5%AD%B8%E5%88%86%E3%80%95-%E7%A8%8B%E5%BC%8F%E7%B5%90%E6%A7%8B%E8%88%87%E8%A8%AD%E8%A8%88-by-%E9%84%AD%E5%8D%9C%E5%A3%AC"><span class="nav-text">〔3 學分〕 程式結構與設計 by 鄭卜壬</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E8%88%AC%E9%81%B8%E4%BF%AE"><span class="nav-text">一般選修</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%80%943-%E5%AD%B8%E5%88%86%E3%80%95-%E6%97%A5%E6%96%87%E4%BA%8C%E4%B8%8A-by-%E5%BC%B5%E9%88%9E%E7%AB%B9"><span class="nav-text">〔3 學分〕 日文二上 by 張鈞竹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%80%94%E5%81%9C%E4%BF%AE%E3%80%95-Web-APP-%E9%96%8B%E7%99%BC-by-%E4%BD%95%E6%89%BF%E9%81%A0"><span class="nav-text">〔停修〕 Web APP 開發 by 何承遠</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%8C%E8%A8%98"><span class="nav-text">後記</span></a></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2025</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-paw"></i>&nbsp;&nbsp;<a href="/">PixelCat31415</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        16 posts in total
+                    </span>
+                    
+                        <span>
+                            43.7k words in total
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.5</a></span>
+        </div>
+        
+        
+        
+        
+            
+                
+        
+                
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog "></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/build/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+</body>
+
+</html>

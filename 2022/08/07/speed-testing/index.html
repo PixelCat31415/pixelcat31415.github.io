@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="PixelCat31415">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set data attribute for CSS variables
+                root.setAttribute("data-theme", theme);
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes once DOM is ready
+            if (document.readyState !== "loading") {
+                document.body.classList.add(theme + "-mode");
+            } else {
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.body.classList.add(theme + "-mode");
+                    document.body.classList.remove((theme === DARK ? LIGHT : DARK) + "-mode");
+                });
+            }
+        })();
+    </script>
+    
+    <!-- Critical CSS to prevent flash -->
+    <style>
+        :root[data-theme="dark"] {
+            --background-color: #202124;
+            --background-color-transparent: rgba(32, 33, 36, 0.6);
+            --second-background-color: #2d2e32;
+            --third-background-color: #34353a;
+            --third-background-color-transparent: rgba(32, 33, 36, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #ffffff;
+            --second-text-color: #eeeeee;
+            --third-text-color: #bebec6;
+            --fourth-text-color: #999999;
+            --default-text-color: #bebec6;
+            --invert-text-color: #373D3F;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(255, 255, 255, 0.08);
+            --shadow-color-2: rgba(255, 255, 255, 0.05);
+        }
+        
+        :root[data-theme="light"] {
+            --background-color: #fff;
+            --background-color-transparent: rgba(255, 255, 255, 0.6);
+            --second-background-color: #f8f8f8;
+            --third-background-color: #f2f2f2;
+            --third-background-color-transparent: rgba(241, 241, 241, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #16171a;
+            --second-text-color: #2f3037;
+            --third-text-color: #5e5e5e;
+            --fourth-text-color: #eeeeee;
+            --default-text-color: #373D3F;
+            --invert-text-color: #bebec6;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(0, 0, 0, 0.08);
+            --shadow-color-2: rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+        
+        /* Apply body classes as soon as DOM is ready */
+        :root[data-theme="dark"] body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+    </style>
+    
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://pixelcat31415.github.io/2022/08/07/speed-testing/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+        
+        <meta name="description" content="Nyanyannya.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何測試 Judge 速度">
+<meta property="og:url" content="https://pixelcat31415.github.io/2022/08/07/speed-testing/">
+<meta property="og:site_name" content="Nyanyannya">
+<meta property="og:description" content="Nyanyannya.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://pixelcat31415.github.io/images/pixelcat.png">
+<meta property="article:published_time" content="2022-08-07T05:16:37.000Z">
+<meta property="article:modified_time" content="2025-07-25T01:04:11.431Z">
+<meta property="article:author" content="PixelCat31415">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="競程">
+<meta property="article:tag" content="組合語言">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pixelcat31415.github.io/images/pixelcat.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/pixelcat.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/pixelcat.png">
+    <meta name="theme-color" content="#fcc7f4">
+    <link rel="shortcut icon" href="/images/pixelcat.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            如何測試 Judge 速度 | Nyanyannya
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+        
+            
+    
+            
+    
+            
+                
+                    <link rel="stylesheet" href="/css/custom.css">
+                
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+        <link href="https://fonts.googleapis.com/css2?family=Victor+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    
+    
+        <link href="/css/openhuninn.css" rel="stylesheet">
+    
+    
+    
+        <link href="/css/openhuninn.css" rel="stylesheet">
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"pixelcat31415.github.io","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.75,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":false},"author_label":{"enable":false,"auto":false,"list":[]},"code_block":{"copy":true,"style":"simple","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":true,"family":"Victor Mono","url":"https://fonts.googleapis.com/css2?family=Victor+Mono:ital,wght@0,100..700;1,100..700&display=swap"}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":false,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#fcc7f4","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":true,"family":"Open Huninn","url":"/css/openhuninn.css"},"english":{"enable":false,"family":null,"url":null},"title":{"enable":true,"family":"Open Huninn","url":"/css/openhuninn.css"}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":false,"site_uv":false,"post_pv":false},"single_page":true,"preloader":{"enable":false,"custom_message":null},"side_tools":{"gear_rotation":false,"auto_expand":false},"open_graph":{"enable":true,"image":"/images/pixelcat.png","description":"Nyanyannya."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/cat-in-tokyo-city.jpg"},"title":"A subtle purr from nowhere.","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#afe0fa"},"text_style":{"title_size":"1.4rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1"}},"version":"2.8.5","navbar":{"auto_hide":false,"color":{"left":"#fcc7f4","right":"#afe0fa","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"About":{"path":"/about","icon":"fa-regular fa-user"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":false,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2025/7/22 18:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+                <a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/">
+                    <img src="/images/pixelcat.png" class="w-full h-full rounded-xs">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                Nyanyannya
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/about"
+                                        >
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    ABOUT
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/about"
+                        >
+                            <span>
+                                ABOUT
+                            </span>
+                            
+                                <i class="fa-regular fa-user fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">11</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">0</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">16</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">如何測試 Judge 速度</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/pixelcat.png">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">PixelCat31415</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2022-08-07 07:16:37</span>
+        <span class="mobile">2022-08-07 07:16:37</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-07-25 03:04:11</span>
+            <span class="mobile">2025-07-25 03:04:11</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/C/">C++</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E7%AB%B6%E7%A8%8B/">競程</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E7%B5%84%E5%90%88%E8%AA%9E%E8%A8%80/">組合語言</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>3.1k Words</span>
+        </span>
+    
+    
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>通常在各種比賽開始前都會有一段測機時間。這段時間可以測試編譯器有沒有支援一些特殊語法（<code>__int128</code>、pbds 等），許多人也會一併測試 judge 的執行速度是否正常。然而如何精準的測量一台機器執行程式的速度？為了解答這個問題我出於好奇做了一些實驗，雖然實用價值不大，不過我覺得實驗的過程頗為有趣。</p>
+<p>不想看廢話的可以直接跳到結論。</p>
+<h2 id="正常的作法">正常的作法</h2>
+<p>通常我們會想測試一秒能夠執行多少個運算，其中 <code>+</code> <code>-</code> <code>*</code> <code>/</code> 等又不太一樣，浮點運算又不太一樣。不過我們只想知道一個大概，比如說一秒加法能做幾次？</p>
+<div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> kITER = <span class="number">1'000'000'000</span>; <span class="comment">// 1e9 iteration</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> res = <span class="number">0</span>, inc = <span class="number">49</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt;= kITER; i++) {</span><br><span class="line">    res += inc;</span><br><span class="line">}</span><br><span class="line">cout &lt;&lt; <span class="string">"res = "</span> &lt;&lt; res &lt;&lt; <span class="string">"\n"</span>;</span><br></pre></td></tr></table></figure></div>
+<p>只要把這段丟上去給 judge，看是 AC 還是 TLE 就知道一秒能不能跑完 $10^9$ 次加法了（差不多是正常速度）。或者假如比賽平台有提供 custom test（像 cms 就有），我們也可以把下面這段程式碼丟上去，看看他在 judge 端輸出了什麼結果。作為實驗，我們先測測看本地的執行速度，完整的程式碼大概長這樣：</p>
+<div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// test.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iomanip&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;ctime&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Timer</span><span class="params">(<span class="type">bool</span> output = <span class="literal">true</span>)</span> </span>{</span><br><span class="line">    <span class="type">static</span> <span class="type">clock_t</span> last = <span class="number">-1</span>;</span><br><span class="line">    <span class="type">clock_t</span> now = std::<span class="built_in">clock</span>();</span><br><span class="line">    <span class="keyword">if</span>(last != <span class="number">-1</span> &amp;&amp; output) {</span><br><span class="line">        std::cerr &lt;&lt; <span class="string">"Elapsed: "</span> &lt;&lt; ((<span class="type">double</span>)(now - last) / CLOCKS_PER_SEC) &lt;&lt; <span class="string">" s\n"</span>;</span><br><span class="line">    }</span><br><span class="line">    last = now;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">DoTest</span><span class="params">()</span> </span>{</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> kITER = <span class="number">1'000'000'000</span>; <span class="comment">// 1e9 iteration</span></span><br><span class="line">    <span class="type">int</span> res = <span class="number">0</span>, inc = <span class="number">49</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt;= kITER; i++) {</span><br><span class="line">        res += inc;</span><br><span class="line">    }</span><br><span class="line">    std::cout &lt;&lt; <span class="string">"res = "</span> &lt;&lt; res &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>{</span><br><span class="line">    std::cerr &lt;&lt; std::fixed &lt;&lt; std::<span class="built_in">setprecision</span>(<span class="number">3</span>);</span><br><span class="line">    <span class="built_in">Timer</span>(); <span class="built_in">DoTest</span>(); <span class="built_in">Timer</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Txt"><figure class="iseeu highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[-O2 optimization]</span><br><span class="line"></span><br><span class="line">&lt;stdout&gt;</span><br><span class="line">res = 1755359793</span><br><span class="line"></span><br><span class="line">&lt;stderr&gt;</span><br><span class="line">Elapsed: 0.000 s</span><br></pre></td></tr></table></figure></div>
+<p>呃，蛤，瞬間？看來因為我平常開著 <code>-O2</code>，編譯器用某種方法優化掉了。我們可以偷看他的組合語言，找到很像 <code>DoTest</code> 的那段</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ g++ test.cpp -O2 -std=c++14 -S</span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">; .....</span><br><span class="line">_Z6DoTestv:</span><br><span class="line">.LFB1929:</span><br><span class="line">; .....</span><br><span class="line">    call    _ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@PLT</span><br><span class="line">    movq    %rbx, %rdi</span><br><span class="line">    movl    $1755359793, %esi</span><br><span class="line">    call    _ZNSolsEi@PLT</span><br><span class="line">; .....</span><br></pre></td></tr></table></figure></div>
+<p>省略了中間噴出一大坨不知道是什麼鬼，看起來跟 ostream 有關。不過注意中間的這行 <code>movl $1755359793, %esi</code>，1755359793 正好是輸出結果，也就是說開了 <code>-O2</code> 編譯器會自動幫你算好結果直接輸出，反正 <code>res</code>、<code>inc</code>、<code>kITER</code> 都是編譯時期就知道的事情。</p>
+<p>要怎麼避免我們的測試程式碼被優化掉？</p>
+<h2 id="鎮壓編譯優化（一）：-O0">鎮壓編譯優化（一）：<code>-O0</code></h2>
+<p>為了避免被編譯器優化掉，我們可以在編譯指令中用 <code>-O0</code> 來關掉所有編譯優化，或者不指定優化，因為 <code>-O0</code> 本來就是預設的優化等級</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ g++ test.cpp -O0 -std=c++14 -o test.out</span><br></pre></td></tr></table></figure></div>
+<p>或者也可以在程式碼前面加上</p>
+<div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> GCC optimize(<span class="string">"O0"</span>)</span></span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Txt"><figure class="iseeu highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[-O0 optimization]</span><br><span class="line"></span><br><span class="line">&lt;stdout&gt;</span><br><span class="line">res = 1755359793</span><br><span class="line"></span><br><span class="line">&lt;stderr&gt;</span><br><span class="line">Elapsed: 1.527 s</span><br></pre></td></tr></table></figure></div>
+<p>時間看起來正常了！同樣的可以把加法換成其他運算，在我的機器上輸出如下。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">運算</th>
+<th style="text-align:center">時間（秒 / 1e9 次運算）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">+</td>
+<td style="text-align:center">1.527</td>
+</tr>
+<tr>
+<td style="text-align:center">-</td>
+<td style="text-align:center">1.513</td>
+</tr>
+<tr>
+<td style="text-align:center">*</td>
+<td style="text-align:center">2.092</td>
+</tr>
+<tr>
+<td style="text-align:center">/</td>
+<td style="text-align:center">8.143</td>
+</tr>
+<tr>
+<td style="text-align:center">%</td>
+<td style="text-align:center">8.382</td>
+</tr>
+<tr>
+<td style="text-align:center">^</td>
+<td style="text-align:center">1.513</td>
+</tr>
+</tbody>
+</table>
+<h2 id="鎮壓編譯優化（二）：volatile">鎮壓編譯優化（二）：<code>volatile</code></h2>
+<p>除了編譯優化之外，也可以用關鍵字 <code>volatile</code>（揮發性的）來阻止編譯器優化。<code>volatile</code> 用法很像 <code>const</code>，把變數宣告成 <code>volatile</code> 的意思是「這個變數的值可能會隨時改變，所以每次存取他的時候都請從記憶體裡重新讀取」。既然每次都重讀，那就不用擔心編譯器跳過計算過程了。</p>
+<div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">DoTest</span><span class="params">()</span> </span>{</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> kITER = <span class="number">1'000'000'000</span>;</span><br><span class="line">    <span class="keyword">volatile</span> <span class="type">int</span> res = <span class="number">0</span>    <span class="comment">// notice this</span></span><br><span class="line">    <span class="keyword">volatile</span> <span class="type">int</span> inc = <span class="number">49</span>;  <span class="comment">// notice this</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt;= kITER; i++) {</span><br><span class="line">        res += inc;</span><br><span class="line">    }</span><br><span class="line">    std::cout &lt;&lt; <span class="string">"res = "</span> &lt;&lt; res &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Txt"><figure class="iseeu highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[-O2 optimization]</span><br><span class="line"></span><br><span class="line">&lt;stdout&gt;</span><br><span class="line">res = 1755359793</span><br><span class="line"></span><br><span class="line">&lt;stderr&gt;</span><br><span class="line">Elapsed: 1.599 s</span><br></pre></td></tr></table></figure></div>
+<p>穩了。</p>
+<h2 id="鬼故事的開始">鬼故事的開始</h2>
+<p>有趣的事情開始發生了，上面是 res、inc 兩個變數都加上 <code>volatile</code>，假如只加一邊呢？兩邊都不加呢？</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">res</th>
+<th style="text-align:center">inc</th>
+<th style="text-align:center">執行時間（秒）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">volatile</td>
+<td style="text-align:center">volatile</td>
+<td style="text-align:center">1.599</td>
+</tr>
+<tr>
+<td style="text-align:center">volatile</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">1.643</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">volatile</td>
+<td style="text-align:center">0.638</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">&lt; 0.001</td>
+</tr>
+</tbody>
+</table>
+<p>兩個都不加的情況被編譯器優化掉了所以是瞬間。可是為什麼只加一邊的情況會有差異？我們再次偷看程式碼產生的組合語言，因為組合語言最能顯現優化過的程式碼變成什麼樣子。</p>
+<div class="code-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ g++ test.cpp -S -std=c++14 -O2</span><br></pre></td></tr></table></figure></div>
+<h3 id="res、inc-都是-volatile-的情況">res、inc 都是 <code>volatile</code> 的情況</h3>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">_Z6DoTestv:</span><br><span class="line">; .....</span><br><span class="line">    movl    $0, 8(%rsp)    ; res = 8(%rsp)</span><br><span class="line">    movl    $49, 12(%rsp)  ; inc = 12(%rsp)</span><br><span class="line">; .....</span><br><span class="line">.L10:  ; 主迴圈</span><br><span class="line">    movl    12(%rsp), %ecx</span><br><span class="line">    movl    8(%rsp), %eax</span><br><span class="line">    addl    %ecx, %eax</span><br><span class="line">    movl    %eax, 8(%rsp)</span><br><span class="line">    subl    $1, %edx</span><br><span class="line">    jne     .L10</span><br><span class="line">; .....</span><br></pre></td></tr></table></figure></div>
+<p>我們可以看到 res、inc 兩個變數都是存在記憶體裡，有各自的位址。迴圈做的事情是：</p>
+<ol>
+<li>把 inc 和 res 從記憶體讀出來，各自放到暫存器裡</li>
+<li>加起來</li>
+<li>把結果寫回記憶體裡的 res 裡</li>
+</ol>
+<h3 id="只有-res-是-volatile-的情況">只有 res 是 <code>volatile</code> 的情況</h3>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">_Z6DoTestv:</span><br><span class="line">; .....</span><br><span class="line">    movl    $0, 12(%rsp)  ; res = 12(%rsp)</span><br><span class="line">; .....</span><br><span class="line">.L10:  ; 主迴圈</span><br><span class="line">    movl    12(%rsp), %eax</span><br><span class="line">    addl    $49, %eax</span><br><span class="line">    movl    %eax, 12(%rsp)</span><br><span class="line">    subl    $1, %edx</span><br><span class="line">    jne     .L10</span><br><span class="line">; .....</span><br></pre></td></tr></table></figure></div>
+<p>inc 徹底從記憶體裡消失了，而是直接用一個常數 49 來代替。這是因為編譯器發現他根本不會變，所以<strong>幫你節省了一次記憶體讀取</strong>。</p>
+<h3 id="只有-inc-是-volatile-的情況">只有 inc 是 <code>volatile</code> 的情況</h3>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">_Z6DoTestv:</span><br><span class="line">; .....</span><br><span class="line">    movl    $49, 12(%rsp)  ; inc = 12(%rsp)</span><br><span class="line">; .....</span><br><span class="line">.L10:  ; 主迴圈</span><br><span class="line">    movl    12(%rsp), %edx</span><br><span class="line">    addl    %edx, %ebx</span><br><span class="line">    subl    $1, %eax</span><br><span class="line">    jne     .L10</span><br><span class="line">; .....</span><br></pre></td></tr></table></figure></div>
+<p>這次產生的組語更短了，換成 res 消失。取代 res 的是暫存器 ebx，也就是說編譯器發現這個變數不會影響到別人，所以<strong>幫你節省了一次記憶體讀取和一次記憶體寫入</strong>。</p>
+<h3 id="所以呢？">所以呢？</h3>
+<p>所以，我們發現省略的那次記憶體寫入，實際上可以幫我們省下約 60% 的執行時間！也就是說，我們想要測試的明明是做加法的時間，結果搞不好一大半的時間都在等記憶體讀寫。我們也可以偷看剛剛指定 <code>O0</code> 不優化，產生的組合語言長怎樣</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">_Z6DoTestv:</span><br><span class="line">; .....</span><br><span class="line">    movl    $0, -16(%rbp)</span><br><span class="line">    movl    $49, -4(%rbp)</span><br><span class="line">    movl    $0, -12(%rbp)</span><br><span class="line">    jmp     .L20</span><br><span class="line">.L21:</span><br><span class="line">    movl    -4(%rbp), %eax</span><br><span class="line">    addl    %eax, -16(%rbp)</span><br><span class="line">    addl    $1, -12(%rbp)</span><br><span class="line">.L20:</span><br><span class="line">    cmpl    $1000000000, -12(%rbp)</span><br><span class="line">    jle     .L21</span><br><span class="line">; .....</span><br></pre></td></tr></table></figure></div>
+<p>可以看到仍然進行了許多記憶體讀寫，第 9 行的 <code>addl</code> 看起來無害，實際上因為是作用在記憶體上的 <code>-16(%rbp)</code> 所以還是有包含記憶體操作。</p>
+<p>有沒有辦法完全避免記憶體的問題，只測出 <code>addl</code> 指令本身的速度？</p>
+<h2 id="傳說中的-asm">傳說中的 <code>__asm__</code></h2>
+<p>可以！我們可以自己在 C++ 中內嵌組合語言，對程式碼達到完全的控制！因為我沒寫過組合語言所以花了一些時間研究某個人寫的 <a class="link" target="_blank" rel="noopener" href="https://www.felixcloutier.com/documents/gcc-asm.html">GCC’s assembler syntax<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>，這篇 guide 裡對 <code>__asm__</code> 語法和各種附帶功能解釋的很清楚，初心者向，推薦大家都去看看 :heart:</p>
+<p>經過一番努力上面的測試函數被改成了這樣</p>
+<div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">DoTest</span><span class="params">()</span> </span>{</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> kITER = <span class="number">1'000'000'000</span>; <span class="comment">// 1e9 iteration</span></span><br><span class="line">    <span class="type">int</span> res = <span class="number">0</span>, inc = <span class="number">49</span>;</span><br><span class="line">    __asm__ __volatile__ (</span><br><span class="line">        <span class="string">"   movl %3, %%ecx     ;\n"</span></span><br><span class="line">        <span class="string">".TEST_LOOP:           ;\n"</span></span><br><span class="line">        <span class="string">"   addl %2, %0        ;\n"</span></span><br><span class="line">        <span class="string">"   subl $1, %%ecx     ;\n"</span></span><br><span class="line">        <span class="string">"   jne .TEST_LOOP     ;\n"</span></span><br><span class="line">        :<span class="string">"=r"</span>(res)</span><br><span class="line">        :<span class="string">"r"</span>(res), <span class="string">"r"</span>(inc), <span class="string">"m"</span>(kITER)</span><br><span class="line">        :<span class="string">"%ecx"</span></span><br><span class="line">    );</span><br><span class="line">    std::cout &lt;&lt; <span class="string">"res = "</span> &lt;&lt; res &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+<p>其中：</p>
+<ol>
+<li>這段組合語言需要輸入 res、inc 分別放在（任意）暫存器中，這樣就可以避免記憶體的讀寫操作</li>
+<li>ecx 暫存器存迴圈的索引值</li>
+<li>編譯優化開 <code>O0</code> 或 <code>O2</code> 都沒差，輸出組語是一樣的</li>
+</ol>
+<p>輸出結果：</p>
+<div class="code-container" data-rel="Txt"><figure class="iseeu highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[-O2 optimization]</span><br><span class="line"></span><br><span class="line">&lt;stdout&gt;</span><br><span class="line">res = 1755359744</span><br><span class="line"></span><br><span class="line">&lt;stderr&gt;</span><br><span class="line">Elapsed: 0.334 s</span><br></pre></td></tr></table></figure></div>
+<p>因此，實際上 $10^9$ 次加法只花費了約 20% 的時間，其餘 80% 都在等待記憶體操作！</p>
+<h2 id="走火入魔">走火入魔</h2>
+<h3 id="不只加法">不只加法</h3>
+<p>既然都搬出組語了，我們當然可以把加法換成其他操作…嗎？然而，沒寫過組語的我什麼指令都不認識，因此我們可以先寫好一段簡單的 C++</p>
+<div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">owo</span><span class="params">()</span> </span>{</span><br><span class="line">    <span class="type">int</span> a = <span class="number">48763</span>;</span><br><span class="line">    <span class="type">int</span> b = <span class="number">49</span>;</span><br><span class="line">    <span class="type">int</span> c = a / b;</span><br><span class="line">    <span class="keyword">return</span> c;</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+<p>然後偷看組合語言的長相</p>
+<div class="code-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">_Z3owov:</span><br><span class="line">.LFB1909:</span><br><span class="line">    .cfi_startproc</span><br><span class="line">    pushq   %rbp</span><br><span class="line">    .cfi_def_cfa_offset 16</span><br><span class="line">    .cfi_offset 6, -16</span><br><span class="line">    movq    %rsp, %rbp</span><br><span class="line">    .cfi_def_cfa_register 6</span><br><span class="line">    movl    $48763, -12(%rbp)</span><br><span class="line">    movl    $49, -8(%rbp)</span><br><span class="line">    movl    -12(%rbp), %eax</span><br><span class="line">    cltd</span><br><span class="line">    idivl   -8(%rbp)</span><br><span class="line">    movl    %eax, -4(%rbp)</span><br><span class="line">    movl    -4(%rbp), %eax</span><br><span class="line">    popq    %rbp</span><br><span class="line">    .cfi_def_cfa 7, 8</span><br><span class="line">    ret</span><br></pre></td></tr></table></figure></div>
+<p>組合語言的指令雖然簡短，不過通常還是可以猜出大概的意思，這裡出現兩個之前沒看過的指令 <code>cltd</code>、<code>idivl</code>，經過一番 Google 順便翻翻文件 <a class="link" target="_blank" rel="noopener" href="https://www.felixcloutier.com/x86/">x86 and amd64 instruction reference<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>，我們確定負責除法的就是第 11 到 13 行。所以我們可以改改前面的 code，測量除法運算<sup id="fnref:1"><a href="#fn:1" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="一個中途發現的 fun fact 是：除法、模運算的組語指令一樣，因為 [`idiv` 指令](https://www.felixcloutier.com/x86/idiv)會同時計算商數和餘數存在兩個暫存器裡面，C++ 裡的除法和模只差在從哪個暫存器拿結果而已">1</span></a></sup>的時間</p>
+<div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">DoTest</span><span class="params">()</span> </span>{</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> kITER = <span class="number">1'000'000'000</span>; <span class="comment">// 1e9 iteration</span></span><br><span class="line">    <span class="type">int</span> res = <span class="number">48763</span>, denom = <span class="number">49</span>;</span><br><span class="line">    __asm__ __volatile__ (</span><br><span class="line">        <span class="string">"   movl %3, %%ecx            ;\n"</span></span><br><span class="line">        <span class="string">".TEST_LOOP_DIV:              ;\n"</span></span><br><span class="line">        <span class="string">"   cltd                      ;\n"</span></span><br><span class="line">        <span class="string">"   idivl %%ebx               ;\n"</span></span><br><span class="line">        <span class="string">"   subl $1, %%ecx            ;\n"</span></span><br><span class="line">        <span class="string">"   jne .TEST_LOOP_DIV        ;\n"</span></span><br><span class="line">        :<span class="string">"=a"</span>(res)</span><br><span class="line">        :<span class="string">"a"</span>(res), <span class="string">"b"</span>(denom), <span class="string">"m"</span>(kITER)</span><br><span class="line">        :<span class="string">"%ecx"</span></span><br><span class="line">    );</span><br><span class="line">    std::cout &lt;&lt; <span class="string">"res = "</span> &lt;&lt; res &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+<p>甚至是浮點運算（在這裡是除法）</p>
+<div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">DoTest</span><span class="params">()</span> </span>{</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> kITER = <span class="number">1'000'000'000</span>; <span class="comment">// 1e9 iteration</span></span><br><span class="line">    <span class="type">double</span> res = <span class="number">0.1</span>;</span><br><span class="line">    <span class="type">double</span> denom = <span class="number">1.000001</span>;</span><br><span class="line">    __asm__ __volatile__ (</span><br><span class="line">        <span class="string">"   movl %3, %%ecx             ;\n"</span></span><br><span class="line">        <span class="string">"   movq %1, %%xmm0            ;\n"</span></span><br><span class="line">        <span class="string">"   movq %2, %%xmm1            ;\n"</span></span><br><span class="line">        <span class="string">".TEST_LOOP_FDIV:              ;\n"</span></span><br><span class="line">        <span class="string">"   divsd %%xmm1, %%xmm0       ;\n"</span></span><br><span class="line">        <span class="string">"   subl $1, %%ecx             ;\n"</span></span><br><span class="line">        <span class="string">"   jne .TEST_LOOP_FDIV        ;\n"</span></span><br><span class="line">        <span class="string">"   movq %%xmm0, %0            ;\n"</span></span><br><span class="line">        :<span class="string">"=m"</span>(res)</span><br><span class="line">        :<span class="string">"m"</span>(res), <span class="string">"m"</span>(denom), <span class="string">"m"</span>(kITER)</span><br><span class="line">        :<span class="string">"%ecx"</span>, <span class="string">"%xmm0"</span>, <span class="string">"%xmm1"</span></span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+<h3 id="不只算術運算">不只算術運算</h3>
+<p>前面提到簡單的一行加法花了大把時間在記憶體存取，我們當然可以測到記憶體存取到底花了多少時間，甚至不需要用到組語，只要把先前的 <code>+=</code> 改成 <code>=</code> 就好。這裡先不考慮快取之類的可怕的問題</p>
+<div class="code-container" data-rel="Txt"><figure class="iseeu highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[-O0 optimization]</span><br><span class="line"></span><br><span class="line">&lt;stdout&gt;</span><br><span class="line">res = 49</span><br><span class="line"></span><br><span class="line">&lt;stderr&gt;</span><br><span class="line">Elapsed: 2.061 s</span><br></pre></td></tr></table></figure></div>
+<p>虫合？不用加法居然變慢了？</p>
+<h3 id="失控的鬼故事">失控的鬼故事</h3>
+<p>這個問題已經超出目前我能自己找到答案的範圍了。</p>
+<p>我目前想得到的原因偏向某種神奇的 pipelining，因為 CPU 自己也在機器碼層級做超級多事情，也許他用某種方式平行處理了一些加法指令之類的，但是這只是我的猜測。除此之外，前面的許多測試到底真的準確嗎？還有沒有其他因素會影響程式執行的速度、要怎麼排除這些因素？也許等我哪天變硬體大師、對 CPU 有更多了解才能好好解答這些問題 OAO</p>
+<blockquote>
+<p>Modern CPUs are complex beasts. —<a class="link" target="_blank" rel="noopener" href="https://stackoverflow.com/questions/692718/how-many-cpu-cycles-are-needed-for-each-assembly-instruction">某篇 stackoverflow<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></p>
+</blockquote>
+<h2 id="結論">結論</h2>
+<p>到這裡為止，我們算是用了盡可能準確的方式測到了 CPU 執行各種指令需要的時間，雖然顯的有點殺雞用牛刀了。不過有一個最重要的問題：測到這個然後呢？</p>
+<p>基本上沒有用。</p>
+<p>追根究底，我們測 judge 速度的目的是要決定，在複雜度算出來離時限感覺比較接近的時候，要不要賭他常數夠小 judge 能跑完，假如 judge 本來就偏慢的話那被卡常的機率也會比較高；此外，在實際應用的情況，我們也不可能為了避免記憶體存取太慢，就直接在賽場裡開寫組合語言來賺那點常數優勢。所以，既然所謂「judge 的速度」只是參考性質估計用，測出那點速度差異根本沒什麼參考價值，我們需要知道的只有跟其他機器比起來，這台伺服器的速度有沒有特別快或特別慢。</p>
+<p>我們大可相信一開始那段最單純的 code 就足以估計 judge 是快是慢。</p>
+<div class="code-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> GCC optimize(<span class="string">"O0"</span>)</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iomanip&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;ctime&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>{</span><br><span class="line">    <span class="keyword">auto</span> start = <span class="built_in">clock</span>();</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> res = <span class="number">0</span>, inc = <span class="number">49</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt;= <span class="number">1e9</span>; i++) {</span><br><span class="line">        res += inc;</span><br><span class="line">    }</span><br><span class="line">    cout &lt;&lt; <span class="string">"res = "</span> &lt;&lt; res &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">auto</span> end = <span class="built_in">clock</span>();</span><br><span class="line">    cout &lt;&lt; fixed &lt;&lt; <span class="built_in">setprecision</span>(<span class="number">3</span>);</span><br><span class="line">    cout &lt;&lt; <span class="string">"Elapsed: "</span> &lt;&lt; ((<span class="type">double</span>)(end - start) / CLOCKS_PER_SEC) &lt;&lt; <span class="string">" s\n"</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></table></figure></div>
+<div class="code-container" data-rel="Txt"><figure class="iseeu highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;stdout&gt;</span><br><span class="line">res = 1755359793</span><br><span class="line">Elapsed: 1.540 s</span><br></pre></td></tr></table></figure></div>
+<p>話雖如此，我覺得學習組合語言的過程還是很有趣的！</p>
+<h2 id="References">References</h2>
+<ol>
+<li><a class="link" target="_blank" rel="noopener" href="https://www.felixcloutier.com/documents/gcc-asm.html">GCC’s assembler syntax<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
+<li><a class="link" target="_blank" rel="noopener" href="https://csiflabs.cs.ucdavis.edu/~ssdavis/50/att-syntax.htm">AT&amp;T Assembly Syntax<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
+<li><a class="link" target="_blank" rel="noopener" href="https://www.felixcloutier.com/x86/">x86 and amd64 instruction reference<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
+<li><a class="link" target="_blank" rel="noopener" href="https://stackoverflow.com/questions/692718/how-many-cpu-cycles-are-needed-for-each-assembly-instruction">某篇 stackoverflow，關於每個指令到底要花費幾個 cycle<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
+<li><a class="link" target="_blank" rel="noopener" href="https://en.algorithmica.org/hpc/pipelining/">Algorithmica 的 pipelining 章節<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a></li>
+</ol>
+<div id="footnotes"><hr><div id="footnotelist"><ol style="list-style: none; padding-left: 0; margin-left: 40px"><li id="fn:1"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">1.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">一個中途發現的 fun fact 是：除法、模運算的組語指令一樣，因為 <a target="_blank" rel="noopener" href="https://www.felixcloutier.com/x86/idiv"><code>idiv</code> 指令</a>會同時計算商數和餘數存在兩個暫存器裡面，C++ 裡的除法和模只差在從哪個暫存器拿結果而已<a href="#fnref:1" rev="footnote">↩</a></span></li></ol></div></div>
+		</div>
+
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/C/">#C++</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E7%AB%B6%E7%A8%8B/">#競程</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/%E7%B5%84%E5%90%88%E8%AA%9E%E8%A8%80/">#組合語言</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/2022/08/12/vimrc-for-cp/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">筆記．競程向 vimrc</span>
+						<span class="post-nav-item">Prev posts</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/2022/07/27/gcc-option-notes/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">筆記．g++ 編譯選項</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">如何測試 Judge 速度</div>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E5%B8%B8%E7%9A%84%E4%BD%9C%E6%B3%95"><span class="nav-text">正常的作法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%8E%AE%E5%A3%93%E7%B7%A8%E8%AD%AF%E5%84%AA%E5%8C%96%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A-O0"><span class="nav-text">鎮壓編譯優化（一）：-O0</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%8E%AE%E5%A3%93%E7%B7%A8%E8%AD%AF%E5%84%AA%E5%8C%96%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9Avolatile"><span class="nav-text">鎮壓編譯優化（二）：volatile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AC%BC%E6%95%85%E4%BA%8B%E7%9A%84%E9%96%8B%E5%A7%8B"><span class="nav-text">鬼故事的開始</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#res%E3%80%81inc-%E9%83%BD%E6%98%AF-volatile-%E7%9A%84%E6%83%85%E6%B3%81"><span class="nav-text">res、inc 都是 volatile 的情況</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AA%E6%9C%89-res-%E6%98%AF-volatile-%E7%9A%84%E6%83%85%E6%B3%81"><span class="nav-text">只有 res 是 volatile 的情況</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AA%E6%9C%89-inc-%E6%98%AF-volatile-%E7%9A%84%E6%83%85%E6%B3%81"><span class="nav-text">只有 inc 是 volatile 的情況</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%80%E4%BB%A5%E5%91%A2%EF%BC%9F"><span class="nav-text">所以呢？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%82%B3%E8%AA%AA%E4%B8%AD%E7%9A%84-asm"><span class="nav-text">傳說中的 __asm__</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%B0%E7%81%AB%E5%85%A5%E9%AD%94"><span class="nav-text">走火入魔</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E5%8F%AA%E5%8A%A0%E6%B3%95"><span class="nav-text">不只加法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E5%8F%AA%E7%AE%97%E8%A1%93%E9%81%8B%E7%AE%97"><span class="nav-text">不只算術運算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%B1%E6%8E%A7%E7%9A%84%E9%AC%BC%E6%95%85%E4%BA%8B"><span class="nav-text">失控的鬼故事</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B5%90%E8%AB%96"><span class="nav-text">結論</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-text">References</span></a></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2025</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-paw"></i>&nbsp;&nbsp;<a href="/">PixelCat31415</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        16 posts in total
+                    </span>
+                    
+                        <span>
+                            43.7k words in total
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.5</a></span>
+        </div>
+        
+        
+        
+        
+            
+                
+        
+                
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog "></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/build/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+</body>
+
+</html>

@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="PixelCat31415">
+    
+    <!-- Completely eliminate flash of wrong theme -->
+    <script>
+        (function() {
+            const THEME_KEY = "REDEFINE-THEME-STATUS";
+            const DARK = "dark", LIGHT = "light";
+            
+            // Get preferred theme
+            function getTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved) {
+                        const { isDark } = JSON.parse(saved);
+                        return isDark ? DARK : LIGHT;
+                    }
+                } catch (e) {}
+                
+                return matchMedia("(prefers-color-scheme: dark)").matches ? DARK : LIGHT;
+            }
+            
+            // Apply theme to document
+            function applyTheme(theme) {
+                const isDark = theme === DARK;
+                const root = document.documentElement;
+                
+                // Set data attribute for CSS variables
+                root.setAttribute("data-theme", theme);
+                
+                // Set classes for compatibility
+                root.classList.add(theme);
+                root.classList.remove(isDark ? LIGHT : DARK);
+                root.style.colorScheme = theme;
+            }
+            
+            // Initial application
+            const theme = getTheme();
+            applyTheme(theme);
+            
+            // Listen for system preference changes
+            matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
+                // Only update if using system preference (no localStorage entry)
+                if (!localStorage.getItem(THEME_KEY)) {
+                    applyTheme(matches ? DARK : LIGHT);
+                }
+            });
+            
+            // Set body classes once DOM is ready
+            if (document.readyState !== "loading") {
+                document.body.classList.add(theme + "-mode");
+            } else {
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.body.classList.add(theme + "-mode");
+                    document.body.classList.remove((theme === DARK ? LIGHT : DARK) + "-mode");
+                });
+            }
+        })();
+    </script>
+    
+    <!-- Critical CSS to prevent flash -->
+    <style>
+        :root[data-theme="dark"] {
+            --background-color: #202124;
+            --background-color-transparent: rgba(32, 33, 36, 0.6);
+            --second-background-color: #2d2e32;
+            --third-background-color: #34353a;
+            --third-background-color-transparent: rgba(32, 33, 36, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #ffffff;
+            --second-text-color: #eeeeee;
+            --third-text-color: #bebec6;
+            --fourth-text-color: #999999;
+            --default-text-color: #bebec6;
+            --invert-text-color: #373D3F;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(255, 255, 255, 0.08);
+            --shadow-color-2: rgba(255, 255, 255, 0.05);
+        }
+        
+        :root[data-theme="light"] {
+            --background-color: #fff;
+            --background-color-transparent: rgba(255, 255, 255, 0.6);
+            --second-background-color: #f8f8f8;
+            --third-background-color: #f2f2f2;
+            --third-background-color-transparent: rgba(241, 241, 241, 0.6);
+            --primary-color: #0066CC;
+            --first-text-color: #16171a;
+            --second-text-color: #2f3037;
+            --third-text-color: #5e5e5e;
+            --fourth-text-color: #eeeeee;
+            --default-text-color: #373D3F;
+            --invert-text-color: #bebec6;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --selection-color: #0066CC;
+            --shadow-color-1: rgba(0, 0, 0, 0.08);
+            --shadow-color-2: rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+        
+        /* Apply body classes as soon as DOM is ready */
+        :root[data-theme="dark"] body {
+            background-color: var(--background-color);
+            color: var(--default-text-color);
+        }
+    </style>
+    
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://pixelcat31415.github.io/2025/07/23/challenge-part-one/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+    
+    
+        
+        <meta name="description" content="Nyanyannya.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2025 Challenge（上）視點和裏話">
+<meta property="og:url" content="https://pixelcat31415.github.io/2025/07/23/challenge-part-one/">
+<meta property="og:site_name" content="Nyanyannya">
+<meta property="og:description" content="Nyanyannya.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://pixelcat31415.github.io/images/pixelcat.png">
+<meta property="article:published_time" content="2025-07-22T21:58:17.000Z">
+<meta property="article:modified_time" content="2025-07-25T01:08:10.173Z">
+<meta property="article:author" content="PixelCat31415">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pixelcat31415.github.io/images/pixelcat.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/pixelcat.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/pixelcat.png">
+    <meta name="theme-color" content="#fcc7f4">
+    <link rel="shortcut icon" href="/images/pixelcat.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            2025 Challenge（上）視點和裏話 | Nyanyannya
+        
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+        
+            
+    
+            
+    
+            
+                
+                    <link rel="stylesheet" href="/css/custom.css">
+                
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/css/build/tailwind.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+        <link href="https://fonts.googleapis.com/css2?family=Victor+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    
+    
+        <link href="/css/openhuninn.css" rel="stylesheet">
+    
+    
+    
+        <link href="/css/openhuninn.css" rel="stylesheet">
+    
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"pixelcat31415.github.io","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.75,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":false},"author_label":{"enable":false,"auto":false,"list":[]},"code_block":{"copy":true,"style":"simple","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":true,"family":"Victor Mono","url":"https://fonts.googleapis.com/css2?family=Victor+Mono:ital,wght@0,100..700;1,100..700&display=swap"}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":false,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#fcc7f4","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":true,"family":"Open Huninn","url":"/css/openhuninn.css"},"english":{"enable":false,"family":null,"url":null},"title":{"enable":true,"family":"Open Huninn","url":"/css/openhuninn.css"}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":false,"site_uv":false,"post_pv":false},"single_page":true,"preloader":{"enable":false,"custom_message":null},"side_tools":{"gear_rotation":false,"auto_expand":false},"open_graph":{"enable":true,"image":"/images/pixelcat.png","description":"Nyanyannya."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/cat-in-tokyo-city.jpg"},"title":"A subtle purr from nowhere.","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#afe0fa"},"text_style":{"title_size":"1.4rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1"}},"version":"2.8.5","navbar":{"auto_hide":false,"color":{"left":"#fcc7f4","right":"#afe0fa","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"About":{"path":"/about","icon":"fa-regular fa-user"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":false,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2025/7/22 18:00:00"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
+
+
+
+<body>
+	<div class="progress-bar-container">
+	
+
+	
+	<span class="pjax-progress-bar"></span>
+	<!--        <span class="swup-progress-icon">-->
+	<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+	<!--        </span>-->
+	
+</div>
+
+<main class="page-container" id="swup">
+
+	
+
+	<div class="main-content-container flex flex-col justify-between min-h-dvh">
+		<div class="main-content-header">
+			<header class="navbar-container px-6 md:px-12">
+    <div class="navbar-content transition-navbar ">
+        <div class="left">
+            
+                <a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="/">
+                    <img src="/images/pixelcat.png" class="w-full h-full rounded-xs">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                Nyanyannya
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    ARCHIVES
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/about"
+                                        >
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    ABOUT
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                ARCHIVES
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/about"
+                        >
+                            <span>
+                                ABOUT
+                            </span>
+                            
+                                <i class="fa-regular fa-user fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">11</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">0</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">16</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+		</div>
+
+		<div class="main-content-body transition-fade-up">
+			
+
+			<div class="main-content">
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
+
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">2025 Challenge（上）視點和裏話</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/pixelcat.png">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">PixelCat31415</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-07-22 23:58:17</span>
+        <span class="mobile">2025-07-22 23:58:17</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-07-25 03:08:10</span>
+            <span class="mobile">2025-07-25 03:08:10</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>11.7k Words</span>
+        </span>
+    
+    
+    
+</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<p>今年的 Challenge 不順利的結束了。</p>
+<p>如果你不知道什麼是 Challenge 的話，那是資訊營的其中一個環節，我們寫一個遊戲，小隊員寫策略玩這個遊戲，營期最後一天所有小隊比賽也和我們寫的 agent 比賽。</p>
+<p>Challenge 組跟營隊的籌備團隊獨立，今年我和胡祐誠是 Challenge 長，任務大概是帶 Challenge 組的大家做完這個遊戲。想說的話和故事有不少，大概得要拆成二或三篇來發。這一篇想說關於我的視角的整個籌備過程和我心裡的小劇場，不過一萬多字裡面大概有相當成份的流水帳，後面幾篇再接著說一些感想和思考（如果有的話）。</p>
+<h2 id="致謝：Challenge-組員名單">致謝：Challenge 組員名單</h2>
+<p>總之還是想第一個寫工作人員名單（照 vscode 內建排序功能排序）。</p>
+<ul>
+<li>卓育安 prairie2022</li>
+<li>常洧丞 Weber Change</li>
+<li>廖禹喬 JoyLiao</li>
+<li>張嘉泰 TDDY</li>
+<li>張聲元 LightningFarter</li>
+<li>李尚哲 Matt</li>
+<li>林文繡 bbwinner</li>
+<li>洪德朗 Andromeda</li>
+<li>王　淇 littlecube8152</li>
+<li>胡祐誠 HyperSoWeak</li>
+<li>蔡孟憬 cmj</li>
+<li>蔡孟衡 lemonilemon</li>
+<li>蔡瑜恩 Jaime</li>
+<li>謝承憲 ChengHsien</li>
+<li>邱翊均 PixelCat</li>
+</ul>
+<p>Challenge 組員只能說不離不棄，難以用文字表達的感謝。</p>
+<h2 id="最一開始的開始">最一開始的開始</h2>
+<p>今年整個 Challenge 的 TLDR 就是趕死線。</p>
+<p>但是真要說的話 Challenge 還蠻早就開始在準備，從寒假剛結束二月底就開始招工，學期中期中考前後大概一個禮拜都會開一次會，教一些基本的 Git 和 Godot 和 Python 之類的，這個東西有沒有用的話是另一個太大的討論點，不過至少是表面上看起來有做點什麼。起初進度最樂觀的頂點是，因為今年想用遊戲引擎不想像以前用滿地破病的 pygame，我們兩個 Challenge 長三月的時候搞了一個測試用的遊戲，測試遊戲引擎是好用的、websocket 是可以正常工作的、python 和 godot 的溝通整個都沒問題，只要我們花時間把遊戲機制實做出來就好了！</p>
+<p>然後呢？然後就沒了，那個只有一個 commit 的測試遊戲 repo 被放了三個多月沒人再打開過。到六月最後一個禮拜前遊戲都沒有任何進度，從五月中開始整個 Challenge 組沒有任何的活動。下面這張圖是營期前的日期表，灰色是期末考週，黃色是營期，我們大概從藍色格子才開始真的著手做遊戲。</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/images/2025-07-challenge/calendar.png" alt=""></p>
+<h2 id="營期前四週">營期前四週</h2>
+<p>也許我大概是有點藉口的，期末考週之後連續的兩個禮拜是資芽的團體賽和認證考，我要各出一題花了一些時間。但是再怎麼說，營期前一個月還沒有任何進度都真的太過分了。可能我某種程度上也在拿手上的其他事情逃避遊戲沒進度的壓力吧。</p>
+<p>這件事不管怎麼看我都有最大的責任。</p>
+<h2 id="營期前-24-天．6-19（四）">營期前 24 天．6/19（四）</h2>
+<p>16 日開始的幾天兩個 Challenge 長嘗試約了幾次討論，不過兩個人都完全沒進入狀況，約到 19 號終於有第一次實質討論。印象中當天決定了幾件事情</p>
+<ul>
+<li>6/23 開始，每週三次大家實體聚在一起做遊戲（實際上一週三次從容得令人髮指，7/3 開始我們幾乎每天醒著的時間都在做）</li>
+<li>6/30 開始找美術組開出完整的需求（實際上 7/2 第一次和美術組討論，這一天同時是最關鍵的一天）</li>
+<li>計畫 7/7 完成可發布的第一版（實際上 7/14 發布 v1.0.0）</li>
+<li>創建 GitHub repository</li>
+</ul>
+<p>如果你覺得前面的所有事情都不夠離譜的話，那你看到最後這句話一定要感到震驚：「我們 6/19 才建立我們的專案 repository」。</p>
+<h2 id="營期前-20-天．6-23（一）">營期前 20 天．6/23（一）</h2>
+<p>週末胡祐誠搞了一個簡單的塔防遊戲原形，6/23 2025 Challenge 組第一次針對遊戲開發一起討論，這次討論重點只有簡單說說要發 issue 和要發 pull request。我們的 issue template 甚至是這一天開會中才做出來，在這之前還是 GitHub 官方文件裡的範例。</p>
+<p>會說「簡單說說」是因為，那天說完基本上沒人真的知道具體應該做什麼。那個時間點接近一個空的專案，實做任何一件事情都是在憑空創造實做架構，也沒有一個明確的計畫說「我們有這些這些事要做，我們一件一件事做」。接下來的一個多禮拜每個人想到什麼發什麼 issue，寫一寫能動就推，也沒辦法 review，因為沒有結構的東西是不能討論結構合不合理的，很多會動就好的東西被合進去之後真的算是實做完成了嗎？那樣的 codebase 不可能繼續擴展，但是 issue closed，看起來好像有進度，實際上所有東西都是不能用的。</p>
+<p>就拿幾個例子來說，預覽的半透明防禦塔全部寫在 <code>game.gd</code> 這個應該要管遊戲邏輯的地方。商店包在 <code>game</code> 這個 scene 裡面，但是遊戲內應該要只有一個商店怎麼辦？把另一邊的商店藏起來。商店位置看起來是用滑鼠隨意拉的位置。<code>game</code> 管其中一邊的遊戲，但是沒有任何人計畫把兩盤遊戲湊起來變成真正的對戰，更不用說準備畫面、結算畫面都沒有實做的計畫。這段也許太 detail，我希望描繪的是每個人都在發很 minor 的小功能，能動就行，codebase 沒有任何結構和規劃，還有更多更基礎的任務沒有任何人要動，因為要改的東西太多、也不知道從何改起。</p>
+<p>一個沒有場景切換和雙人對戰的遊戲，要怎麼成為完整的對戰塔防遊戲？但有太多東西只能從頭建造起，不是十來個人一起到處小修小補就可以自動解決的。我們太晚才意識到不是越多人工作就會進行得越快，到七月開始的時候感覺大家更難在越來越亂的 codebase 上做任何修改，沒有任何有效的進展。</p>
+<p>混亂的另一個來源是我們沒有寫得很清楚關於 issue、pull request、pre-commit 之類的機制具體來說應該怎麼操作，其中又有一部分原因是我們自己對於 GitHub 那些機制也沒有真的很熟悉。在混亂幾天之後寫了一份 <em>開發指北</em> 一步一步說我們想像組員應該要怎麼利用這些機制，也許情況有明朗一點，不過大概也還是沒有寫得真的很清楚或傳達得很確實。這個問題還是要一部分歸咎今年第一次嘗試依賴這些機制，還需要一點點時間摸索。</p>
+<p>也許還有另一個因素是我（其中一個 Challenge 長）因為一些麻煩的原因不在臺北，線上和實體在溝通效率還是有一些差距。從我的視角感覺後來幾天我只負責每兩天掛在線上三個小時，組員看起來不知道能做什麼，我也不知道我能做什麼，大家一起很無助。</p>
+<p>這是 6/30 的遊戲畫面（commit <code>a865efbe</code>），codebase 難以呈現但是只能說一片混亂。是我一手造成的惡果沒錯，但是其實我真的感覺還蠻無助的。</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/images/2025-07-challenge/gamesc-0630-game.png" alt=""></p>
+<h2 id="營期前-11-天．7-2（三）">營期前 11 天．7/2（三）</h2>
+<p>這天是今年整個 Challenge 組最大的轉折點。導火線是這天早上我們終於和美術組約了時間討論我們需要的素材（題外話：今年我們的美術組幾乎找不到人，這天開會的幾個人還是跟營隊那邊借來的），我和四個美術組到場，Hyper 這天早上不在。但是我們的遊戲就長上面那個鬼樣，更糟糕的是我跟美術非常不熟（Hyper 獨立做過遊戲，還有參與去年美術，對這方面了解多了），我一通意象描述我們的遊戲大概大概需要用到哪些素材，美術組大概整個不知道我在講什麼。我知道我說得很抽象，他們絕對捕捉不到重點，我自己都不知道重點在哪裡，也不知道作為美術組最需要知道的到底其實是什麼。</p>
+<p>張聲元原本不在 Challenge 組員名單裡面，但是他自願來幫忙，還幫忙的是美術組，所以當天早上也在場。十一點會議結束後他特別留下來聽我吵我怎麼的覺得 Challenge 快倒了，像個自己手賤把作業弄掉到池塘裡還要跟老師哭的屁孩，我跟他討論到兩件最重要的事情，現在想一想越來越覺得心有餘悸。（跟他這次通話，還有他把一大半美術的事情撐起來，還有在我不知所措當巨嬰的時候告訴我該怎麼做，我真心的願稱張聲元是 Challenge 組最大的救星）</p>
+<p>第一，遊戲 prototype 需要補全所有細節，不能只是 prototype 了。那份 prototype 從四月底開始就長那樣了，一直沒人覺得有怎麼樣，但是對美術來說，他們需要知道遊戲有哪些畫面才能畫背景或 UI 元件等等，還有具體的敵人、子彈、防禦塔有哪些、應該是什麼形象，這些都需要是一份詳細完整的清單，才有辦法一個一個製作素材。</p>
+<p>第二，想要重寫整個遊戲，或者說一次接近重寫的大規模 refactor。其實在這之前的幾天胡祐誠有提到想 refactor 現有的 codebase，不過我們還是停留在一種沒人真的下定決心打破現狀的渾渾噩噩的狀態。我和張聲元一通哭訴現在的 codebase 之雜亂沒人有辦法加新東西上去，還有上面提到的各種關於基礎架構的問題。我問他，「我有一個想法，我想和胡祐誠兩個人把現在有的所有東西重寫，你覺得怎麼樣？」他說「要，一定要。」</p>
+<p>其實大概所有人都知道 codebase 的問題，只差我們自己下定決心做這件事情，而且必須是我們，因為整件事都是我們捅出來的包。</p>
+<p>當天下午我們把每一個人手上的工作停下來，但是其實大家根本就沒辦法做出有意義的進展所以實質上幾乎沒有耽誤到什麼。我們決定和遊戲長李尚哲三個人花一個下午補全遊戲 prototype、畫出遊戲裡每一個畫面應該出現哪些元素（UI prototype，這是一個沒有先例的嘗試，那時候對於能不能發揮功能、是不是有花時間做的價值還蠻不安的，後面再討論做這件事結果如何），然後最重要的決定在隔天重寫遊戲。</p>
+<p>那天下午說「大家抱歉，我們需要停下來重寫，所以今天開會還沒開始就結束了」的時候我不在現場，大概相當難堪吧？</p>
+<h2 id="營期前-9-天．7-4（五）">營期前 9 天．7/4（五）</h2>
+<p>7/3（四）這天我回台北了，計畫和胡祐誠兩個人花一整天重寫。小插曲是我本來早上想看看我能做什麼，發現有好多莫名其妙的檔案（胡祐誠不小心推上去的測試用雜物）不敢動，所以回去補眠到晚上。所以實際上我們禮拜四晚上才開始做事情。</p>
+<p>其實重寫的那段時間沒什麼好回憶的，就是兩個人講好一下，各自做各自的部份，一起從晚上坐牢到早上。我寫 map（抽象化的遊戲地圖）、game（單一邊的遊戲進程）、round（把兩邊兩個 game 湊起來的對戰）、和決定兩邊遊戲應該怎麼溝通，胡祐誠寫各種遊戲界面、設計界面、決定遊戲界面應該怎麼控制遊戲邏輯、和實做遊戲計時生怪的機制。這一段做得特別順利，因為只有兩個人而且在同一個空間裡面，特別好協調你應該動哪個檔案、我動這個檔案會不會出事、你做這個部份那我去做那個部份。</p>
+<p>我覺得對我來說整個 Challenge 最大的 takeaway 之一就是 <strong>不是越多人一起工作就會完成得越快</strong>。我們兩個人坐牢了一整個晚上和早上之後確定了 Godot 這邊遊戲實做的架構（Python 那邊的 API 還要再等等…），這個架構後來也有沿用到最後。</p>
+<p>禮拜五下午我們整理了一串待辦清單像是誰要去設計 API、誰要去實做各種不一樣的防禦塔或敵人、誰要去實做技能等等各種之類的，一個一個找人去做。我們的願望是重寫之後大家可以各自為政不會有太多衝突，真心希望從大家的視角來看這個目標也真的有達到。</p>
+<p>除此之外，下午發生最重要的事情大概是張聲元和胡祐誠決定兩個人直接開始做美術。其實在這前面的幾天一直跟美術組很難聯絡上，我知道我可能沒有跟他們講清楚，但是他們沒有回訊的情況下我整個不知道他們的狀態、有什麼事我們幫上忙、甚至是他們到底有沒有要做事。禮拜五下午張聲元直接捲起袖子開始畫加起來幾十個的防禦塔和敵人，真的是世界的希望，不可思議的偉大。</p>
+<p>從這一天開始我們的遊戲大概是回到一個正常的專案的形狀，issue 和 pull request（也是因為大家也搞了兩個禮拜了）開始比較正常進行。有些人很久都沒動作，或是有些任務被認領很久都沒看到有實質進度，大概也是這個時候附近開始我們比較強勢的介入。</p>
+<p>這張圖是 7/4 中午的遊戲（commit <code>aa9e3165</code>），看起來可能沒有真的差非常非常多，但是拜託相信我，這個 codebase 裡面真的是長得完全不一樣的。</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/images/2025-07-challenge/gamesc-0704-game.png" alt=""></p>
+<h2 id="營期前-8-天．7-5（六）">營期前 8 天．7/5（六）</h2>
+<p>我的體感上重寫完遊戲讓整個進度變得 promising 很多，好像從很絕望的情況變成趕一下可以搞定？剛好各種的工作都丟包出去了，有一小段時間居然手上沒有立即的任務要做。</p>
+<p>這天是我二十歲生日，PCkomachi 團練了一場又吃到陳竹欣和張聲元和好多人準備的生日蛋糕，幸福得不現實。（是的，這一天被特別寫一段就是因為我生日覺得蛋糕很好吃 🎂🥳🎉）</p>
+<h2 id="營期前-7-天．7-6（日）">營期前 7 天．7/6（日）</h2>
+<p>大概是這一天開始好日子結束，我到營期結束為止好像一直在到處當碼農。凌晨兩點和遠在歐洲的高嘉泓討論他原本計畫要做的 Python 這邊的 API 調用架構，發現他出去玩期間很難做事，所以我就去把這個任務給搶過來了。</p>
+<p>然後 7/6 白天我耍廢了一天，哈哈。</p>
+<p>現在冷靜的想一想覺得到底是怎麼敢的，不過這樣的結果就是我 7/7 凌晨才開始寫，debug 好久之後才發現 python 有個小套件（<a class="link" target="_blank" rel="noopener" href="https://github.com/anetczuk/gdtype-python">gdtype<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>）太過時完全不能用，必須要自己寫，破大防，7/8（二）早上才寫完這個部份。不過是真的要說 <a class="link" target="_blank" rel="noopener" href="https://docs.godotengine.org/en/stable/tutorials/io/binary_serialization_api.html">godot 的 binary serialization 文件<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 早就過期八千萬年了不更新是幾個意思，後來我還是翻他原始碼把 C++ 翻譯成 Python 才寫完這一段，不欣賞。</p>
+<p>這個地方有好多問題可以討論。Python 這邊的呼叫機制、程式碼架構、錯誤處理機制、等等所有的事情都是我一個人花兩天亂寫出來的，這樣真的好嗎？這些機制沒有什麼低能的問題嗎？身為 Challenge 長的我單幹實做道理在哪裡？類似的問題後面大概還會出現很多次，有好多東西都是 <em>我有一個只有我知道的相對完整的想像 ➡️ 跟這件事有關的部份之前也是我寫的我最了解 ➡️ 時間緊迫 ➡️ 啊算了不慢慢說了我自己寫掉最快 ➡️ 這件事情依然只有我最清楚</em> 之類的，其實這真的是還蠻大的問題。</p>
+<details class="yellow" data-header-exclude="">
+    <summary><i class="fa-solid fa-chevron-right"></i>Bug Fix 八選（其一） </summary>
+    <div class="content markdown-body">
+        <div class="note p-4 mb-4 rounded-small markdown-body yellow">
+    <p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/f40e2b2afd0c8fbede70d1de8b1fa1619b03dbf8"><em>Commit <code>f40e2b2a</code> fix: I am officially an idiot</em></a></p>
+  </div>
+<p>7/8（二）跟大家說 API 可以用之後被抓到為什麼 client 端不能傳超過 255 的整數給伺服器端呢？</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/images/2025-07-challenge/bugfix-1-1.png" alt=""></p>
+<p>啊，原來有個智障覺得 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.186ex;" xmlns="http://www.w3.org/2000/svg" width="8.53ex" height="2.072ex" role="img" focusable="false" viewBox="0 -833.9 3770.1 915.9"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mn"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g><g data-mml-node="mn" transform="translate(533,363) scale(0.707)"><path data-c="38" d="M70 417T70 494T124 618T248 666Q319 666 374 624T429 515Q429 485 418 459T392 417T361 389T335 371T324 363L338 354Q352 344 366 334T382 323Q457 264 457 174Q457 95 399 37T249 -22Q159 -22 101 29T43 155Q43 263 172 335L154 348Q133 361 127 368Q70 417 70 494ZM286 386L292 390Q298 394 301 396T311 403T323 413T334 425T345 438T355 454T364 471T369 491T371 513Q371 556 342 586T275 624Q268 625 242 625Q201 625 165 599T128 534Q128 511 141 492T167 463T217 431Q224 426 228 424L286 386ZM250 21Q308 21 350 55T392 137Q392 154 387 169T375 194T353 216T330 234T301 253T274 270Q260 279 244 289T218 306L210 311Q204 311 181 294T133 239T107 157Q107 98 150 60T250 21Z"></path></g></g><g data-mml-node="mo" transform="translate(1214.3,0)"><path data-c="3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path></g><g data-mml-node="mn" transform="translate(2270.1,0)"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path><path data-c="35" d="M164 157Q164 133 148 117T109 101H102Q148 22 224 22Q294 22 326 82Q345 115 345 210Q345 313 318 349Q292 382 260 382H254Q176 382 136 314Q132 307 129 306T114 304Q97 304 95 310Q93 314 93 485V614Q93 664 98 664Q100 666 102 666Q103 666 123 658T178 642T253 634Q324 634 389 662Q397 666 402 666Q410 666 410 648V635Q328 538 205 538Q174 538 149 544L139 546V374Q158 388 169 396T205 412T256 420Q337 420 393 355T449 201Q449 109 385 44T229 -22Q148 -22 99 32T50 154Q50 178 61 192T84 210T107 214Q132 214 148 197T164 157Z" transform="translate(500,0)"></path><path data-c="35" d="M164 157Q164 133 148 117T109 101H102Q148 22 224 22Q294 22 326 82Q345 115 345 210Q345 313 318 349Q292 382 260 382H254Q176 382 136 314Q132 307 129 306T114 304Q97 304 95 310Q93 314 93 485V614Q93 664 98 664Q100 666 102 666Q103 666 123 658T178 642T253 634Q324 634 389 662Q397 666 402 666Q410 666 410 648V635Q328 538 205 538Q174 538 149 544L139 546V374Q158 388 169 396T205 412T256 420Q337 420 393 355T449 201Q449 109 385 44T229 -22Q148 -22 99 32T50 154Q50 178 61 192T84 210T107 214Q132 214 148 197T164 157Z" transform="translate(1000,0)"></path></g></g></g></svg></mjx-container>。</p>
+  <div class="note p-4 mb-4 rounded-small markdown-body yellow">
+    <p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/a2c8641f236b27560c4815597870e5a933dc5565"><em>Commit <code>a2c8641f</code> fix: various bug fixes</em></a></p>
+  </div>
+<p>很久很久以後，在 Demo 前一個晚上還被抓到原來負數也不能傳，原因是有人把二的次方少算一半，一個人眼睛閉起來單幹 binary serialization 真的遭報應了 💩</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/images/2025-07-challenge/bugfix-1-2.png" alt=""></p>
+<p>直到寫這篇回顧的當下才發現原來 <a class="link" target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/blob/8d7092b2dddd489153e17be971d9a2650d1601e1/agent/api/serialization.py#L47">這裡<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 也一直都還是錯的，只是貌似沒有需要從 client 傳負數給伺服器的場合，所以一直沒被發現。這個 bug 到現在還沒被修掉 💩</p>
+
+    </div>
+  </details>
+<p>總之在 7/8（二）早上我們終於可以寫 python 去戳遊戲本體了。但是邪惡的事實是我們 <strong>所有</strong> API 實際實做都還是空的、一些遊戲機制還沒實做完整、選單和結算畫面沒實做、遊戲平衡沒半點調整過，我們還想寫一個可以自動更新遊戲的 launcher 還沒寫，需要寫給小隊員包含 API 在內的一些 document 進度堪慮，然後我們禮拜三晚上要有能動的遊戲讓小隊輔們密籌的時候可以玩。</p>
+<p>後面的事情可能沒有那麼有趣了，就是到處趕死線、到處出包延死線。抱歉從這裡開始會比較多偏向我在當碼農的視角，因為我大部分時間都花在寫自己手上的東西了，對 repo 裡面發生的其他大事比較沒有印象只能看 commit 紀錄回憶一下。</p>
+<h2 id="營期前-4-天．7-9（三）">營期前 4 天．7/9（三）</h2>
+<p>這天我把控制選項的畫面差不多寫完了，包含從遊戲裡面自動執行 agent script。中間一直被 godot 的 <a target="_blank" rel="noopener" href="https://docs.godotengine.org/en/stable/classes/class_os.html#class-os-method-execute-with-pipe"><code>OS.execute_with_pipe</code></a> 搞，這個東西根本到處都是爛的，非常不推薦。</p>
+<p>除此之外，防禦塔、敵人、子彈可以正常互動，技能可以放，最基本的遊戲機制大概是完成了。</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/images/2025-07-challenge/gamesc-0709-player-selection.png" alt=""></p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/images/2025-07-challenge/gamesc-0709-game.png" alt=""></p>
+<p>看起來是有一點樣子了，可是還是到處都是洞（就不細數了，我懶得了）。那天晚上的密籌我們原訂計畫要給隊輔玩遊戲，但是遊戲還是很不可玩，結果變成遊戲簡介加上林文繡（Challenge 組兼學術組教學）教隊輔寫 Python 時間。</p>
+<p>隔天凌晨，第一個遊戲版本 v0.1.0 發布了。那時候真的有一瞬間覺得我們可以及時做完遊戲嗎？已經不記得了，只記得每天醒著的時間都在當碼農，幾個月前就想好的 feature 現在才在一個一個做，連睡覺時間是什麼時候都不記得了。</p>
+<h2 id="營期前-3-天．7-10（四）">營期前 3 天．7/10（四）</h2>
+<p>可能不是重要的大事，不過這天有不知道是誰 rebase 一整大串（最早從 7/5 開始）東西到他的某個很老的 branch 上面，所以我們的圖上有一整大長串莫名其妙的 commit，我好像因此被 GitHub 多算個 20 個 commit 之類的，還蠻好笑的。</p>
+<p>印象中這天白天我睡著了，repo 也沒太多改動，傍晚密籌前 v0.2.0 釋出，終於讓隊輔玩到遊戲了，不過各種環境問題好像還是很多。</p>
+<p>晚上終於加上地圖背景了，不用在黃綠方格上玩遊戲了。這是 7/11 早上的遊戲。其實看起來好像稍微的有一點可玩了。</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/images/2025-07-challenge/gamesc-0711-menu.png" alt=""><br>
+<img lazyload="" src="/images/loading.svg" data-src="/images/2025-07-challenge/gamesc-0711-selection.png" alt=""><br>
+<img lazyload="" src="/images/loading.svg" data-src="/images/2025-07-challenge/gamesc-0711-game.png" alt=""><br>
+<img lazyload="" src="/images/loading.svg" data-src="/images/2025-07-challenge/gamesc-0711-result.png" alt=""></p>
+<h2 id="營期前-2-天．7-11（五）">營期前 2 天．7/11（五）</h2>
+<p>到這裡，我們大概是趕得上 7/14 營期第二天釋出第一個正式版本了，大概，希望。選營期第二天是因為第一天沒有 Challenge 時間。</p>
+<p>這段時間還蠻和諧的，大家各自做各自的部份，包含有人去寫 API document。我在做的事情是稽查所有 API 是不是運作正常，很可惜的似乎相當大一部份不是，所以我大概坐牢了兩天一個一個處理每個 API 和寫測試腳本確定他們真的都是好的。</p>
+<p>看 commit 紀錄的話其他的更新好像是封版、其他各種 bugfix、docstring 和一些偏向 quality of life 的東西。同時胡祐誠和李尚哲兩個猛男把 launcher 搞定了，包括制服 MacOS（這可厲害了）。</p>
+<details class="yellow" data-header-exclude="">
+    <summary><i class="fa-solid fa-chevron-right"></i>Bug Fix 八選（其二） </summary>
+    <div class="content markdown-body">
+        <div class="note p-4 mb-4 rounded-small markdown-body yellow">
+    <p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/6139e0714e3ed09d395c44b8d5abcfd0a99b3a0d"><em>Commit <code>6139e071</code> fix: truncate unneccessary API logging</em></a></p>
+  </div>
+<p>王淇寫完封版功能之後把遊戲打開跑五分鐘最後確認，然後，在遊戲結束準備進結算畫面的瞬間，遊戲畫面就凍結了？而且如果把遊戲時長調短還沒事？</p>
+<p>結果原因是那時候每次呼叫 API 都會在伺服器端輸出一行字，python 那端的請求發太快了（理論上限一秒一百次），伺服器根本就來不及輸出這麼多東西，遊戲畫面凍結實際上是在等 <code>print</code> 在那邊慢慢輸出。</p>
+<p>其實還蠻好笑的，不過 release 前一天戳出這種東西同時也是有點可怕 = =</p>
+
+    </div>
+  </details>
+<h2 id="營期第-2-天．7-14（一）">營期第 2 天．7/14（一）</h2>
+<p>趕在第一次的 Challenge 時間前，趕死線發布遊戲 v1.0.0 版本了。這是遊戲的第一個正式發布版。</p>
+<p>然而 Challenge 時間依然進行的相當不順利，系館網路在週末停電之後一直很不穩，我們的遊戲好幾十 MB，小隊員都要下載很久還不一定載得完，在安裝環境的時候又是破病一大堆，尤其是 Windows。遇到印象最深的兩個問題是 Windows 系統沒更新不能下載遊戲，和有人 Python 跑去裝 3.14 pre-release 的測試版把我們的 client library 搞壞還來哭為什麼跑不動。總之那天搞了很久很久，好像整個 Challenge 時間都在處理環境問題。</p>
+<details class="yellow" data-header-exclude="">
+    <summary><i class="fa-solid fa-chevron-right"></i>Bug Fix 八選（其三） </summary>
+    <div class="content markdown-body">
+        <div class="note p-4 mb-4 rounded-small markdown-body yellow">
+    <p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/d0c3a99d99142299508035a612ed45151a4564a0"><em>Commit <code>d0c3a99d</code> fix: assert has no side effect</em></a></p>
+  </div>
+<p>在前面幾天一直遇到一個玄學問題是 export 的時候開 debug 就一切正常，關掉 debug 開 release 的話整個 server 直接不開給你看，遊戲連嘗試開啟這個伺服器都沒有。所以我們匯出的時候一直都是開 debug。</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/images/2025-07-challenge/bugfix-3-1.png" alt=""></p>
+<p>結果王淇神通廣大，發現關掉 debug 之後整個 <code>assert</code> 連同裡面的東西會一起拿掉！於是我們的 server 永遠不會 listen，從外面看就像伺服器蒸發了。王淇又提到確實 C++ 也是這樣搞的，編譯開 no debug 之後 assert 會直接不見。只能說真的學到了，沒被搞過到底誰會知道，是我學藝不精了 😔</p>
+
+    </div>
+  </details>
+<h2 id="營期第-3-天．7-15（二）">營期第 3 天．7/15（二）</h2>
+<p>這一天更新了 v1.1.0，有一個整個遊戲史上最重要（確信）的新 feature 是有天才在首頁用各種 linux distro（和 Windows 和 MacOS）的 logo 做了一個消消樂，有一說一用遊戲引擎就是好，消消樂又好做又好玩又還不錯精緻，Challenge 組一致公認消消樂才是遊戲本體。</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/images/2025-07-challenge/gamesc-0715-menu.png" alt=""></p>
+<p>晚上我們定案了 Demo 賽制，賽制問題在我們的 todo 清單上擺可能超過一個禮拜了，一直找不到有人自願想弄，只好我們自己發揮一點想像力用腳排賽程，不過最後效果好像不差。</p>
+<p>大概到這裡，我們最最基本的任務算是還蠻大一部份的搞定了，嗎？才不，這一天就是我牢底坐穿的開始。翻了一下那天的討論紀錄我們最重要的事情剩下四件：同時四開四場遊戲、用小隊分數課金的機制、寫 boss agent、做隱藏地圖。其他的大概是像修各種 bug、minor feature、平衡性調整之類的，各種的雜事，雖然是雜事但是也不少。</p>
+<p>課金機制跟之前實做各種 API 是差不多的概念，只差在限制特殊 API 的限額；boss agent 後來找到李尚哲和高嘉泓去寫，他們寫的 agent 也都不錯強；隱藏地圖胡祐誠有想法想去做。然而這個四開的功能。因為賽制設計的關係四開在 Demo 的時候一定會用到，但是那時候控制選擇那個畫面是我寫的，四開要做的事情差不多但是重複四次的煩，看看這個畫面大概可以想像做這個有多坐牢。</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/images/2025-07-challenge/godotsc-quad-1.png" alt=""><br>
+<img lazyload="" src="/images/loading.svg" data-src="/images/2025-07-challenge/godotsc-quad-2.png" alt=""></p>
+<p>總之因為（之前就發生過很多次的）一樣的原因這個工作我做了。這個工作其實難度沒有很高，只是有點無聊，還總感覺我好長一段時間被硬控在那裡做不了其他事情。或者是因為我一直很想對齊那些東西？或是我一直在糾結排版怎麼搞比較好？反正我覺得做這個大概是最心累的時候。大概有相當的成份是因為我這時候已經有點累了，四開的畫面設計又比較多細節。</p>
+<p>這個時候日期的分界已經沒有很重要了，每天休息的時間也很隨機，在這裡標日期大概只有分段的功能。</p>
+<h2 id="營期第-4-天．7-16（三）">營期第 4 天．7/16（三）</h2>
+<p>這天有 Challenge 時間，我們打算把手上的進度整理一下發新版本。「進度整理一下」實際上包含檢查和合併進行中的 pull request、做掉一些很 minor 但是掛在那邊很久的功能、修 bug、測試、修測試的時候戳出來的怪 bug，總之就是各種雜事混合體。</p>
+<details class="yellow" data-header-exclude="">
+    <summary><i class="fa-solid fa-chevron-right"></i>Bug Fix 八選（其四） </summary>
+    <div class="content markdown-body">
+      <p>v1.1.0 其實還有一個大改動是王淇看不下去髒亂的 repo 決定打掃一下衛生。</p>
+  <div class="note p-4 mb-4 rounded-small markdown-body yellow">
+    <p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/7207db9effda09ce12fafa9fc8b4a3c5966da49e"><em>Commit <code>7207db9e</code> fix: TOWER_SCENES is 0-indexed, but used as 1-indexed</em></a></p>
+  </div>
+<p>為什麼有這個 bug 大概去看一下前後的 commit 就會懂。但是那時候我沒測過 API 測試腳本就眼睛閉起來合進去了，這個 bug 肯定要先算一半在我頭上。結果有小隊員半夜兩點傳 bug report 回報這個 bug，太誇張了。</p>
+  <div class="note p-4 mb-4 rounded-small markdown-body yellow">
+    <p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/045d4d4cd36c468ab2dda1f80088ce8abc81306e"><em>Commit <code>045d4d4c</code> fix: resource not found</em></a></p>
+  </div>
+<p>打掃衛生的時候把之前用作 placeholder 的素材揚了，遊戲素材應該要已經換成我們畫的對的素材，結果竟然還有人有用到那些被揚掉的素材，結果遊戲直接 crash 給我們看。最惡劣的是因為一些快取的關係我們在 godot 編輯器裡面跑就天下太平，什麼都測不出來，坐牢好久才找到是哪些人在搞。</p>
+<p>總之我們整個凌晨都在搞這些麻煩的怪問題，理智值掉光。</p>
+
+    </div>
+  </details>
+<details class="yellow" data-header-exclude="">
+    <summary><i class="fa-solid fa-chevron-right"></i>Bug Fix 八選（其五） </summary>
+    <div class="content markdown-body">
+        <div class="note p-4 mb-4 rounded-small markdown-body yellow">
+    <p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/a59a57118fbddbb46b93cd13c40f72a056d23ddb"><em>Commit <code>a59a5711</code> fix: loading .txt files via res:// could fail when exported</em></a></p>
+  </div>
+<p><img lazyload="" src="/images/loading.svg" data-src="/images/2025-07-challenge/bugfix-5-1.png" alt=""></p>
+<p>（Screenshot from <a class="link" target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/releases/tag/v1.1.1">Release v1.1.1<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>）</p>
+<p>我們凌晨死人時間公開 v1.1.1 的時候沒有測試 export 出來的東西能不能跑就傳了（哪那麼衰？），結果還真的一戳開始遊戲就 crash。追查了一下 log 發現是遊戲想讀一個 <code>.txt</code> 檔案但是找不到，但是我們明明用 <code>res://</code> 的路徑讀，在編輯器裡面試跑也一點問題都沒有，結果才知道 <a class="link" target="_blank" rel="noopener" href="https://docs.godotengine.org/en/stable/classes/class_fileaccess.html">官方文件<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 說不是所有檔案用 <code>res://</code> 戳就沒事了，像 <code>.txt</code> 就不像 <code>.json</code> 預設不會被包進執行檔裡面，所以去戳 <code>.txt</code> 檔案就會找不到（？？？）</p>
+<p>其實我覺得戳到這個還蠻有價值的，稽查的過程有讓我比較會看 godot 吐出來的 log 找問題。</p>
+
+    </div>
+  </details>
+<p>這天的整個凌晨我和胡祐誠和王淇都窩在大三區做這些雜事，中間還一直畫新的餅，像是有邪惡的人（大概是他們兩個一起想到的）想到可以設計各種奇怪的地圖機制讓防禦塔消失、讓敵人加速、還有酷炫彩蛋之類的，感覺人的理智度降低的時候就會有各種瘋狂的想法出現。</p>
+<p>到了早上五點 v1.1.2 釋出，胡祐誠和王淇終於可以下班了。然而我的四開還是沒半點進度，只好繼續坐牢當前端工程師，設計那兩個畫面真的還蠻像網頁設計的，但是我一直就有點討厭做前端當碼農，破大防。很可惜到 7/16 結束的時候我的進度還是只有選擇畫面的沒有功能的雛型。</p>
+<p>下午 Challenge 時間原訂計畫是公佈 Demo 賽制和公佈 premium API（可以用小隊分數課金使用的 API），賽制前一天定案了所以沒問題，不過據說後者應該是只有模糊的畫個餅。但是這天整個 Challenge 時間我都睡死讓胡祐誠扛，實在是太感謝他了。</p>
+<h2 id="營期第-5-天．7-17（四）">營期第 5 天．7/17（四）</h2>
+<p>這個時間點我唯一的目標是盡快把四開的功能寫完，於是我繼續戰鬥了一個凌晨，終於在早上的時候做到我覺得足夠完整的水準，被合進 develop branch。然而一個小暴雷是這件事情到這裡還沒結束，我隔天還有得坐牢。</p>
+<details class="yellow" data-header-exclude="">
+    <summary><i class="fa-solid fa-chevron-right"></i>Bug Fix 八選（其六） </summary>
+    <div class="content markdown-body">
+        <div class="note p-4 mb-4 rounded-small markdown-body yellow">
+    <p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/2733ddf35806d331cd7cffe6a45d32f63634856a"><em>Commit <code>2733ddf3</code> fix: <code>place_tower</code> api not freeing tower instances causes memory leak</em></a></p>
+  </div>
+<p>剛寫完四開我想拿四個 sample agent 開一場遊戲跑五分鐘測試有沒有問題。結果過了一分鐘之後遊戲直接 crash 給我看，跑幾次都是不多不少的差不多一分鐘 crash。我和王淇醒了一整個晚上，早上不到八點在那裡找問題。開 verbose log 說是 <a class="link" target="_blank" rel="noopener" href="https://docs.godotengine.org/en/stable/classes/class_rid.html">RID<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 不夠用了，但是 RID 上限有 262144 個是怎麼用完的？還發現是防禦塔在 leak RID，哪來這麼多防禦塔？</p>
+<p>最後還得是王淇一個一個檢查每一次 <code>instantiate()</code> 有沒有好好清理，才發現是每呼叫一次 <code>place_tower</code> API，沒有成功放上去的話，都要 leak 一個防禦塔的 instance（大概 5 到 10 個 RID），一秒可以呼叫快一百次 API，場上八個 agent，算一算差不多就是一分鐘會超過上限。</p>
+<p>這個東西只要之前有人拿兩個 sample agent 跑四分鐘就會戳到，不過過了這麼久都沒有人發現（？）</p>
+
+    </div>
+  </details>
+<p>7/17 下午是一整個下午的 Challenge 時間，讓小隊員寫他們的 agent。我早上寫完四開之後直接睡死到下午，Challenge 時間的所有工作（可能是回答小隊員的問題？）大概都是所有其他 Challenge 組員處理的。其實營期間的 Challenge 時間我很少有在幫忙做事情，前一天（第四天 7/16）的 Challenge 時間我甚至沒出現，真的要好好感謝其他組員們。</p>
+<p>對 Challenge 時間唯一的印象是有小隊員 agent 連不上去，原因到現在都還不明，我突發奇想叫他戳 reset token 竟然就好了，那時候寫 reset token 的功能沒想過居然會有用，好欸。除了這個小插曲之外我起床之後就跟胡祐誠等其他人一起趕工 premium API，公開時間一拖再拖，結果到傍晚晚會前我們還是沒有公開 premium API。</p>
+<p>我們原本的計畫是這樣的：晚上十二點是軟死線讓小隊員交一個版本，凌晨一點是硬死線。凌晨 00:19 我們終於在版本 v1.3.0 釋出完整的 premium API，但是釋出之後他們還要測試啊，怎麼辦？所以我們又把死線往後延。v1.3.0 釋出之後又發現新的 bug，所以 12:54 釋出 v1.3.1，死線又再一次往後延。</p>
+<p>最後我們凌晨四點才關 agent 提交表單。</p>
+<details class="yellow" data-header-exclude="">
+    <summary><i class="fa-solid fa-chevron-right"></i>Bug Fix 八選（其七） </summary>
+    <div class="content markdown-body">
+        <div class="note p-4 mb-4 rounded-small markdown-body yellow">
+    <p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/52d79d3354475564b8915c7dbf451e945a25aa9c"><em>Commit <code>52d79d33</code> fix: get income fails when 2x income spell is active</em></a></p>
+  </div>
+<p>遊戲裡有個框框顯示你現在有多少錢和你每秒的收入。原本那個綠色的字顯示正多少就是你的收入，不過 v1.3.0 更新之後，如果身上有兩倍收入的效果的話也會一併顯示。而且 <em>那兩段數字在同一個文字框</em>！</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/images/2025-07-challenge/bugfix-7-1.png" alt=""><br>
+<img lazyload="" src="/images/loading.svg" data-src="/images/2025-07-challenge/bugfix-7-2.png" alt=""></p>
+<p>很快有人發現，更新之後查詢目前收入的 API 怎麼壞掉了？</p>
+<p><img lazyload="" src="/images/loading.svg" data-src="/images/2025-07-challenge/bugfix-7-3.png" alt=""></p>
+<p>誰會知道有人從顯示的文字框裡撈資料出來啊？</p>
+<p>誰會知道有人會動那個文字框裡面的東西啊？</p>
+<p>沒有要怪這幾個人的意思，我到現在還是覺得很好笑。</p>
+
+    </div>
+  </details>
+<p>前幾年 Challenge 組最後一個晚上都會留在旅館幫忙小隊員趕工他們的 agent，今年請召部留了兩間房間讓我們有地方可以睡。所以我們就整個晚上待在旅館（有人在房間整個晚上播 <a class="link" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=YmHZI03a_Yo">這種東西<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 和 <a class="link" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=h5h7ylmD__0">這種東西<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 💀），如果不是這樣的話有點無法想像我們這天晚上要怎麼有地方可以趕各種東西，太感謝召部了。</p>
+<h2 id="營期第-6-天．7-18（五）">營期第 6 天．7/18（五）</h2>
+<p>其實我到這裡有點麻木了，寫到這裡的現在的我也有點麻木了，反正就是一直各種趕工。小隊員的 agent 表單關掉之後我們還</p>
+<ul>
+<li>
+<p><strong>修理小隊員的 agent</strong>。有一堆人都不知道有沒有測試過（高機率是沒有）就傳，寫出來的東西都不能跑，好像其實還有不少是隊輔有在幫忙寫，但是大部分隊輔就一如去年的不會寫程式，好多 agent 都會直接 runtime error 死掉等重開的那種，所以我們還要幫他們修理到能跑得動為止。大概有不只五個人（亂估計的）在做這件事吧。</p>
+</li>
+<li>
+<p><strong>Cut Scene 和「關於防禦塔的小調整」</strong>。王淇幫隱藏圖設計了一段精美揭曉動畫，後來有天才加上一個 <s>原神</s> 超解的字，整個看起來超級精美。<br>
+防禦塔的調整是蔡瑜恩前幾天其實就開了一個還蠻大的 <a class="link" target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/pull/169">pull request #169<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 做了八件事情，但是一直沒有人有空看過所有東西（他改了 54 個檔案）然後把他合進去。7/18 凌晨我們覺得不想要在 Demo 前再做平衡性調整，他的 PR 又有太多東西混在一起，所以決議是他把跟平衡性無關的東西重做一次，就這樣害他又搞了一個晚上。<br>
+那個時候其實還有好多 PR，但是在 Demo 前再大改就很危險，這個程度我是知道的。最後決定只合這兩個最重要的，也沒時間真的很認真的檢查和測試。我想說，賭一把，簡單看看 code 簡單跑一跑，覺得他好像能動就合進去了。所以後來我付出代價了。</p>
+</li>
+</ul>
+<p><img lazyload="" src="/images/loading.svg" data-src="/images/2025-07-challenge/gamesc-0718-cutscene.png" alt=""></p>
+<ul>
+<li>
+<p><strong>做隱藏圖</strong>。兩天前我們原訂的最理想計畫是多出兩張公開圖和做兩張隱藏圖，不過很當然的沒有實現。後來出了一張公開圖（王淇的 <em>沙河模擬</em>，7/17 在 v1.2.0 公開了，這張真的只能說世紀無敵厲害，王淇我的偶像），7/18 凌晨的時候的計畫是要有一張隱藏圖在 Demo 的時候公開。<br>
+這張隱藏圖胡祐誠預謀還蠻久了，只是因為同時還有很多任務所以還沒被實做出來，他的計畫是 7/18 凌晨開始趕工做完。然而這個開始時間一直往後延，早上大概離 Demo 還有三（四？忘記了）小時的時候進度可能還是 🤏，我一度對隱藏圖完全放棄希望，還想好要不要放一張原本就有的圖套上隱藏圖的揭露動畫。大概 Demo 前兩小時的時候李尚哲（抱歉也許還有其他人 🙇）光速生了一張「圖」圖（<a class="link" target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)">這個<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 圖）當隱藏地圖；胡祐誠起床了，claim 他可以做得完之後繼續趕工。</p>
+</li>
+<li>
+<p><strong>記分板和對戰計算腳本</strong>。今年賽制是我和胡祐誠用腳想的，後面誰對誰會依賴於前面的對戰結果，但是 Demo 的時候不可能用手一個一個點每一隊的 agent（一次就有八隊要同時打架），需要有個腳本算誰和誰要打架和自動統計對戰結果去算下一場誰要上，同時還希望 Demo 進行到一半大家有記分板可以看。這個東西到 agent 表單關掉的時候都是零進度，所以我又跑去找王淇求救，後來那個好看的記分板就是他做的；我去寫對戰腳本，寫了好久好久，寫到一半還會發現為了打比賽其實還有小地方要改，可能還有我不太會寫程式，總之就是搞了八個世紀才搞好。</p>
+</li>
+</ul>
+<p>有一瞬間我感覺該做的事情好像都有做完，好像是有機會順利 Demo 的。</p>
+<h2 id="正式賽-Demo">正式賽 Demo</h2>
+<p>Demo 遇到的第一個問題就是用哪一台電腦。我自己的電腦因為奇怪的破病（現在懷疑是 X11 在搞？），接第二個螢幕（投影機）的時候開遊戲會畫面凍結；胡祐誠的電腦要拿去繼續趕著做地圖；還不能用 windows，不然那個 match making 腳本可能會怪怪的（其實我不確定，但是沒測過完全沒把握，我自己沒有用 windows 開過遊戲）。結論是去跟王淇借電腦。結果他的電腦也戳出那個第二個螢幕畫面凍結的問題，召部說想一邊開直播或一邊錄影也有讓情況變得更混亂一點（不是要責怪他們的意思）。總之設備問題狀況很多，對局很勉強的進行下去了。</p>
+<p>最大的問題是，從第二場開始有人發現所有嘿呵都沒有在做事，很多是射一發子彈之後就徹底不動了。但是很多隊伍有用嘿呵，他們說前一天測試也都還是好的，張聲元（早上臨時拜託他當主持人 😔）在台上罰站整個很尷尬，我在旁邊負責操控電腦，但是我什麼都做不到。</p>
+<p>我承認這個時候我不知道要怎麼辦。那個 bug 相關的所有 code 我都沒有認真讀過，我自己一時修不好，103 教室現場只有我和張聲元兩個人，我不知道大三區現在是什麼情況、有幾個人，甚至不知道這個問題能不能修得好。中間有人來說懷疑是小隊員的 agent 寫壞掉，很快發現別的小隊也怪怪的，所以又回去繼續找問題。後來才知道有幾個小隊確實是他們自己亂寫，又混淆視聽了一下增加 debug 的難度。我也不能說要換一個人上來主控，因為我的 match making 腳本那時候 literally 只有我看過，沒人會用，所以我必須待在台上。</p>
+<p>當時實際上是繼續對戰，我還是找不到問題，同時我還得要待在台上繼續控制電腦。事後冷靜的想一下的話在決定重賽的當下就應該去跟召部討論有沒有方法可以直接停止 Demo 去做點別的事情，給我們一些時間嘗試修理這個問題，修好之後再開。這個對策再怎麼說都會比照常繼續還好，因為已經承諾重賽了，繼續對戰的結果沒有任何意義，該想辦法做點其他事情不要繼續浪費大家的時間；我要去大三區多獲得任何有意義的資訊的話的話也不能被綁在台上。</p>
+<p>結果我們拖到午餐時間，小隊員去吃飯，Demo 暫停。</p>
+<details class="yellow" data-header-exclude="">
+    <summary><i class="fa-solid fa-chevron-right"></i>Bug Fix 八選（其八） </summary>
+    <div class="content markdown-body">
+      <p>張聲元給我他的電腦叫我找問題在哪，我看到錯誤訊息說某個 signal 被 connect 兩次，但是單純的註解掉那一行也不 work。</p>
+  <div class="note p-4 mb-4 rounded-small markdown-body yellow">
+    <p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/fd1857b0b2584c8877de5af66e80f81109ac8b9b"><em>Commit <code>fd1857b0</code> fix: shy guy</em></a></p>
+  </div>
+<p>重要的只有 <code>tower_with_multiple_bullet.gd</code>。事後找了一下問題，簡單來說跟防禦塔有關的有三個 class：</p>
+<ul>
+<li><code>class Tower</code></li>
+<li><code>class TowerWithSingleBullet extends Tower</code></li>
+<li><code>class TowerWithMultipleBullet extends TowerWithSingleBullet</code></li>
+</ul>
+<p>問題應出在 <a class="link" target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/blob/0c911b4e83dfd1b1e600dff2db2b647046d21f53/scripts/towers/tower.gd#L48">這裡<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 從 parent class 的 <code>_ready()</code> 接了一次 signal，<a class="link" target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/blob/09ae4148b553a610394b3738058cf40abdbb6bbd/scripts/towers/tower_with_single_bullet.gd#L22">這裡<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 有從 child class 拿掉，但是 <a class="link" target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/blob/0c911b4e83dfd1b1e600dff2db2b647046d21f53/scripts/towers/tower_with_multiple_bullet.gd#L18">這裡<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 沒有刪到，從其他地方又 <code>connect</code>。所以 <code>TowerWithMultipleBullet</code>（嘿呵）會想要接 signal 兩次。至於為什麼不能只刪那個 <code>connect</code> 大概跟防禦塔發子彈的邏輯有關。</p>
+<p>這就是我用眼睛亂檢查的下場。我早上決定賭他沒問題把他合進去，所以接受他壞掉了的處罰，再怎麼說我都有最大的責任。但是這個「我有責任」實在是太空泛了，我能怎麼負責？充其量只是我現在事後嘴砲被精神譴責罷了。</p>
+
+    </div>
+  </details>
+<p>中午胡祐誠的地圖做完了，差不多同個時間蔡瑜恩和卓育安把嘿呵修好了，回到比賽可以進行的狀態。召部又幫我們擠出不少下午的時間，我們一些組員和召部討論了一下接下來的計畫，決定全部重賽，把前幾輪開兩倍速加速。胡祐誠的隱藏圖可以在 boss 戰前 merge 進來，其實對於現場合新東西進來我還是覺得有點怕，不過就這樣吧。另一個決議是要改某些小隊的 agent。有一個小隊不看文件寫出一個無窮迴圈整個不會動，所以我們要在後半輪幫他們修好；第八小隊聲稱他們縮排壞了，所以後半輪要幫他們改過。</p>
+<p>重賽的時候相當順利，還好我們是用遊戲引擎所以可以讓遊戲加到兩倍速，五分鐘的遊戲縮短成兩分半我覺得節奏更好。</p>
+<p>不過循環賽快結束的時候第八小隊又不開心了，他們聲稱他們想改的不是我們改的。他們一開始交的 agent 整個會直接 runtime error，所以我們幫他們改過 agent，但是因為這樣他們手上想改的 code 跟正賽用的不一樣，然後他們隊輔（那個不能跑的東西好像是隊輔寫的？）就上來說他們要改的不是這樣云云。反正我們不能說服他我們改的是好的，他們其實也還是沒說他們的訴求是什麼，忘記最後是什麼結論了。我的決策失誤是沒有先搞清楚他們的訴求，後面其實沒有他們的比賽了，後來也沒有再重賽，所以他們來吵完一輪之後對比賽沒有任何實質影響，但是拖了有點久去跟他們來回吵架（用吵架這個詞是因為他們隊輔看起來一直想爭取什麼，但是講出來的話沒什麼道理）。也許我們這邊應該要提前讓小隊員知道改過的程式碼長怎樣？這樣才不會有這種的不會寫程式還來吵架。</p>
+<p>除了第八小隊的事情以外重賽都很順利，甚至可能可以說相當成功。決賽的時候第三小隊輸第五小隊一截，封版後趁大家都看不到分數全部逆轉，三比一直接帶走五戰三勝的決賽。決賽 tie breaker 是隱藏圖所以要繼續打完，解鎖隱藏圖的過場動畫效果拉滿，尤其是那一幕超解的字，然後第三小隊就又贏了。boss 戰是冠軍第三小隊打高嘉泓（因為某些溝通失誤，原本計畫用李尚哲的，不過結果論用高嘉泓的效果相當好，而且我覺得這裡的溝通問題有點 ¯\_(ツ)_/¯），高嘉泓的防禦塔設置策略被地圖機制重點針對，一陣拉鋸戰之後第三小隊又贏了，節目效果滿分，小隊員看起來好像也都還蠻開心的。稽查原始碼發現第三小隊 code 只有不到五十行，而且他們三點就交了，而且他們沒有用到 <em>任何</em> premium API，真心覺得太厲害了。</p>
+<h2 id="後話">後話</h2>
+<p>Demo 結束就沒我們的事情了，感性時間這種活動我肯定不會到。</p>
+<p>我們一群 Challenge 組的很多人在地下室圍一圈回顧籌備期間發生的事情、沒機會完成的功能、畫大概不會實現的餅、抱怨 repo 有多髒亂、討論未來的 Challenge 可以怎麼做、檢討發生的問題和應該怎麼做，交換關於 Challenge、關於程式語言、關於學程式的各種觀點。大概說了兩小時的話吧，然後我就睡死了。整個 Challenge 的故事大概到這裡就結束了，剩下的頂多是我們可能想小修小改之後釋出最後一個版本。</p>
+<p>據說有人說過「Challenge 組（的時程或進度）會搞成這樣是他們自己的問題」，說的大概有點太對了。</p>
+
+		</div>
+
+		
+
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			<div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="prev" rel="prev" href="/2025/08/02/vulkan-1-the-triangle/">
+					<span class="left arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-left"></i>
+					</span>
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">牙牙學 Vulkan（一）用七百行畫一個三角形</span>
+						<span class="post-nav-item">Prev posts</span>
+					</span>
+				</a>
+			</div>
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/2025/05/12/cpp-symbols/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">C++ 的強符號與弱符號</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+	</div>
+
+	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">2025 Challenge（上）視點和裏話</div>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%B4%E8%AC%9D%EF%BC%9AChallenge-%E7%B5%84%E5%93%A1%E5%90%8D%E5%96%AE"><span class="nav-text">致謝：Challenge 組員名單</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E4%B8%80%E9%96%8B%E5%A7%8B%E7%9A%84%E9%96%8B%E5%A7%8B"><span class="nav-text">最一開始的開始</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%87%9F%E6%9C%9F%E5%89%8D%E5%9B%9B%E9%80%B1"><span class="nav-text">營期前四週</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%87%9F%E6%9C%9F%E5%89%8D-24-%E5%A4%A9%EF%BC%8E6-19%EF%BC%88%E5%9B%9B%EF%BC%89"><span class="nav-text">營期前 24 天．6&#x2F;19（四）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%87%9F%E6%9C%9F%E5%89%8D-20-%E5%A4%A9%EF%BC%8E6-23%EF%BC%88%E4%B8%80%EF%BC%89"><span class="nav-text">營期前 20 天．6&#x2F;23（一）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%87%9F%E6%9C%9F%E5%89%8D-11-%E5%A4%A9%EF%BC%8E7-2%EF%BC%88%E4%B8%89%EF%BC%89"><span class="nav-text">營期前 11 天．7&#x2F;2（三）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%87%9F%E6%9C%9F%E5%89%8D-9-%E5%A4%A9%EF%BC%8E7-4%EF%BC%88%E4%BA%94%EF%BC%89"><span class="nav-text">營期前 9 天．7&#x2F;4（五）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%87%9F%E6%9C%9F%E5%89%8D-8-%E5%A4%A9%EF%BC%8E7-5%EF%BC%88%E5%85%AD%EF%BC%89"><span class="nav-text">營期前 8 天．7&#x2F;5（六）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%87%9F%E6%9C%9F%E5%89%8D-7-%E5%A4%A9%EF%BC%8E7-6%EF%BC%88%E6%97%A5%EF%BC%89"><span class="nav-text">營期前 7 天．7&#x2F;6（日）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%87%9F%E6%9C%9F%E5%89%8D-4-%E5%A4%A9%EF%BC%8E7-9%EF%BC%88%E4%B8%89%EF%BC%89"><span class="nav-text">營期前 4 天．7&#x2F;9（三）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%87%9F%E6%9C%9F%E5%89%8D-3-%E5%A4%A9%EF%BC%8E7-10%EF%BC%88%E5%9B%9B%EF%BC%89"><span class="nav-text">營期前 3 天．7&#x2F;10（四）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%87%9F%E6%9C%9F%E5%89%8D-2-%E5%A4%A9%EF%BC%8E7-11%EF%BC%88%E4%BA%94%EF%BC%89"><span class="nav-text">營期前 2 天．7&#x2F;11（五）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%87%9F%E6%9C%9F%E7%AC%AC-2-%E5%A4%A9%EF%BC%8E7-14%EF%BC%88%E4%B8%80%EF%BC%89"><span class="nav-text">營期第 2 天．7&#x2F;14（一）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%87%9F%E6%9C%9F%E7%AC%AC-3-%E5%A4%A9%EF%BC%8E7-15%EF%BC%88%E4%BA%8C%EF%BC%89"><span class="nav-text">營期第 3 天．7&#x2F;15（二）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%87%9F%E6%9C%9F%E7%AC%AC-4-%E5%A4%A9%EF%BC%8E7-16%EF%BC%88%E4%B8%89%EF%BC%89"><span class="nav-text">營期第 4 天．7&#x2F;16（三）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%87%9F%E6%9C%9F%E7%AC%AC-5-%E5%A4%A9%EF%BC%8E7-17%EF%BC%88%E5%9B%9B%EF%BC%89"><span class="nav-text">營期第 5 天．7&#x2F;17（四）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%87%9F%E6%9C%9F%E7%AC%AC-6-%E5%A4%A9%EF%BC%8E7-18%EF%BC%88%E4%BA%94%EF%BC%89"><span class="nav-text">營期第 6 天．7&#x2F;18（五）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E5%BC%8F%E8%B3%BD-Demo"><span class="nav-text">正式賽 Demo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%8C%E8%A9%B1"><span class="nav-text">後話</span></a></li></ol>
+
+	</div>
+</div>
+	</div>
+	
+</div>
+			</div>
+
+			
+		</div>
+
+		<div class="main-content-footer">
+			<footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2025</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-paw"></i>&nbsp;&nbsp;<a href="/">PixelCat31415</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        16 posts in total
+                    </span>
+                    
+                        <span>
+                            43.7k words in total
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.5</a></span>
+        </div>
+        
+        
+        
+        
+            
+                
+        
+                
+        
+        
+    </div>  
+</footer>
+		</div>
+	</div>
+
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+	</ul>
+</div>
+	</div>
+	
+
+	<div class="right-side-tools-container">
+		<div class="side-tools-container">
+	<ul class="hidden-tools-list">
+		<li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-plus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+			<i class="fa-regular fa-magnifying-glass-minus"></i>
+		</li>
+
+		<li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+			<i class="fa-regular fa-moon"></i>
+		</li>
+
+		<!-- rss -->
+		
+
+		
+
+		<li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+			<i class="fa-regular fa-arrow-down"></i>
+		</li>
+	</ul>
+
+	<ul class="visible-tools-list">
+		<li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+			<i class="fa-regular fa-cog "></i>
+		</li>
+		
+		<li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+			<i class="arrow-up fas fa-arrow-up"></i>
+			<span class="percent"></span>
+		</li>
+		
+		
+	</ul>
+</div>
+	</div>
+
+	<div class="image-viewer-container">
+	<img src="">
+</div>
+
+	
+
+</main>
+
+
+
+<script src="/js/build/libs/Swup.min.js"></script>
+
+<script src="/js/build/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/build/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+	
+<script src="/js/build/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/build/utils.js" type="module"></script>
+
+<script src="/js/build/main.js" type="module"></script>
+
+<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/build/layouts/categoryList.js" type="module"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/build/layouts/lazyload.js" type="module"></script>
+
+
+
+
+
+
+  
+<script src="/js/build/libs/Typed.min.js"></script>
+
+  
+<script src="/js/build/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/build/libs/anime.min.js"></script>
+
+
+
+
+
+    
+<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
+
+<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+<script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
+
+
+<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
+
+
+
+
+
+	
+</body>
+
+</html>
