@@ -38,7 +38,7 @@ highly customizable...？你個鬼啦，接下來就是無盡 customize 了。
 
 主題都會有給好的選項可以調，不過效果有限，最直接的方法還是直接改裡面的模板。然而此時發現Hugo 檔案根本量子糾纏，先不檢討我沒認真把官方文件看完（真的太多了啦 QQ），但是這到底是啥鬼（圖裡大概只有不到三分之一的檔案吧）
 
-![eureka files screenshot](/images/building-hugo-site.png)
+![eureka files screenshot](/images/2022-07-building-hugo-site.png)
 
 原來是這個主題超級肥，有各種酷酷的功能，導致檔案一大堆難以找出到底要改哪個，好在經過一番通靈和撞牆還算搞懂哪個檔案在做什麼了。其實這步應該是最難的，因為搞懂了剩下都是 HTML/CSS 可以搞定的事情，慢慢搞就能做出想要的樣子了。
 
