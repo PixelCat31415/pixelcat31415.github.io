@@ -208,8 +208,8 @@ navbar:
     Home:
       path: / 
       icon: fa-regular fa-house
-    Archives:
-      path: /archives 
+    Archive:
+      path: /archive
       icon: fa-regular fa-archive
     About:
       path: /about
