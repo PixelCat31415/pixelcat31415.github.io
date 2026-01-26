@@ -123,7 +123,7 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://pixelcat31415.github.io/tags/web/"/>
+    <link rel="canonical" href="https://pixelcat31415.github.io/2026/01/27/vulkan-3-refactoring/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
@@ -132,14 +132,18 @@
     
         
         <meta name="description" content="Nyanyannya.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Nyanyannya">
-<meta property="og:url" content="https://pixelcat31415.github.io/tags/web/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="牙牙學 Vulkan（三）">
+<meta property="og:url" content="https://pixelcat31415.github.io/2026/01/27/vulkan-3-refactoring/">
 <meta property="og:site_name" content="Nyanyannya">
 <meta property="og:description" content="Nyanyannya.">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://pixelcat31415.github.io/images/pixelcat.png">
+<meta property="article:published_time" content="2026-01-27T02:09:34.000Z">
+<meta property="article:modified_time" content="2026-01-26T20:35:17.431Z">
 <meta property="article:author" content="PixelCat31415">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="Vulkan">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://pixelcat31415.github.io/images/pixelcat.png">
     
@@ -153,7 +157,7 @@
     
     <title>
         
-            Tag: web | Nyanyannya
+            牙牙學 Vulkan（三） | Nyanyannya
         
     </title>
 
@@ -542,58 +546,154 @@ mjx-container[display="true"] + br {
 			
 
 			<div class="main-content">
-				<div class="page-template-container">
-	
+				<div class="post-page-container flex relative justify-between box-border w-full h-full">
+	<div class="article-content-container">
 
-	
-	<div class="tag-name">
-    <i class="fa-solid fa-tag"></i>&nbsp;web
-</div>
-<div class="tag-post-list">
+		<div class="article-title relative w-full">
+			
+			<div class="w-full flex items-center pt-6 justify-start">
+				<h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">牙牙學 Vulkan（三）</h1>
+			</div>
+			
+		</div>
+
+		
+		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+				<img src="/images/pixelcat.png">
+			</div>
+			<div class="info flex flex-col justify-between">
+				<div class="author flex items-center">
+					<span class="name text-default-text-color text-lg font-semibold">PixelCat31415</span>
+					
+				</div>
+				<div class="meta-info">
+					<div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2026-01-27 03:09:34</span>
+        <span class="mobile">2026-01-27 03:09:34</span>
+        <span class="hover-info">Created</span>
+    </span>
     
-<div class="archive-list-container">
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2026-01-26 21:35:17</span>
+            <span class="mobile">2026-01-26 21:35:17</span>
+            <span class="hover-info">Updated</span>
+        </span>
     
-        <section class="archive-item mb-spacing-unit last:mb-0">
-            <div class="archive-item-header flex flex-row items-center mb-2">
-                <span class="archive-year font-semibold text-3xl mr-2">2022</span>
-                <span class="archive-year-post-count text-xs md:text-sm font-bold rounded-small bg-third-background-color py-[2px] px-[10px] border border-border-color">1</span>
-            </div>
-            
-            <ul class="article-list pl-0 md:pl-8 text-lg leading-[1.5]">
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
                 
-                    
-                    
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='07-19'>
-                    
-                    <a href="/2022/07/19/building-hugo-site/" class="block w-fit">
-                        <span class="article-title my-0.5 text-2xl">建立 Hugo Site</span>
-                    </a>
-                    
+                    <li>
+                        <a href="/tags/C/">C++</a>&nbsp;
+                    </li>
                 
-                </li> <!-- Ensure the last item is properly closed -->
+                    <li>
+                        | <a href="/tags/Vulkan/">Vulkan</a>&nbsp;
+                    </li>
+                
             </ul>
-        </section>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>1.4k Words</span>
+        </span>
+    
+    
     
 </div>
-</div>
+
+				</div>
+			</div>
+		</div>
+		
+
+		
+
+
+		<div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+			<p>又放假了，所以回頭來學畫畫。這個專案的進度龜速，因為我學期間基本沒空搞其他東西，再加上我確實的學藝不精寫程式效率奇差，都常常覺得怎麼我搞了這麼久還在這裡 😔（more on this later）</p>
+<h2 id="前情提要">前情提要</h2>
+<p>半年前的 <a href="https://pixelcat31415.github.io/2025/08/12/vulkan-2-buffers/">上一篇</a> 的進度大概是會畫一個任意的模型。理論上到這裡就可以很暴力的畫出任意我想畫的東西了，所以扣除效能問題之外根本就可以寫一個完整的會動的遊戲了；但是大問題是原本的程式碼整個塞在同一個有 1200 行的檔案裡面，擴展性基本是零，所以這是一個我必須要第一個處理的問題。</p>
+<h2 id="重寫（幾乎）">重寫（幾乎）</h2>
+<p>其實也不是說一個檔案寫很長就很糟糕，是在說原本我只有一個 class 裝下一切所有的東西，包含：</p>
+<div class="code-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">GLFWwindow* window_;</span><br><span class="line">vk::raii::Context context_;</span><br><span class="line">vk::raii::Instance instance_;</span><br><span class="line">vk::raii::DebugUtilsMessengerEXT debug_messenger_;</span><br><span class="line">vk::raii::SurfaceKHR surface_;</span><br><span class="line">vk::raii::PhysicalDevice physical_device_;</span><br><span class="line">vk::raii::Device device_;</span><br><span class="line"><span class="type">uint32_t</span> queue_family_index_;</span><br><span class="line">vk::raii::Queue device_queue_;</span><br><span class="line"><span class="type">uint32_t</span> swapchain_image_count_;</span><br><span class="line"><span class="type">uint32_t</span> parallel_rendering_count_;</span><br><span class="line">vk::raii::SwapchainKHR swapchain_;</span><br><span class="line">std::vector&lt;vk::Image&gt; swapchain_images_;</span><br><span class="line">std::vector&lt;vk::raii::ImageView&gt; swapchain_image_views_;</span><br><span class="line">vk::Format swapchain_image_format_;</span><br><span class="line">vk::Extent2D swapchain_extent_;</span><br><span class="line">vk::raii::Pipeline graphics_pipeline_;</span><br><span class="line">vk::raii::DescriptorSetLayout descriptor_set_layout_;</span><br><span class="line">vk::raii::PipelineLayout graphics_pipeline_layout_;</span><br><span class="line">vk::raii::CommandPool graphics_command_pool_;</span><br><span class="line">vk::raii::CommandPool transfer_command_pool_;</span><br><span class="line">std::vector&lt;vk::raii::CommandBuffer&gt; command_buffers_;</span><br><span class="line">std::vector&lt;vk::raii::Semaphore&gt; present_finished_semaphores_;</span><br><span class="line">std::vector&lt;vk::raii::Semaphore&gt; render_finished_semaphores_;</span><br><span class="line">std::vector&lt;vk::raii::Fence&gt; draw_fences_;</span><br><span class="line"><span class="type">uint32_t</span> semaphore_index_ = <span class="number">0</span>;</span><br><span class="line"><span class="type">uint32_t</span> frame_index_ = <span class="number">0</span>;</span><br><span class="line"><span class="type">bool</span> swapchain_outdated_ = <span class="literal">false</span>;</span><br><span class="line">vk::raii::Buffer vertex_buffer_;</span><br><span class="line">vk::raii::DeviceMemory vertex_buffer_memory_;</span><br><span class="line">vk::raii::Buffer index_buffer_;</span><br><span class="line">vk::raii::DeviceMemory index_buffer_memory_;</span><br><span class="line">std::vector&lt;vk::raii::Buffer&gt; uniform_buffers_;</span><br><span class="line">std::vector&lt;vk::raii::DeviceMemory&gt; uniform_buffers_memory_;</span><br><span class="line">std::vector&lt;<span class="type">void</span>*&gt; uniform_buffers_mapping_;</span><br><span class="line">vk::raii::DescriptorPool descriptor_pool_;</span><br><span class="line">std::vector&lt;vk::raii::DescriptorSet&gt; descriptor_sets_;</span><br><span class="line">vk::raii::Image texture_image_;</span><br><span class="line">vk::raii::DeviceMemory tetxure_image_memory_;</span><br><span class="line">vk::raii::ImageView texture_image_view_;</span><br><span class="line">vk::raii::Sampler texture_sampler_;</span><br><span class="line">vk::Format depth_format_;</span><br><span class="line">std::vector&lt;vk::raii::Image&gt; depth_image_;</span><br><span class="line">std::vector&lt;vk::raii::DeviceMemory&gt; depth_image_memory_;</span><br><span class="line">std::vector&lt;vk::raii::ImageView&gt; depth_image_views_;</span><br></pre></td></tr></table></figure></div>
+<p>其實還蠻好笑的，根本就是實質意義的全域變數。基於各種所有你想得到的原因我把這個宇宙 class 裡面的東西拆成很多個部份，像是有一個類裝跟 swapchain 有關的東西，或是像實做一個類包裝 buffer 和對應的 device memory，之類的。</p>
+<p>必須說剛開始的時候我根本不知道我該怎麼做才能讓他足夠分離、足夠精簡、又足夠好用、讓我以後可以輕鬆的擴展或使用，所以我去問 LLM 了。我問他我如果想為了 3D 遊戲寫一個 renderer，一般來說這種東西會有哪些元件和 expose 哪些介面，讓我思考一下我該怎麼實做；LLM 的回答我沒有很滿意，他講了一大段但是我感覺要不是在講我已經知道的不然就是說得很模糊，感覺有可能其實連我都不知道我的問題是什麼，我不知道我該知道什麼才能幫助我往「寫一個適合 3D 遊戲的渲染引擎」的目標前進。</p>
+<p>但是 LLM 說了一句讓我印象很深的話是「我應該從『誰擁有一項資源』的角度思考」。我以前寫程式的思維模式都是 procedural 的，像是我應該用什麼順序照著做這些事情，對我來說物件一直都像是 service/functionality provider 而不是 resource holder，所以我覺得這句話對我來說特別重要，那是一個根本上思維模式層級的問題。我根據我的理解把整個程式在架構上重寫了一次，現在看起來還算順眼，之後大概可以開始預謀用這個 renderer 做點什麼事情了。</p>
+<h2 id="知識牆">知識牆</h2>
+<p>我原本的目標是寫一個小遊戲，但是要寫遊戲總要有某種概念上的遊戲引擎吧？像是輸入要怎麼處理、要怎麼抽象化遊戲內的實體和渲染機制，等等的，要是只寫一個遊戲而用很暴力的方式隨便處理的話那就無聊了，要是能寫一個完整一些的遊戲引擎的話應該會是有趣的嘗試，所以現在姑且把一個遊戲引擎當做目標。</p>
+<p>我覺得最大的障礙就是我確實的知識不足了。當我說出「我要寫一個遊戲引擎」的時候我甚至不知道一個完整的遊戲引擎應該要有哪些部份，幾乎沒用過遊戲引擎，唯一經驗是去年 challenge 用 godot 做的小遊戲，我覺得在這個條件下我對我自己做出的任何 design desicion 都沒有任何信心。思而不學則殆。</p>
+<p>總之現在的話也許會想先不真的寫程式，去到處看看關於遊戲引擎的書、教學、甚至是上手用用看，直到我覺得我又準備好了的那天。</p>
+<h2 id="其他閒話">其他閒話</h2>
+<p>不可避免的開始思考有沒有可能我有機會進入遊戲引擎或圖形渲染開發一類的工作，不過我猜大概是沒有，這種領域的門檻看起來都好高，我覺得我能不能作為 software developer 混一口飯吃搞不好都是個問題了。我一直覺得作為一個寫程式的人有一個自己作為興趣的專案是一件讓我很嚮往的事情，他不會成為一個世界頂尖的或突破性的發明，我沒有要改變世界，我自己覺得開心就是唯一的最高目標，希望我能堅持這個願望很多年。</p>
+<p>下一次更新這個系列會是什麼時候呢？</p>
+
+		</div>
+
+		
+
+		
+		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/C/">#C++</a>&nbsp;
+			</li>
+			
+			<li class="tag-item mx-0.5">
+				<a href="/tags/Vulkan/">#Vulkan</a>&nbsp;
+			</li>
+			
+		</ul>
+		
+
+		
+
+		
+		<div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+			
+			
+			<div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+				<a class="next" rel="next" href="/2025/12/31/courses-review-2025fall/">
+					<span class="title flex justify-center items-center">
+						<span class="post-nav-title-item truncate max-w-48">大三上修課心得（2025 Fall）</span>
+						<span class="post-nav-item">Next posts</span>
+					</span>
+					<span class="right arrow-icon flex justify-center items-center">
+						<i class="fa-solid fa-chevron-right"></i>
+					</span>
+				</a>
+			</div>
+			
+		</div>
+		
+
+
+		
+	</div>
+
 	
+	<div class="toc-content-container">
+		<div class="post-toc-wrap">
+	<div class="post-toc">
+		<div class="toc-title">On this page</div>
+		<div class="page-title">牙牙學 Vulkan（三）</div>
+		<ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E6%83%85%E6%8F%90%E8%A6%81"><span class="nav-text">前情提要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E5%AF%AB%EF%BC%88%E5%B9%BE%E4%B9%8E%EF%BC%89"><span class="nav-text">重寫（幾乎）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A5%E8%AD%98%E7%89%86"><span class="nav-text">知識牆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E9%96%92%E8%A9%B1"><span class="nav-text">其他閒話</span></a></li></ol>
 
-	<div class="page-template-content markdown-body">
-		
-
-		
-	</div>
-
-	<div class="page-template-comments">
-		
 	</div>
 </div>
-
-<div class="paginator">
-	<span class="page-number current">1</span>
+	</div>
+	
 </div>
-  
 			</div>
 
 			
@@ -644,6 +744,22 @@ mjx-container[display="true"] + br {
 		</div>
 	</div>
 
+	
+	<div class="post-tools">
+		<div class="post-tools-container">
+	<ul class="article-tools-list">
+		<!-- TOC aside toggle -->
+		
+		<li class="right-bottom-tools page-aside-toggle">
+			<i class="fa-regular fa-outdent"></i>
+		</li>
+		
+
+		<!-- go comment -->
+		
+	</ul>
+</div>
+	</div>
 	
 
 	<div class="right-side-tools-container">
@@ -726,6 +842,7 @@ mjx-container[display="true"] + br {
         containers: ["#swup"],
     });
 </script>
+
 
 
 
