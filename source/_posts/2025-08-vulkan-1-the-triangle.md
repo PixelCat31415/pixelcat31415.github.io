@@ -1,5 +1,5 @@
 ---
-title: 牙牙學 Vulkan（一）用七百行畫一個三角形
+title: 牙牙學 Vulkan（一）
 date: 2025-08-02 07:23:54
 tags: [Vulkan, C++]
 ---
