@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="keywords" content="Hexo Theme Redefine">
     
+    
     <meta name="author" content="PixelCat31415">
     
     <!-- Completely eliminate flash of wrong theme -->
@@ -31,9 +32,6 @@
                 const isDark = theme === DARK;
                 const root = document.documentElement;
                 
-                // Set data attribute for CSS variables
-                root.setAttribute("data-theme", theme);
-                
                 // Set classes for compatibility
                 root.classList.add(theme);
                 root.classList.remove(isDark ? LIGHT : DARK);
@@ -52,69 +50,26 @@
                 }
             });
             
-            // Set body classes once DOM is ready
-            if (document.readyState !== "loading") {
-                document.body.classList.add(theme + "-mode");
-            } else {
-                document.addEventListener("DOMContentLoaded", () => {
-                    document.body.classList.add(theme + "-mode");
-                    document.body.classList.remove((theme === DARK ? LIGHT : DARK) + "-mode");
+            // Set body classes ASAP (before DOMContentLoaded)
+            (function() {
+                const addBodyClass = () => {
+                    const b = document.body;
+                    if (!b) return false;
+                    b.classList.add(theme + "-mode");
+                    return true;
+                };
+
+                // Try immediately
+                if (addBodyClass()) return;
+
+                // Observe until body exists
+                const mo = new MutationObserver(() => {
+                    if (addBodyClass()) mo.disconnect();
                 });
-            }
+                mo.observe(document.documentElement, { childList: true, subtree: true });
+            })();
         })();
     </script>
-    
-    <!-- Critical CSS to prevent flash -->
-    <style>
-        :root[data-theme="dark"] {
-            --background-color: #202124;
-            --background-color-transparent: rgba(32, 33, 36, 0.6);
-            --second-background-color: #2d2e32;
-            --third-background-color: #34353a;
-            --third-background-color-transparent: rgba(32, 33, 36, 0.6);
-            --primary-color: #0066CC;
-            --first-text-color: #ffffff;
-            --second-text-color: #eeeeee;
-            --third-text-color: #bebec6;
-            --fourth-text-color: #999999;
-            --default-text-color: #bebec6;
-            --invert-text-color: #373D3F;
-            --border-color: rgba(255, 255, 255, 0.08);
-            --selection-color: #0066CC;
-            --shadow-color-1: rgba(255, 255, 255, 0.08);
-            --shadow-color-2: rgba(255, 255, 255, 0.05);
-        }
-        
-        :root[data-theme="light"] {
-            --background-color: #fff;
-            --background-color-transparent: rgba(255, 255, 255, 0.6);
-            --second-background-color: #f8f8f8;
-            --third-background-color: #f2f2f2;
-            --third-background-color-transparent: rgba(241, 241, 241, 0.6);
-            --primary-color: #0066CC;
-            --first-text-color: #16171a;
-            --second-text-color: #2f3037;
-            --third-text-color: #5e5e5e;
-            --fourth-text-color: #eeeeee;
-            --default-text-color: #373D3F;
-            --invert-text-color: #bebec6;
-            --border-color: rgba(0, 0, 0, 0.08);
-            --selection-color: #0066CC;
-            --shadow-color-1: rgba(0, 0, 0, 0.08);
-            --shadow-color-2: rgba(0, 0, 0, 0.05);
-        }
-        
-        body {
-            background-color: var(--background-color);
-            color: var(--default-text-color);
-        }
-        
-        /* Apply body classes as soon as DOM is ready */
-        :root[data-theme="dark"] body {
-            background-color: var(--background-color);
-            color: var(--default-text-color);
-        }
-    </style>
     
     <!-- preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -127,7 +82,6 @@
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
-    
     
     
         
@@ -208,8 +162,9 @@
 
     <script id="hexo-configurations">
     window.config = {"hostname":"pixelcat31415.github.io","root":"/","language":"en"};
-    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.75,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":false},"author_label":{"enable":false,"auto":false,"list":[]},"code_block":{"copy":true,"style":"simple","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":true,"family":"Victor Mono","url":"https://fonts.googleapis.com/css2?family=Victor+Mono:ital,wght@0,100..700;1,100..700&display=swap"}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":false,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#fcc7f4","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":true,"family":"Open Huninn","url":"/css/openhuninn.css"},"english":{"enable":false,"family":null,"url":null},"title":{"enable":true,"family":"Open Huninn","url":"/css/openhuninn.css"}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":false,"site_uv":false,"post_pv":false},"single_page":true,"preloader":{"enable":false,"custom_message":null},"side_tools":{"gear_rotation":false,"auto_expand":false},"open_graph":{"enable":true,"image":"/images/pixelcat.png","description":"Nyanyannya."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/cat-in-tokyo-city.jpg"},"title":"A subtle purr from nowhere.","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#afe0fa"},"text_style":{"title_size":"1.4rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":{"github":null,"instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1"}},"version":"2.8.5","navbar":{"auto_hide":false,"color":{"left":"#fcc7f4","right":"#afe0fa","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archive":{"path":"/archive","icon":"fa-regular fa-archive"},"About":{"path":"/about","icon":"fa-regular fa-user"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":false,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2025/7/22 18:00:00"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.75,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"delete_mask":false,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":false},"author_label":{"enable":false,"auto":false,"list":[]},"code_block":{"copy":true,"style":"simple","highlight_theme":{"light":"github","dark":"vs2015"},"font":{"enable":true,"family":"Victor Mono","url":"https://fonts.googleapis.com/css2?family=Victor+Mono:ital,wght@0,100..700;1,100..700&display=swap"}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":false,"default":"cc_by_nc_sa"},"lazyload":true,"pangu_js":false,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#fcc7f4","secondary":null,"default_mode":"dark"},"global":{"fonts":{"chinese":{"enable":true,"family":"Open Huninn","url":"/css/openhuninn.css"},"english":{"enable":false,"family":null,"url":null},"title":{"enable":true,"family":"Open Huninn","url":"/css/openhuninn.css"}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":false,"site_uv":false,"post_pv":false},"single_page":true,"preloader":{"enable":false,"custom_message":null},"side_tools":{"gear_rotation":false,"auto_expand":false},"open_graph":{"enable":true,"image":"/images/pixelcat.png","description":"Nyanyannya."},"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/cat-in-tokyo-city.jpg"},"title":"A subtle purr from nowhere.","subtitle":{"text":[],"hitokoto":{"enable":false,"show_author":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#afe0fa"},"text_style":{"title_size":"1.4rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"style":"default","links":[],"qrs":[]}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"11.4.1","theme":{"light":"default","dark":"dark"}}},"version":"2.9.0","navbar":{"auto_hide":false,"color":{"left":"#fcc7f4","right":"#afe0fa","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archive":{"path":"/archive","icon":"fa-regular fa-archive"},"About":{"path":"/about","icon":"fa-regular fa-user"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur","masonry":{"batch_size":12,"initial_batch_size":24}},"home":{"sidebar":{"enable":false,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":null},"article_date_format":"auto","excerpt_length":200,"categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footer":{"runtime":false,"icon":"<i class=\"fa-solid fa-paw\"></i>","start":"2025/7/22 18:00:00","statistics":true,"customize":null,"icp":{"enable":false,"number":null,"url":null}},"footerStart":"2025/7/22 18:00:00","mermaid":{"style":{"light":"default","dark":"dark"}}};
     window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.i18n = {"search":"Search...","toc":"On this page","prev":"Prev","next":"Next","prev_posts":"Prev posts","next_posts":"Next posts","page":"Page %d","recent_posts":"Recent Posts","share":"Share","powered_by":"POWERED BY %s","theme":"THEME","rss_feed":"RSS Feed","category":"Category","categories":"Categories","tag":"Tag","tags":"Tags","post":"Post","posts":"Posts","tagcloud":"Tag Cloud","comment":"Comment","comments":"Comments","home":"Home","archive":"Archive","archives":"Archives","top":"TOP","sticky":"Sticky","go-back-home":"Go Back Home","masonry_loading":"Loading photos...","image_viewer":"Image viewer","close":"Close","exif":{"title":"EXIF","cards":{"camera":"Camera","lens":"Lens","exposure":"Exposure","other":"Other"},"fields":{"make":"Brand","model":"Model","date_taken":"Date taken","lens_model":"Lens","focal_length":"Focal length","focus_mode":"Focus mode","shutter":"Shutter","aperture":"Aperture","iso":"ISO","exposure_program":"Exposure program","exposure_compensation":"Exposure compensation","metering_mode":"Metering mode","flash":"Flash","white_balance":"White balance","latitude":"Latitude","longitude":"Longitude","altitude":"Altitude"},"status":{"loading":"Loading...","no_exif":"No EXIF available","library_missing":"EXIF library not loaded","image_source_missing":"Image source unavailable","unavailable":"EXIF unavailable (blocked by CORS or missing metadata)","flag_unavailable":"EXIF unavailable"}},"about":"About","changelog":"Changelog","links":"Links","link":"Link","friends":"Friends","friend":"Friend","timeline":"Timeline","shuoshuo":"Shuoshuo","bookmarks":"Bookmarks","site_uv":"VISITOR COUNT","site_pv":"TOTAL PAGE VIEWS","read_more":"Read more","wordcount":"Words","min2read":"Mins","status":"Status","runtime":"Blog up for","days":"days","hours":"hrs","minutes":"Min","seconds":"Sec","optimized_by":"and Optimized by Evan","rights":"All Rights Reserved","site_posts":"%s posts in total","site_wordcount":"%s words in total","copyright":{"author":"Author","title":"Title","link":"Link","create_time":"Created at","update_time":"Updated at","license_title":"License","license_content":"This work is licensed under %s.","all_rights_reserved":"All Rights Reserved &#169; %s","public_domain":"This work is in the public domain."},"ago":{"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"},"create_time":"Created","update_time":"Updated","expired":"This post is written %s days ago, and the content may not be up to date."};
     window.data = {"masonry":false};
   </script>
     
@@ -230,7 +185,7 @@
     
     
     
-<meta name="generator" content="Hexo 7.3.0"><style>mjx-container[jax="SVG"] {
+<meta name="generator" content="Hexo 8.1.1"><style>mjx-container[jax="SVG"] {
   direction: ltr;
 }
 
@@ -343,7 +298,6 @@ mjx-container[display="true"] + br {
   display: none;
 }
 </style></head>
-
 
 
 <body>
@@ -519,7 +473,7 @@ mjx-container[display="true"] + br {
 
         <div class="statistics flex justify-around my-2.5">
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">12</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">13</div>
         <div class="label text-third-text-color text-sm">Tags</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
@@ -527,7 +481,7 @@ mjx-container[display="true"] + br {
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archive">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">21</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">22</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -557,7 +511,7 @@ mjx-container[display="true"] + br {
 
 		
 		<div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
-			<div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+			<div class="avatar w-[46px] h-[46px] shrink-0 rounded-medium border border-border-color p-px">
 				<img src="/images/pixelcat.png">
 			</div>
 			<div class="info flex flex-col justify-between">
@@ -678,24 +632,15 @@ mjx-container[display="true"] + br {
 <p>然後 7/6 白天我耍廢了一天，哈哈。</p>
 <p>現在冷靜的想一想覺得到底是怎麼敢的，不過這樣的結果就是我 7/7 凌晨才開始寫，debug 好久之後才發現 python 有個小套件（<a class="link" target="_blank" rel="noopener" href="https://github.com/anetczuk/gdtype-python">gdtype<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>）太過時完全不能用，必須要自己寫，破大防，7/8（二）早上才寫完這個部份。不過是真的要說 <a class="link" target="_blank" rel="noopener" href="https://docs.godotengine.org/en/stable/tutorials/io/binary_serialization_api.html">godot 的 binary serialization 文件<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 早就過期八千萬年了不更新是幾個意思，後來我還是翻他原始碼把 C++ 翻譯成 Python 才寫完這一段，不欣賞。</p>
 <p>這個地方有好多問題可以討論。Python 這邊的呼叫機制、程式碼架構、錯誤處理機制、等等所有的事情都是我一個人花兩天亂寫出來的，這樣真的好嗎？這些機制沒有什麼低能的問題嗎？身為 Challenge 長的我單幹實做道理在哪裡？類似的問題後面大概還會出現很多次，有好多東西都是 <em>我有一個只有我知道的相對完整的想像 ➡️ 跟這件事有關的部份之前也是我寫的我最了解 ➡️ 時間緊迫 ➡️ 啊算了不慢慢說了我自己寫掉最快 ➡️ 這件事情依然只有我最清楚</em> 之類的，其實這真的是還蠻大的問題。</p>
-<details class="yellow" data-header-exclude="">
-    <summary><i class="fa-solid fa-chevron-right"></i>Bug Fix 八選（其一） </summary>
-    <div class="content markdown-body">
-        <div class="note p-4 mb-4 rounded-small markdown-body yellow">
-    <p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/f40e2b2afd0c8fbede70d1de8b1fa1619b03dbf8"><em>Commit <code>f40e2b2a</code> fix: I am officially an idiot</em></a></p>
-  </div>
+<details class="relative my-4 border border-border-color bg-second-background-color rounded-md  yellow" data-header-exclude=""><summary class="px-4 py-2 rounded-md shadow-[0_0_2px_0_var(--shadow-color-1)] cursor-pointer not-markdown"><i class="fa-solid fa-chevron-right"></i>Bug Fix 八選（其一）</summary><div class="content p-4 "><div class="callout callout--simple yellow mb-4 rounded-small shadow-redefine-flat bg-(--callout-bg-color) p-3 pl-1 relative flex flex-row gap-2 items-center"><div role="none" class="rounded-full self-stretch w-0.5 bg-(--callout-primary-color) shrink-0 opacity-60"></div><div class="callout__content markdown-body flex-1 min-w-0"><p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/f40e2b2afd0c8fbede70d1de8b1fa1619b03dbf8"><em>Commit <code>f40e2b2a</code> fix: I am officially an idiot</em></a></p></div></div>
 <p>7/8（二）跟大家說 API 可以用之後被抓到為什麼 client 端不能傳超過 255 的整數給伺服器端呢？</p>
 <p><img lazyload="" src="/images/loading.svg" data-src="/images/2025-07-challenge/bugfix-1-1.png" alt=""></p>
 <p>啊，原來有個智障覺得 <mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.186ex;" xmlns="http://www.w3.org/2000/svg" width="8.53ex" height="2.072ex" role="img" focusable="false" viewBox="0 -833.9 3770.1 915.9"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mn"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g><g data-mml-node="mn" transform="translate(533,363) scale(0.707)"><path data-c="38" d="M70 417T70 494T124 618T248 666Q319 666 374 624T429 515Q429 485 418 459T392 417T361 389T335 371T324 363L338 354Q352 344 366 334T382 323Q457 264 457 174Q457 95 399 37T249 -22Q159 -22 101 29T43 155Q43 263 172 335L154 348Q133 361 127 368Q70 417 70 494ZM286 386L292 390Q298 394 301 396T311 403T323 413T334 425T345 438T355 454T364 471T369 491T371 513Q371 556 342 586T275 624Q268 625 242 625Q201 625 165 599T128 534Q128 511 141 492T167 463T217 431Q224 426 228 424L286 386ZM250 21Q308 21 350 55T392 137Q392 154 387 169T375 194T353 216T330 234T301 253T274 270Q260 279 244 289T218 306L210 311Q204 311 181 294T133 239T107 157Q107 98 150 60T250 21Z"></path></g></g><g data-mml-node="mo" transform="translate(1214.3,0)"><path data-c="3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path></g><g data-mml-node="mn" transform="translate(2270.1,0)"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path><path data-c="35" d="M164 157Q164 133 148 117T109 101H102Q148 22 224 22Q294 22 326 82Q345 115 345 210Q345 313 318 349Q292 382 260 382H254Q176 382 136 314Q132 307 129 306T114 304Q97 304 95 310Q93 314 93 485V614Q93 664 98 664Q100 666 102 666Q103 666 123 658T178 642T253 634Q324 634 389 662Q397 666 402 666Q410 666 410 648V635Q328 538 205 538Q174 538 149 544L139 546V374Q158 388 169 396T205 412T256 420Q337 420 393 355T449 201Q449 109 385 44T229 -22Q148 -22 99 32T50 154Q50 178 61 192T84 210T107 214Q132 214 148 197T164 157Z" transform="translate(500,0)"></path><path data-c="35" d="M164 157Q164 133 148 117T109 101H102Q148 22 224 22Q294 22 326 82Q345 115 345 210Q345 313 318 349Q292 382 260 382H254Q176 382 136 314Q132 307 129 306T114 304Q97 304 95 310Q93 314 93 485V614Q93 664 98 664Q100 666 102 666Q103 666 123 658T178 642T253 634Q324 634 389 662Q397 666 402 666Q410 666 410 648V635Q328 538 205 538Q174 538 149 544L139 546V374Q158 388 169 396T205 412T256 420Q337 420 393 355T449 201Q449 109 385 44T229 -22Q148 -22 99 32T50 154Q50 178 61 192T84 210T107 214Q132 214 148 197T164 157Z" transform="translate(1000,0)"></path></g></g></g></svg></mjx-container>。</p>
-  <div class="note p-4 mb-4 rounded-small markdown-body yellow">
-    <p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/a2c8641f236b27560c4815597870e5a933dc5565"><em>Commit <code>a2c8641f</code> fix: various bug fixes</em></a></p>
-  </div>
+<div class="callout callout--simple yellow mb-4 rounded-small shadow-redefine-flat bg-(--callout-bg-color) p-3 pl-1 relative flex flex-row gap-2 items-center"><div role="none" class="rounded-full self-stretch w-0.5 bg-(--callout-primary-color) shrink-0 opacity-60"></div><div class="callout__content markdown-body flex-1 min-w-0"><p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/a2c8641f236b27560c4815597870e5a933dc5565"><em>Commit <code>a2c8641f</code> fix: various bug fixes</em></a></p></div></div>
 <p>很久很久以後，在 Demo 前一個晚上還被抓到原來負數也不能傳，原因是有人把二的次方少算一半，一個人眼睛閉起來單幹 binary serialization 真的遭報應了 💩</p>
 <p><img lazyload="" src="/images/loading.svg" data-src="/images/2025-07-challenge/bugfix-1-2.png" alt=""></p>
 <p>直到寫這篇回顧的當下才發現原來 <a class="link" target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/blob/8d7092b2dddd489153e17be971d9a2650d1601e1/agent/api/serialization.py#L47">這裡<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 也一直都還是錯的，只是貌似沒有需要從 client 傳負數給伺服器的場合，所以一直沒被發現。這個 bug 到現在還沒被修掉 💩</p>
-
-    </div>
-  </details>
+</div></details>
 <p>總之在 7/8（二）早上我們終於可以寫 python 去戳遊戲本體了。但是邪惡的事實是我們 <strong>所有</strong> API 實際實做都還是空的、一些遊戲機制還沒實做完整、選單和結算畫面沒實做、遊戲平衡沒半點調整過，我們還想寫一個可以自動更新遊戲的 launcher 還沒寫，需要寫給小隊員包含 API 在內的一些 document 進度堪慮，然後我們禮拜三晚上要有能動的遊戲讓小隊輔們密籌的時候可以玩。</p>
 <p>後面的事情可能沒有那麼有趣了，就是到處趕死線、到處出包延死線。抱歉從這裡開始會比較多偏向我在當碼農的視角，因為我大部分時間都花在寫自己手上的東西了，對 repo 裡面發生的其他大事比較沒有印象只能看 commit 紀錄回憶一下。</p>
 <h2 id="營期前-4-天．7-9（三）">營期前 4 天．7/9（三）</h2>
@@ -717,33 +662,19 @@ mjx-container[display="true"] + br {
 <p>到這裡，我們大概是趕得上 7/14 營期第二天釋出第一個正式版本了，大概，希望。選營期第二天是因為第一天沒有 Challenge 時間。</p>
 <p>這段時間還蠻和諧的，大家各自做各自的部份，包含有人去寫 API document。我在做的事情是稽查所有 API 是不是運作正常，很可惜的似乎相當大一部份不是，所以我大概坐牢了兩天一個一個處理每個 API 和寫測試腳本確定他們真的都是好的。</p>
 <p>看 commit 紀錄的話其他的更新好像是封版、其他各種 bugfix、docstring 和一些偏向 quality of life 的東西。同時胡祐誠和李尚哲兩個猛男把 launcher 搞定了，包括制服 MacOS（這可厲害了）。</p>
-<details class="yellow" data-header-exclude="">
-    <summary><i class="fa-solid fa-chevron-right"></i>Bug Fix 八選（其二） </summary>
-    <div class="content markdown-body">
-        <div class="note p-4 mb-4 rounded-small markdown-body yellow">
-    <p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/6139e0714e3ed09d395c44b8d5abcfd0a99b3a0d"><em>Commit <code>6139e071</code> fix: truncate unneccessary API logging</em></a></p>
-  </div>
+<details class="relative my-4 border border-border-color bg-second-background-color rounded-md  yellow" data-header-exclude=""><summary class="px-4 py-2 rounded-md shadow-[0_0_2px_0_var(--shadow-color-1)] cursor-pointer not-markdown"><i class="fa-solid fa-chevron-right"></i>Bug Fix 八選（其二）</summary><div class="content p-4 "><div class="callout callout--simple yellow mb-4 rounded-small shadow-redefine-flat bg-(--callout-bg-color) p-3 pl-1 relative flex flex-row gap-2 items-center"><div role="none" class="rounded-full self-stretch w-0.5 bg-(--callout-primary-color) shrink-0 opacity-60"></div><div class="callout__content markdown-body flex-1 min-w-0"><p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/6139e0714e3ed09d395c44b8d5abcfd0a99b3a0d"><em>Commit <code>6139e071</code> fix: truncate unneccessary API logging</em></a></p></div></div>
 <p>王淇寫完封版功能之後把遊戲打開跑五分鐘最後確認，然後，在遊戲結束準備進結算畫面的瞬間，遊戲畫面就凍結了？而且如果把遊戲時長調短還沒事？</p>
 <p>結果原因是那時候每次呼叫 API 都會在伺服器端輸出一行字，python 那端的請求發太快了（理論上限一秒一百次），伺服器根本就來不及輸出這麼多東西，遊戲畫面凍結實際上是在等 <code>print</code> 在那邊慢慢輸出。</p>
 <p>其實還蠻好笑的，不過 release 前一天戳出這種東西同時也是有點可怕 = =</p>
-
-    </div>
-  </details>
+</div></details>
 <h2 id="營期第-2-天．7-14（一）">營期第 2 天．7/14（一）</h2>
 <p>趕在第一次的 Challenge 時間前，趕死線發布遊戲 v1.0.0 版本了。這是遊戲的第一個正式發布版。</p>
 <p>然而 Challenge 時間依然進行的相當不順利，系館網路在週末停電之後一直很不穩，我們的遊戲好幾十 MB，小隊員都要下載很久還不一定載得完，在安裝環境的時候又是破病一大堆，尤其是 Windows。遇到印象最深的兩個問題是 Windows 系統沒更新不能下載遊戲，和有人 Python 跑去裝 3.14 pre-release 的測試版把我們的 client library 搞壞還來哭為什麼跑不動。總之那天搞了很久很久，好像整個 Challenge 時間都在處理環境問題。</p>
-<details class="yellow" data-header-exclude="">
-    <summary><i class="fa-solid fa-chevron-right"></i>Bug Fix 八選（其三） </summary>
-    <div class="content markdown-body">
-        <div class="note p-4 mb-4 rounded-small markdown-body yellow">
-    <p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/d0c3a99d99142299508035a612ed45151a4564a0"><em>Commit <code>d0c3a99d</code> fix: assert has no side effect</em></a></p>
-  </div>
+<details class="relative my-4 border border-border-color bg-second-background-color rounded-md  yellow" data-header-exclude=""><summary class="px-4 py-2 rounded-md shadow-[0_0_2px_0_var(--shadow-color-1)] cursor-pointer not-markdown"><i class="fa-solid fa-chevron-right"></i>Bug Fix 八選（其三）</summary><div class="content p-4 "><div class="callout callout--simple yellow mb-4 rounded-small shadow-redefine-flat bg-(--callout-bg-color) p-3 pl-1 relative flex flex-row gap-2 items-center"><div role="none" class="rounded-full self-stretch w-0.5 bg-(--callout-primary-color) shrink-0 opacity-60"></div><div class="callout__content markdown-body flex-1 min-w-0"><p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/d0c3a99d99142299508035a612ed45151a4564a0"><em>Commit <code>d0c3a99d</code> fix: assert has no side effect</em></a></p></div></div>
 <p>在前面幾天一直遇到一個玄學問題是 export 的時候開 debug 就一切正常，關掉 debug 開 release 的話整個 server 直接不開給你看，遊戲連嘗試開啟這個伺服器都沒有。所以我們匯出的時候一直都是開 debug。</p>
 <p><img lazyload="" src="/images/loading.svg" data-src="/images/2025-07-challenge/bugfix-3-1.png" alt=""></p>
 <p>結果王淇神通廣大，發現關掉 debug 之後整個 <code>assert</code> 連同裡面的東西會一起拿掉！於是我們的 server 永遠不會 listen，從外面看就像伺服器蒸發了。王淇又提到確實 C++ 也是這樣搞的，編譯開 no debug 之後 assert 會直接不見。只能說真的學到了，沒被搞過到底誰會知道，是我學藝不精了 😔</p>
-
-    </div>
-  </details>
+</div></details>
 <h2 id="營期第-3-天．7-15（二）">營期第 3 天．7/15（二）</h2>
 <p>這一天更新了 v1.1.0，有一個整個遊戲史上最重要（確信）的新 feature 是有天才在首頁用各種 linux distro（和 Windows 和 MacOS）的 logo 做了一個消消樂，有一說一用遊戲引擎就是好，消消樂又好做又好玩又還不錯精緻，Challenge 組一致公認消消樂才是遊戲本體。</p>
 <p><img lazyload="" src="/images/loading.svg" data-src="/images/2025-07-challenge/gamesc-0715-menu.png" alt=""></p>
@@ -756,62 +687,34 @@ mjx-container[display="true"] + br {
 <p>這個時候日期的分界已經沒有很重要了，每天休息的時間也很隨機，在這裡標日期大概只有分段的功能。</p>
 <h2 id="營期第-4-天．7-16（三）">營期第 4 天．7/16（三）</h2>
 <p>這天有 Challenge 時間，我們打算把手上的進度整理一下發新版本。「進度整理一下」實際上包含檢查和合併進行中的 pull request、做掉一些很 minor 但是掛在那邊很久的功能、修 bug、測試、修測試的時候戳出來的怪 bug，總之就是各種雜事混合體。</p>
-<details class="yellow" data-header-exclude="">
-    <summary><i class="fa-solid fa-chevron-right"></i>Bug Fix 八選（其四） </summary>
-    <div class="content markdown-body">
-      <p>v1.1.0 其實還有一個大改動是王淇看不下去髒亂的 repo 決定打掃一下衛生。</p>
-  <div class="note p-4 mb-4 rounded-small markdown-body yellow">
-    <p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/7207db9effda09ce12fafa9fc8b4a3c5966da49e"><em>Commit <code>7207db9e</code> fix: TOWER_SCENES is 0-indexed, but used as 1-indexed</em></a></p>
-  </div>
+<details class="relative my-4 border border-border-color bg-second-background-color rounded-md  yellow" data-header-exclude=""><summary class="px-4 py-2 rounded-md shadow-[0_0_2px_0_var(--shadow-color-1)] cursor-pointer not-markdown"><i class="fa-solid fa-chevron-right"></i>Bug Fix 八選（其四）</summary><div class="content p-4 "><p>v1.1.0 其實還有一個大改動是王淇看不下去髒亂的 repo 決定打掃一下衛生。</p>
+<div class="callout callout--simple yellow mb-4 rounded-small shadow-redefine-flat bg-(--callout-bg-color) p-3 pl-1 relative flex flex-row gap-2 items-center"><div role="none" class="rounded-full self-stretch w-0.5 bg-(--callout-primary-color) shrink-0 opacity-60"></div><div class="callout__content markdown-body flex-1 min-w-0"><p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/7207db9effda09ce12fafa9fc8b4a3c5966da49e"><em>Commit <code>7207db9e</code> fix: TOWER_SCENES is 0-indexed, but used as 1-indexed</em></a></p></div></div>
 <p>為什麼有這個 bug 大概去看一下前後的 commit 就會懂。但是那時候我沒測過 API 測試腳本就眼睛閉起來合進去了，這個 bug 肯定要先算一半在我頭上。結果有小隊員半夜兩點傳 bug report 回報這個 bug，太誇張了。</p>
-  <div class="note p-4 mb-4 rounded-small markdown-body yellow">
-    <p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/045d4d4cd36c468ab2dda1f80088ce8abc81306e"><em>Commit <code>045d4d4c</code> fix: resource not found</em></a></p>
-  </div>
+<div class="callout callout--simple yellow mb-4 rounded-small shadow-redefine-flat bg-(--callout-bg-color) p-3 pl-1 relative flex flex-row gap-2 items-center"><div role="none" class="rounded-full self-stretch w-0.5 bg-(--callout-primary-color) shrink-0 opacity-60"></div><div class="callout__content markdown-body flex-1 min-w-0"><p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/045d4d4cd36c468ab2dda1f80088ce8abc81306e"><em>Commit <code>045d4d4c</code> fix: resource not found</em></a></p></div></div>
 <p>打掃衛生的時候把之前用作 placeholder 的素材揚了，遊戲素材應該要已經換成我們畫的對的素材，結果竟然還有人有用到那些被揚掉的素材，結果遊戲直接 crash 給我們看。最惡劣的是因為一些快取的關係我們在 godot 編輯器裡面跑就天下太平，什麼都測不出來，坐牢好久才找到是哪些人在搞。</p>
 <p>總之我們整個凌晨都在搞這些麻煩的怪問題，理智值掉光。</p>
-
-    </div>
-  </details>
-<details class="yellow" data-header-exclude="">
-    <summary><i class="fa-solid fa-chevron-right"></i>Bug Fix 八選（其五） </summary>
-    <div class="content markdown-body">
-        <div class="note p-4 mb-4 rounded-small markdown-body yellow">
-    <p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/a59a57118fbddbb46b93cd13c40f72a056d23ddb"><em>Commit <code>a59a5711</code> fix: loading .txt files via res:// could fail when exported</em></a></p>
-  </div>
+</div></details>
+<details class="relative my-4 border border-border-color bg-second-background-color rounded-md  yellow" data-header-exclude=""><summary class="px-4 py-2 rounded-md shadow-[0_0_2px_0_var(--shadow-color-1)] cursor-pointer not-markdown"><i class="fa-solid fa-chevron-right"></i>Bug Fix 八選（其五）</summary><div class="content p-4 "><div class="callout callout--simple yellow mb-4 rounded-small shadow-redefine-flat bg-(--callout-bg-color) p-3 pl-1 relative flex flex-row gap-2 items-center"><div role="none" class="rounded-full self-stretch w-0.5 bg-(--callout-primary-color) shrink-0 opacity-60"></div><div class="callout__content markdown-body flex-1 min-w-0"><p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/a59a57118fbddbb46b93cd13c40f72a056d23ddb"><em>Commit <code>a59a5711</code> fix: loading .txt files via res:// could fail when exported</em></a></p></div></div>
 <p><img lazyload="" src="/images/loading.svg" data-src="/images/2025-07-challenge/bugfix-5-1.png" alt=""></p>
 <p>（Screenshot from <a class="link" target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/releases/tag/v1.1.1">Release v1.1.1<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a>）</p>
 <p>我們凌晨死人時間公開 v1.1.1 的時候沒有測試 export 出來的東西能不能跑就傳了（哪那麼衰？），結果還真的一戳開始遊戲就 crash。追查了一下 log 發現是遊戲想讀一個 <code>.txt</code> 檔案但是找不到，但是我們明明用 <code>res://</code> 的路徑讀，在編輯器裡面試跑也一點問題都沒有，結果才知道 <a class="link" target="_blank" rel="noopener" href="https://docs.godotengine.org/en/stable/classes/class_fileaccess.html">官方文件<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 說不是所有檔案用 <code>res://</code> 戳就沒事了，像 <code>.txt</code> 就不像 <code>.json</code> 預設不會被包進執行檔裡面，所以去戳 <code>.txt</code> 檔案就會找不到（？？？）</p>
 <p>其實我覺得戳到這個還蠻有價值的，稽查的過程有讓我比較會看 godot 吐出來的 log 找問題。</p>
-
-    </div>
-  </details>
+</div></details>
 <p>這天的整個凌晨我和胡祐誠和王淇都窩在大三區做這些雜事，中間還一直畫新的餅，像是有邪惡的人（大概是他們兩個一起想到的）想到可以設計各種奇怪的地圖機制讓防禦塔消失、讓敵人加速、還有酷炫彩蛋之類的，感覺人的理智度降低的時候就會有各種瘋狂的想法出現。</p>
 <p>到了早上五點 v1.1.2 釋出，胡祐誠和王淇終於可以下班了。然而我的四開還是沒半點進度，只好繼續坐牢當前端工程師，設計那兩個畫面真的還蠻像網頁設計的，但是我一直就有點討厭做前端當碼農，破大防。很可惜到 7/16 結束的時候我的進度還是只有選擇畫面的沒有功能的雛型。</p>
 <p>下午 Challenge 時間原訂計畫是公佈 Demo 賽制和公佈 premium API（可以用小隊分數課金使用的 API），賽制前一天定案了所以沒問題，不過據說後者應該是只有模糊的畫個餅。但是這天整個 Challenge 時間我都睡死讓胡祐誠扛，實在是太感謝他了。</p>
 <h2 id="營期第-5-天．7-17（四）">營期第 5 天．7/17（四）</h2>
 <p>這個時間點我唯一的目標是盡快把四開的功能寫完，於是我繼續戰鬥了一個凌晨，終於在早上的時候做到我覺得足夠完整的水準，被合進 develop branch。然而一個小暴雷是這件事情到這裡還沒結束，我隔天還有得坐牢。</p>
-<details class="yellow" data-header-exclude="">
-    <summary><i class="fa-solid fa-chevron-right"></i>Bug Fix 八選（其六） </summary>
-    <div class="content markdown-body">
-        <div class="note p-4 mb-4 rounded-small markdown-body yellow">
-    <p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/2733ddf35806d331cd7cffe6a45d32f63634856a"><em>Commit <code>2733ddf3</code> fix: <code>place_tower</code> api not freeing tower instances causes memory leak</em></a></p>
-  </div>
+<details class="relative my-4 border border-border-color bg-second-background-color rounded-md  yellow" data-header-exclude=""><summary class="px-4 py-2 rounded-md shadow-[0_0_2px_0_var(--shadow-color-1)] cursor-pointer not-markdown"><i class="fa-solid fa-chevron-right"></i>Bug Fix 八選（其六）</summary><div class="content p-4 "><div class="callout callout--simple yellow mb-4 rounded-small shadow-redefine-flat bg-(--callout-bg-color) p-3 pl-1 relative flex flex-row gap-2 items-center"><div role="none" class="rounded-full self-stretch w-0.5 bg-(--callout-primary-color) shrink-0 opacity-60"></div><div class="callout__content markdown-body flex-1 min-w-0"><p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/2733ddf35806d331cd7cffe6a45d32f63634856a"><em>Commit <code>2733ddf3</code> fix: <code>place_tower</code> api not freeing tower instances causes memory leak</em></a></p></div></div>
 <p>剛寫完四開我想拿四個 sample agent 開一場遊戲跑五分鐘測試有沒有問題。結果過了一分鐘之後遊戲直接 crash 給我看，跑幾次都是不多不少的差不多一分鐘 crash。我和王淇醒了一整個晚上，早上不到八點在那裡找問題。開 verbose log 說是 <a class="link" target="_blank" rel="noopener" href="https://docs.godotengine.org/en/stable/classes/class_rid.html">RID<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 不夠用了，但是 RID 上限有 262144 個是怎麼用完的？還發現是防禦塔在 leak RID，哪來這麼多防禦塔？</p>
 <p>最後還得是王淇一個一個檢查每一次 <code>instantiate()</code> 有沒有好好清理，才發現是每呼叫一次 <code>place_tower</code> API，沒有成功放上去的話，都要 leak 一個防禦塔的 instance（大概 5 到 10 個 RID），一秒可以呼叫快一百次 API，場上八個 agent，算一算差不多就是一分鐘會超過上限。</p>
 <p>這個東西只要之前有人拿兩個 sample agent 跑四分鐘就會戳到，不過過了這麼久都沒有人發現（？）</p>
-
-    </div>
-  </details>
+</div></details>
 <p>7/17 下午是一整個下午的 Challenge 時間，讓小隊員寫他們的 agent。我早上寫完四開之後直接睡死到下午，Challenge 時間的所有工作（可能是回答小隊員的問題？）大概都是所有其他 Challenge 組員處理的。其實營期間的 Challenge 時間我很少有在幫忙做事情，前一天（第四天 7/16）的 Challenge 時間我甚至沒出現，真的要好好感謝其他組員們。</p>
 <p>對 Challenge 時間唯一的印象是有小隊員 agent 連不上去，原因到現在都還不明，我突發奇想叫他戳 reset token 竟然就好了，那時候寫 reset token 的功能沒想過居然會有用，好欸。除了這個小插曲之外我起床之後就跟胡祐誠等其他人一起趕工 premium API，公開時間一拖再拖，結果到傍晚晚會前我們還是沒有公開 premium API。</p>
 <p>我們原本的計畫是這樣的：晚上十二點是軟死線讓小隊員交一個版本，凌晨一點是硬死線。凌晨 00:19 我們終於在版本 v1.3.0 釋出完整的 premium API，但是釋出之後他們還要測試啊，怎麼辦？所以我們又把死線往後延。v1.3.0 釋出之後又發現新的 bug，所以 12:54 釋出 v1.3.1，死線又再一次往後延。</p>
 <p>最後我們凌晨四點才關 agent 提交表單。</p>
-<details class="yellow" data-header-exclude="">
-    <summary><i class="fa-solid fa-chevron-right"></i>Bug Fix 八選（其七） </summary>
-    <div class="content markdown-body">
-        <div class="note p-4 mb-4 rounded-small markdown-body yellow">
-    <p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/52d79d3354475564b8915c7dbf451e945a25aa9c"><em>Commit <code>52d79d33</code> fix: get income fails when 2x income spell is active</em></a></p>
-  </div>
+<details class="relative my-4 border border-border-color bg-second-background-color rounded-md  yellow" data-header-exclude=""><summary class="px-4 py-2 rounded-md shadow-[0_0_2px_0_var(--shadow-color-1)] cursor-pointer not-markdown"><i class="fa-solid fa-chevron-right"></i>Bug Fix 八選（其七）</summary><div class="content p-4 "><div class="callout callout--simple yellow mb-4 rounded-small shadow-redefine-flat bg-(--callout-bg-color) p-3 pl-1 relative flex flex-row gap-2 items-center"><div role="none" class="rounded-full self-stretch w-0.5 bg-(--callout-primary-color) shrink-0 opacity-60"></div><div class="callout__content markdown-body flex-1 min-w-0"><p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/52d79d3354475564b8915c7dbf451e945a25aa9c"><em>Commit <code>52d79d33</code> fix: get income fails when 2x income spell is active</em></a></p></div></div>
 <p>遊戲裡有個框框顯示你現在有多少錢和你每秒的收入。原本那個綠色的字顯示正多少就是你的收入，不過 v1.3.0 更新之後，如果身上有兩倍收入的效果的話也會一併顯示。而且 <em>那兩段數字在同一個文字框</em>！</p>
 <p><img lazyload="" src="/images/loading.svg" data-src="/images/2025-07-challenge/bugfix-7-1.png" alt=""><br>
 <img lazyload="" src="/images/loading.svg" data-src="/images/2025-07-challenge/bugfix-7-2.png" alt=""></p>
@@ -820,9 +723,7 @@ mjx-container[display="true"] + br {
 <p>誰會知道有人從顯示的文字框裡撈資料出來啊？</p>
 <p>誰會知道有人會動那個文字框裡面的東西啊？</p>
 <p>沒有要怪這幾個人的意思，我到現在還是覺得很好笑。</p>
-
-    </div>
-  </details>
+</div></details>
 <p>前幾年 Challenge 組最後一個晚上都會留在旅館幫忙小隊員趕工他們的 agent，今年請召部留了兩間房間讓我們有地方可以睡。所以我們就整個晚上待在旅館（有人在房間整個晚上播 <a class="link" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=YmHZI03a_Yo">這種東西<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 和 <a class="link" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=h5h7ylmD__0">這種東西<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 💀），如果不是這樣的話有點無法想像我們這天晚上要怎麼有地方可以趕各種東西，太感謝召部了。</p>
 <h2 id="營期第-6-天．7-18（五）">營期第 6 天．7/18（五）</h2>
 <p>其實我到這裡有點麻木了，寫到這裡的現在的我也有點麻木了，反正就是一直各種趕工。小隊員的 agent 表單關掉之後我們還</p>
@@ -853,13 +754,8 @@ mjx-container[display="true"] + br {
 <p>我承認這個時候我不知道要怎麼辦。那個 bug 相關的所有 code 我都沒有認真讀過，我自己一時修不好，103 教室現場只有我和張聲元兩個人，我不知道大三區現在是什麼情況、有幾個人，甚至不知道這個問題能不能修得好。中間有人來說懷疑是小隊員的 agent 寫壞掉，很快發現別的小隊也怪怪的，所以又回去繼續找問題。後來才知道有幾個小隊確實是他們自己亂寫，又混淆視聽了一下增加 debug 的難度。我也不能說要換一個人上來主控，因為我的 match making 腳本那時候 literally 只有我看過，沒人會用，所以我必須待在台上。</p>
 <p>當時實際上是繼續對戰，我還是找不到問題，同時我還得要待在台上繼續控制電腦。事後冷靜的想一下的話在決定重賽的當下就應該去跟召部討論有沒有方法可以直接停止 Demo 去做點別的事情，給我們一些時間嘗試修理這個問題，修好之後再開。這個對策再怎麼說都會比照常繼續還好，因為已經承諾重賽了，繼續對戰的結果沒有任何意義，該想辦法做點其他事情不要繼續浪費大家的時間；我要去大三區多獲得任何有意義的資訊的話的話也不能被綁在台上。</p>
 <p>結果我們拖到午餐時間，小隊員去吃飯，Demo 暫停。</p>
-<details class="yellow" data-header-exclude="">
-    <summary><i class="fa-solid fa-chevron-right"></i>Bug Fix 八選（其八） </summary>
-    <div class="content markdown-body">
-      <p>張聲元給我他的電腦叫我找問題在哪，我看到錯誤訊息說某個 signal 被 connect 兩次，但是單純的註解掉那一行也不 work。</p>
-  <div class="note p-4 mb-4 rounded-small markdown-body yellow">
-    <p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/fd1857b0b2584c8877de5af66e80f81109ac8b9b"><em>Commit <code>fd1857b0</code> fix: shy guy</em></a></p>
-  </div>
+<details class="relative my-4 border border-border-color bg-second-background-color rounded-md  yellow" data-header-exclude=""><summary class="px-4 py-2 rounded-md shadow-[0_0_2px_0_var(--shadow-color-1)] cursor-pointer not-markdown"><i class="fa-solid fa-chevron-right"></i>Bug Fix 八選（其八）</summary><div class="content p-4 "><p>張聲元給我他的電腦叫我找問題在哪，我看到錯誤訊息說某個 signal 被 connect 兩次，但是單純的註解掉那一行也不 work。</p>
+<div class="callout callout--simple yellow mb-4 rounded-small shadow-redefine-flat bg-(--callout-bg-color) p-3 pl-1 relative flex flex-row gap-2 items-center"><div role="none" class="rounded-full self-stretch w-0.5 bg-(--callout-primary-color) shrink-0 opacity-60"></div><div class="callout__content markdown-body flex-1 min-w-0"><p><a target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/commit/fd1857b0b2584c8877de5af66e80f81109ac8b9b"><em>Commit <code>fd1857b0</code> fix: shy guy</em></a></p></div></div>
 <p>重要的只有 <code>tower_with_multiple_bullet.gd</code>。事後找了一下問題，簡單來說跟防禦塔有關的有三個 class：</p>
 <ul>
 <li><code>class Tower</code></li>
@@ -868,9 +764,7 @@ mjx-container[display="true"] + br {
 </ul>
 <p>問題應出在 <a class="link" target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/blob/0c911b4e83dfd1b1e600dff2db2b647046d21f53/scripts/towers/tower.gd#L48">這裡<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 從 parent class 的 <code>_ready()</code> 接了一次 signal，<a class="link" target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/blob/09ae4148b553a610394b3738058cf40abdbb6bbd/scripts/towers/tower_with_single_bullet.gd#L22">這裡<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 有從 child class 拿掉，但是 <a class="link" target="_blank" rel="noopener" href="https://github.com/CSIE-Challenge/Challenge2025/blob/0c911b4e83dfd1b1e600dff2db2b647046d21f53/scripts/towers/tower_with_multiple_bullet.gd#L18">這裡<i class="fa-solid fa-arrow-up-right ml-[0.2em] font-light align-text-top text-[0.7em] link-icon"></i></a> 沒有刪到，從其他地方又 <code>connect</code>。所以 <code>TowerWithMultipleBullet</code>（嘿呵）會想要接 signal 兩次。至於為什麼不能只刪那個 <code>connect</code> 大概跟防禦塔發子彈的邏輯有關。</p>
 <p>這就是我用眼睛亂檢查的下場。我早上決定賭他沒問題把他合進去，所以接受他壞掉了的處罰，再怎麼說我都有最大的責任。但是這個「我有責任」實在是太空泛了，我能怎麼負責？充其量只是我現在事後嘴砲被精神譴責罷了。</p>
-
-    </div>
-  </details>
+</div></details>
 <p>中午胡祐誠的地圖做完了，差不多同個時間蔡瑜恩和卓育安把嘿呵修好了，回到比賽可以進行的狀態。召部又幫我們擠出不少下午的時間，我們一些組員和召部討論了一下接下來的計畫，決定全部重賽，把前幾輪開兩倍速加速。胡祐誠的隱藏圖可以在 boss 戰前 merge 進來，其實對於現場合新東西進來我還是覺得有點怕，不過就這樣吧。另一個決議是要改某些小隊的 agent。有一個小隊不看文件寫出一個無窮迴圈整個不會動，所以我們要在後半輪幫他們修好；第八小隊聲稱他們縮排壞了，所以後半輪要幫他們改過。</p>
 <p>重賽的時候相當順利，還好我們是用遊戲引擎所以可以讓遊戲加到兩倍速，五分鐘的遊戲縮短成兩分半我覺得節奏更好。</p>
 <p>不過循環賽快結束的時候第八小隊又不開心了，他們聲稱他們想改的不是我們改的。他們一開始交的 agent 整個會直接 runtime error，所以我們幫他們改過 agent，但是因為這樣他們手上想改的 code 跟正賽用的不一樣，然後他們隊輔（那個不能跑的東西好像是隊輔寫的？）就上來說他們要改的不是這樣云云。反正我們不能說服他我們改的是好的，他們其實也還是沒說他們的訴求是什麼，忘記最後是什麼結論了。我的決策失誤是沒有先搞清楚他們的訴求，後面其實沒有他們的比賽了，後來也沒有再重賽，所以他們來吵完一輪之後對比賽沒有任何實質影響，但是拖了有點久去跟他們來回吵架（用吵架這個詞是因為他們隊輔看起來一直想爭取什麼，但是講出來的話沒什麼道理）。也許我們這邊應該要提前讓小隊員知道改過的程式碼長怎樣？這樣才不會有這種的不會寫程式還來吵架。</p>
@@ -936,6 +830,7 @@ mjx-container[display="true"] + br {
 	</div>
 	
 </div>
+
 			</div>
 
 			
@@ -956,11 +851,11 @@ mjx-container[display="true"] + br {
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        21 posts in total
+                        22 posts in total
                     </span>
                     
                         <span>
-                            56.9k words in total
+                            58.2k words in total
                         </span>
                     
                 </p>
@@ -969,7 +864,7 @@ mjx-container[display="true"] + br {
         
         <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
             <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
-            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.8.5</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.9.0</a></span>
         </div>
         
         
@@ -1044,9 +939,43 @@ mjx-container[display="true"] + br {
 </div>
 	</div>
 
-	<div class="image-viewer-container">
-	<img src="">
+	<div class="image-viewer-container" role="dialog" aria-modal="true" aria-label="Image viewer">
+	<button class="image-viewer-close" type="button" aria-label="Close">
+		<i class="fa-solid fa-xmark"></i>
+	</button>
+	<button class="image-viewer-prev" type="button" aria-label="Prev">
+		<i class="fa-solid fa-chevron-left"></i>
+	</button>
+	<div class="image-viewer-frame">
+		<img src="" alt="">
+	</div>
+	<div class="image-viewer-exif-panel hidden absolute left-1/2 bottom-20 -translate-x-1/2 w-[min(92vw,420px)] max-h-[60vh] overflow-hidden rounded-2xl bg-background-color-transparent-80 p-4 text-left shadow-redefine-flat backdrop-blur-md" role="dialog" aria-label="EXIF" aria-hidden="true">
+		<div class="flex items-center justify-between mb-3">
+			<span class="text-sm font-semibold text-first-text-color">EXIF</span>
+			<button class="image-viewer-exif-close flex h-8 w-8 items-center justify-center rounded-full bg-background-color-transparent-80 text-first-text-color transition hover:bg-background-color-transparent-40" type="button" aria-label="Close">
+				<i class="fa-solid fa-xmark text-[0.65rem]"></i>
+			</button>
+		</div>
+		<div class="image-viewer-exif-cards grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto pr-1 scrollbar-hide"></div>
+		<template class="image-viewer-exif-card-template">
+			<div class="rounded-lg bg-background-color-transparent-40 px-3 py-2">
+				<div class="image-viewer-exif-card-header flex items-center gap-2 mb-1">
+					<i class="image-viewer-exif-card-icon fa-solid fa-circle-info text-xs text-third-text-color"></i>
+					<div class="image-viewer-exif-card-title text-xs font-semibold text-first-text-color"></div>
+				</div>
+				<div class="image-viewer-exif-card-items flex flex-col gap-1"></div>
+			</div>
+		</template>
+	</div>
+	<button class="image-viewer-exif-toggle flex items-center gap-2 hidden absolute left-1/2 bottom-6 -translate-x-1/2 rounded-full border border-border-color bg-background-color-transparent-80 px-4 py-2 text-first-text-color backdrop-blur-md transition hover:bg-background-color-transparent-40" type="button" aria-label="EXIF" aria-expanded="false">
+		<i class="fa-solid fa-circle-info text-xs"></i>
+		<span class="text-xs font-semibold uppercase tracking-wider">EXIF</span>
+	</button>
+	<button class="image-viewer-next" type="button" aria-label="Next">
+		<i class="fa-solid fa-chevron-right"></i>
+	</button>
 </div>
+
 
 	
 
@@ -1067,7 +996,7 @@ mjx-container[display="true"] + br {
 <script src="/js/build/libs/SwupPreloadPlugin.min.js"></script>
 
 <script>
-    const swup = new Swup({
+    window.swup = new Swup({
         plugins: [
             new SwupScriptsPlugin({
                 optin: true,
@@ -1083,49 +1012,22 @@ mjx-container[display="true"] + br {
         ],
         containers: ["#swup"],
     });
+
+    window.dispatchEvent(
+        new CustomEvent("redefine:swup:ready", {
+            detail: {
+                swup: window.swup,
+            },
+        }),
+    );
 </script>
 
 
 
 
 	
-<script src="/js/build/tools/imageViewer.js" type="module"></script>
-
-<script src="/js/build/utils.js" type="module"></script>
-
 <script src="/js/build/main.js" type="module"></script>
 
-<script src="/js/build/layouts/navbarShrink.js" type="module"></script>
-
-<script src="/js/build/tools/scrollTopBottom.js" type="module"></script>
-
-<script src="/js/build/tools/lightDarkSwitch.js" type="module"></script>
-
-<script src="/js/build/layouts/categoryList.js" type="module"></script>
-
-
-
-
-
-    
-<script src="/js/build/tools/codeBlock.js" type="module"></script>
-
-
-
-
-    
-<script src="/js/build/layouts/lazyload.js" type="module"></script>
-
-
-
-
-
-
-  
-<script src="/js/build/libs/Typed.min.js"></script>
-
-  
-<script src="/js/build/plugins/typed.js" type="module"></script>
 
 
 
@@ -1134,29 +1036,14 @@ mjx-container[display="true"] + br {
 
 
 
-    
-<script src="/js/build/libs/anime.min.js"></script>
 
 
 
-
-
-    
-<script src="/js/build/tools/tocToggle.js" type="module" data-swup-reload-script=""></script>
-
-<script src="/js/build/layouts/toc.js" type="module" data-swup-reload-script=""></script>
-
-<script src="/js/build/plugins/tabs.js" type="module" data-swup-reload-script=""></script>
 
 
 
 
 <script src="/js/build/libs/moment-with-locales.min.js" data-swup-reload-script=""></script>
-
-
-<script src="/js/build/layouts/essays.js" type="module" data-swup-reload-script=""></script>
-
-
 
 
 
