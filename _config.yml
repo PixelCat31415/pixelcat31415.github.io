@@ -55,7 +55,7 @@ prismjs:
   line_number: true
   tab_replace: ''
 mathjax:
-  tags: all
+  tags: none
   single_dollars: false
   cjk_width: 0.9
   normal_width: 0.6
