@@ -1,7 +1,7 @@
 ---
 title: 牙牙學 Vulkan（三）
 date: 2026-01-27 03:09:34
-tags: [Vulkan, C++]
+tags: [Vulkan, C++, Computer Graphics]
 ---
 
 又放假了，所以回頭來學畫畫。這個專案的進度龜速，因為我學期間基本沒空搞其他東西，再加上我確實的學藝不精寫程式效率奇差，都常常覺得怎麼我搞了這麼久還在這裡 😔（more on this later）

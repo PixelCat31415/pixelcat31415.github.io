@@ -1,7 +1,7 @@
 ---
 title: 牙牙學 Vulkan（一）
 date: 2025-08-02 07:23:54
-tags: [Vulkan, C++]
+tags: [Vulkan, C++, Computer Graphics]
 ---
 
 我終於第一次不嘴砲真的去寫 vulkan 了！
