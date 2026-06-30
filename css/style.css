@@ -577,7 +577,7 @@ img[lazyload] {
   font-size: 3.2rem;
   font-weight: 650;
   border-bottom: solid 2px var(--fourth-text-color);
-  margin-top: 3.2rem;
+  margin-top: 2.4rem;
   margin-bottom: 1rem;
   letter-spacing: -0.025em;
   line-height: 1.2;
@@ -595,7 +595,7 @@ img[lazyload] {
   font-weight: 650;
   padding: 3px 0;
   border-bottom: solid 2px var(--fourth-text-color);
-  margin-top: 2.4rem;
+  margin-top: 1.9rem;
   margin-bottom: 1rem;
   letter-spacing: -0.025em;
   line-height: 1.1;
@@ -611,7 +611,7 @@ img[lazyload] {
 .markdown-body .h3:not(.not-markdown) {
   font-size: 1.8rem;
   font-weight: 600;
-  margin-top: 1.9rem;
+  margin-top: 1.6rem;
   margin-bottom: 0.75rem;
   letter-spacing: -0.025em;
   line-height: 1.3;
@@ -627,7 +627,7 @@ img[lazyload] {
 .markdown-body .h4:not(.not-markdown) {
   font-size: 1.5rem;
   font-weight: 600;
-  margin-top: 1.6rem;
+  margin-top: 1.4rem;
   margin-bottom: 0.75rem;
   line-height: 1.4;
 }
@@ -642,7 +642,7 @@ img[lazyload] {
 .markdown-body .h5:not(.not-markdown) {
   font-size: 1.28rem;
   font-weight: 600;
-  margin-top: 1.4rem;
+  margin-top: 1.3rem;
   margin-bottom: 0.5rem;
   line-height: 1.3;
 }
@@ -657,7 +657,7 @@ img[lazyload] {
 .markdown-body .h6:not(.not-markdown) {
   font-size: 1.2rem;
   font-weight: 600;
-  margin-top: 1.3rem;
+  margin-top: 1.2rem;
   margin-bottom: 0.5rem;
   line-height: 1.2;
 }
